@@ -1,0 +1,20 @@
+CREATE TABLE documentos_gerais (
+    id SERIAL PRIMARY KEY,
+    single_registry_registration TEXT,
+    marital_status TEXT,
+    identity_documents TEXT,
+    guardianship_documents TEXT,
+    vaccination_card TEXT,
+    proof_of_residence TEXT,
+    work_contract TEXT,
+    banking_relations_report TEXT,
+    proof_of_income TEXT,
+    supporting_documentation TEXT,
+    bank_statements TEXT,
+    business_documents TEXT,
+    tax_documents TEXT,
+    mei_documents TEXT,
+    health_disability TEXT,
+    family_composition TEXT,
+    government_program TEXT
+);
