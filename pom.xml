@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>pdev.com</groupId>
-	<artifactId>ASAP</artifactId>
+	<artifactId>agenda</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>asap</name>
-	<description>Projeto bolsa para alunos</description>
+	<name>agenda</name>
+	<description>Projeto para Agendamento de Pacientes</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
