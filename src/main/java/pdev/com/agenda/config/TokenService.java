@@ -6,6 +6,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
+import pdev.com.agenda.domain.entity.UserInfo;
 
 import java.util.Date;
 import java.util.Optional;
@@ -16,11 +17,11 @@ public class TokenService {
     @Value("${agenda.api.security.token.secret}")
     private String secret;
 
-    public String generateToken(User user) {
+    public String generateToken(UserInfo user) {
         Algorithm algorithm = Algorithm.HMAC256(secret);
 
         return JWT.create()
-                .withSubject(user.getUsername())
+                .withSubject(user.getUserName())
                 .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
                 .withIssuer("agenda-service-api")
                 .sign(algorithm);
