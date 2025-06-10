@@ -27,13 +27,4 @@ public class Usuario {
     @NotBlank
     private String senha;
 
-    @Column(name = "token")
-    private String token;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Role role;
-
-    @Column(name = "is_first_login")
-    private boolean isFirstLogin;
-
 }
