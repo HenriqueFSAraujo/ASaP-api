@@ -20,6 +20,7 @@ public class UserInfoMapper {
         entity.setUserName(dto.getUserName());
         entity.setPassword(dto.getPassword());
         entity.setToken(dto.getToken());
+        entity.setRole(dto.getRoleName());
         entity.setFirstLogin(dto.isFirstLogin());
 
 
@@ -33,7 +34,7 @@ public class UserInfoMapper {
         dto.setUserName(entity.getUserName());
         dto.setToken(entity.getToken());
         dto.setIsFirstLogin(entity.isFirstLogin());
-        dto.setRoleName(entity.getRole() != null ? entity.getRole().getName().name() : null);
+        dto.setRoleName(entity.getRole());
 
         return dto;
     }

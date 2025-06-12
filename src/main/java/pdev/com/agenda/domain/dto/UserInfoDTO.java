@@ -1,6 +1,7 @@
 package pdev.com.agenda.domain.dto;
 
 import lombok.Data;
+import pdev.com.agenda.domain.entity.Role;
 
 @Data
 public class UserInfoDTO {
@@ -9,7 +10,7 @@ public class UserInfoDTO {
     private String password;
     private String userName;
     private String token;
-    private String roleName;
+    private Role roleName;
     private boolean isFirstLogin;
 
     public void setIsFirstLogin(boolean firstLogin) {
