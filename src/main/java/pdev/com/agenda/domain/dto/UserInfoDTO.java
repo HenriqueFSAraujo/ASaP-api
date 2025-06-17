@@ -9,6 +9,8 @@ public class UserInfoDTO {
     private String name;
     private String userName;
     private String roleName;
+    private String cpf;
+    private String email;
     private boolean isFirstLogin;
 
     public void setIsFirstLogin(boolean firstLogin) {

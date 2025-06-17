@@ -30,6 +30,12 @@ public class UserInfo {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "cpf")
+    private String cpf;
+
+    @Column(name = "email")
+    private String email;
+
     @Column(name = "user_name")
     private String userName;
 
@@ -45,6 +51,9 @@ public class UserInfo {
 
     @Column(name = "is_first_login")
     private boolean isFirstLogin;
+
+    @Column(name = "isActive")
+    private boolean isActive;
 
 
 }
