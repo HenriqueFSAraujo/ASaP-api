@@ -24,8 +24,8 @@ public class UserInfoMapper {
         entity.setUserName(dto.getCpf());
         entity.setCpf(dto.getCpf());
         entity.setEmail(dto.getEmail());
+        entity.setActive(true);
         entity.setFirstLogin(dto.isFirstLogin());
-
         Role role = roleRepository.findByName(RoleEnum.valueOf(dto.getRoleName()));
         entity.setRole(role);
 
@@ -39,6 +39,7 @@ public class UserInfoMapper {
         dto.setCpf(entity.getCpf());
         dto.setEmail(entity.getEmail());
         dto.setIsFirstLogin(entity.isFirstLogin());
+        entity.setActive(true);
         dto.setRoleName(entity.getRole().getName().name());
 
         return dto;
