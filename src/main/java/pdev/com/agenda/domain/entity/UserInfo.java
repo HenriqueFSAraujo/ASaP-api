@@ -55,5 +55,4 @@ public class UserInfo {
     @Column(name = "isactive")
     private boolean isActive;
 
-
 }

@@ -23,9 +23,13 @@ public class UserInfoMapper {
         entity.setName(dto.getName());
         entity.setUserName(dto.getCpf());
         entity.setCpf(dto.getCpf());
+        entity.setPassword(dto.getCpf());
         entity.setEmail(dto.getEmail());
         entity.setActive(true);
         entity.setFirstLogin(dto.isFirstLogin());
+        if (dto.getRoleName() == null) {
+            throw new IllegalArgumentException("O campo role é obrigatório.");
+        }
         Role role = roleRepository.findByName(RoleEnum.valueOf(dto.getRoleName()));
         entity.setRole(role);
 
@@ -37,6 +41,7 @@ public class UserInfoMapper {
         dto.setName(entity.getName());
         dto.setUserName(entity.getCpf());
         dto.setCpf(entity.getCpf());
+        entity.setPassword(dto.getCpf());
         dto.setEmail(entity.getEmail());
         dto.setIsFirstLogin(entity.isFirstLogin());
         entity.setActive(true);

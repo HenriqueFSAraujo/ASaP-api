@@ -1,10 +1,13 @@
 package pdev.com.agenda.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
-import pdev.com.agenda.domain.entity.Role;
+
 
 @Data
 public class UserInfoDTO {
+    @JsonIgnore
+    private Long userId;
 
     private String name;
     private String userName;
@@ -12,6 +15,12 @@ public class UserInfoDTO {
     private String cpf;
     private String email;
     private boolean isFirstLogin;
+
+    @JsonIgnore
+    private boolean password;
+    @JsonIgnore
+    private boolean isActive;
+
 
     public void setIsFirstLogin(boolean firstLogin) {
 
