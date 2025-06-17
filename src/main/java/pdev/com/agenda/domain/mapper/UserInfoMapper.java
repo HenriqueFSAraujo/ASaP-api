@@ -21,7 +21,7 @@ public class UserInfoMapper {
     public UserInfo toEntity(UserInfoDTO dto) {
         UserInfo entity = new UserInfo();
         entity.setName(dto.getName());
-        dto.setUserId(dto.getUserId());
+        entity.setId(dto.getUserId());
         entity.setUserName(dto.getCpf());
         entity.setCpf(dto.getCpf());
         entity.setPassword(dto.getCpf());
