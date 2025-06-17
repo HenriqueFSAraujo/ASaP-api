@@ -44,9 +44,7 @@ public class UserInfoService {
 
         entity.setName(dto.getName());
         entity.setUserName(dto.getUserName());
-        entity.setPassword(dto.getPassword());
-        entity.setToken(dto.getToken());
-        entity.setFirstLogin(dto.isFirstLogin());
+
 
 
         return mapper.toDTO(repository.save(entity));
