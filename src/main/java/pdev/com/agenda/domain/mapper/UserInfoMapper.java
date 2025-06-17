@@ -21,6 +21,7 @@ public class UserInfoMapper {
     public UserInfo toEntity(UserInfoDTO dto) {
         UserInfo entity = new UserInfo();
         entity.setName(dto.getName());
+        dto.setUserId(dto.getUserId());
         entity.setUserName(dto.getCpf());
         entity.setCpf(dto.getCpf());
         entity.setPassword(dto.getCpf());
@@ -38,13 +39,14 @@ public class UserInfoMapper {
 
     public UserInfoDTO toDTO(UserInfo entity) {
         UserInfoDTO dto = new UserInfoDTO();
+        dto.setUserId(entity.getId());
         dto.setName(entity.getName());
         dto.setUserName(entity.getCpf());
         dto.setCpf(entity.getCpf());
-        entity.setPassword(dto.getCpf());
+        dto.setPassword(entity.getCpf());
         dto.setEmail(entity.getEmail());
         dto.setIsFirstLogin(entity.isFirstLogin());
-        entity.setActive(true);
+        dto.setActive(true);
         dto.setRoleName(entity.getRole().getName().name());
 
         return dto;

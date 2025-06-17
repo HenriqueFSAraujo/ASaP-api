@@ -8,7 +8,6 @@ import lombok.Data;
 public class UserInfoDTO {
     @JsonIgnore
     private Long userId;
-
     private String name;
     private String userName;
     private String roleName;
@@ -17,7 +16,7 @@ public class UserInfoDTO {
     private boolean isFirstLogin;
 
     @JsonIgnore
-    private boolean password;
+    private String password;
     @JsonIgnore
     private boolean isActive;
 
