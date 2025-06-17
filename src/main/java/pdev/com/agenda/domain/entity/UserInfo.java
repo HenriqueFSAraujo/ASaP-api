@@ -52,7 +52,7 @@ public class UserInfo {
     @Column(name = "is_first_login")
     private boolean isFirstLogin;
 
-    @Column(name = "isActive")
+    @Column(name = "isactive")
     private boolean isActive;
 
 
