@@ -20,8 +20,8 @@ public class UserInfoMapper {
 
     public UserInfo toEntity(UserInfoDTO dto) {
         UserInfo entity = new UserInfo();
-        entity.setName(dto.getCpf());
-        entity.setUserName(dto.getUserName());
+        entity.setName(dto.getUserName());
+        entity.setUserName(dto.getCpf());
         entity.setEmail(dto.getEmail());
         entity.setFirstLogin(dto.isFirstLogin());
         Role role = roleRepository.findByName(RoleEnum.valueOf(dto.getRoleName()));
