@@ -35,7 +35,6 @@ public class UserInfoService {
 
     public UserInfoDTO create(UserInfoDTO dto) {
 
-
         UserInfo entity = mapper.toEntity(dto);
         return mapper.toDTO(repository.save(entity));
     }

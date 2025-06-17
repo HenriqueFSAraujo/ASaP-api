@@ -20,10 +20,12 @@ public class UserInfoMapper {
 
     public UserInfo toEntity(UserInfoDTO dto) {
         UserInfo entity = new UserInfo();
-        entity.setName(dto.getUserName());
+        entity.setName(dto.getName());
         entity.setUserName(dto.getCpf());
+        entity.setCpf(dto.getCpf());
         entity.setEmail(dto.getEmail());
         entity.setFirstLogin(dto.isFirstLogin());
+
         Role role = roleRepository.findByName(RoleEnum.valueOf(dto.getRoleName()));
         entity.setRole(role);
 
@@ -34,7 +36,8 @@ public class UserInfoMapper {
         UserInfoDTO dto = new UserInfoDTO();
         dto.setName(entity.getName());
         dto.setUserName(entity.getCpf());
-        entity.setEmail(dto.getEmail());
+        dto.setCpf(entity.getCpf());
+        dto.setEmail(entity.getEmail());
         dto.setIsFirstLogin(entity.isFirstLogin());
         dto.setRoleName(entity.getRole().getName().name());
 
