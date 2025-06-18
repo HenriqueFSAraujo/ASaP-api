@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pdev.com.agenda.domain.UserInfoResponse;
 import pdev.com.agenda.domain.dto.UserInfoDTO;
 import pdev.com.agenda.domain.service.UserInfoService;
 
@@ -25,7 +26,7 @@ public class UserInfoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserInfoDTO>> getAllUsers() {
+    public ResponseEntity<List<UserInfoResponse>> getAllUsers() {
         return ResponseEntity.ok(userInfoService.findAll());
     }
 

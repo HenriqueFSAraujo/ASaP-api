@@ -1,6 +1,7 @@
 package pdev.com.agenda.domain.service;
 
 import org.springframework.stereotype.Service;
+import pdev.com.agenda.domain.UserInfoResponse;
 import pdev.com.agenda.domain.dto.UserInfoDTO;
 import pdev.com.agenda.domain.entity.UserInfo;
 import pdev.com.agenda.domain.mapper.UserInfoMapper;
@@ -21,9 +22,9 @@ public class UserInfoService {
         this.mapper = mapper;
     }
 
-    public List<UserInfoDTO> findAll() {
+    public List<UserInfoResponse> findAll() {
         return repository.findAll().stream()
-                .map(mapper::toDTO)
+                .map(mapper::toResponseDTO)
                 .collect(Collectors.toList());
     }
 
