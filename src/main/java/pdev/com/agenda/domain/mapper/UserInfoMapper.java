@@ -28,7 +28,7 @@ public class UserInfoMapper {
         entity.setPassword(dto.getCpf());
         entity.setEmail(dto.getEmail());
         entity.setActive(true);
-        entity.setFirstLogin(dto.isFirstLogin());
+        entity.setFirstLogin(true);
         if (dto.getRoleName() == null) {
             throw new IllegalArgumentException("O campo role é obrigatório.");
         }
@@ -47,7 +47,7 @@ public class UserInfoMapper {
         dto.setCpf(entity.getCpf());
         dto.setPassword(entity.getCpf());
         dto.setEmail(entity.getEmail());
-        dto.setIsFirstLogin(entity.isFirstLogin());
+        dto.setIsFirstLogin(true);
         dto.setActive(true);
         dto.setRoleName(entity.getRole().getName().name());
 
