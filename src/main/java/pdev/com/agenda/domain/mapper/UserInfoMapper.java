@@ -58,7 +58,7 @@ public class UserInfoMapper {
         UserInfoResponse response = new UserInfoResponse();
         response.setUserId(entity.getId());
         response.setName(entity.getName());
-        response.setUserName(entity.getUserName());
+        response.setUserName(entity.getCpf());
         response.setCpf(entity.getCpf());
         response.setEmail(entity.getEmail());
         response.setPassword(entity.getPassword());
