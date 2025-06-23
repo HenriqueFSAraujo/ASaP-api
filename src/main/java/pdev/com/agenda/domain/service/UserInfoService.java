@@ -36,6 +36,7 @@ public class UserInfoService {
 
     public UserInfoDTO create(UserInfoDTO dto) {
         UserInfo entity = mapper.toEntity(dto);
+        entity.isFirstLogin(true);
         return mapper.toDTO(repository.save(entity));
     }
 

@@ -49,7 +49,7 @@ public class UserInfo {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @Column(name = "is_first_login")
+    @Column(name = "is_first_login", insertable = true)
     private boolean isFirstLogin;
 
     @Column(name = "isactive")
