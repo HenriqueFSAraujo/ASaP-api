@@ -62,7 +62,7 @@ public class UserInfoMapper {
         response.setCpf(entity.getCpf());
         response.setEmail(entity.getEmail());
         response.setPassword(entity.getPassword());
-        response.setIsFirstLogin(entity.isFirstLogin());
+        response.setIsFirstLogin(true);
         response.setActive(true);
 
         if (entity.getRole() != null && entity.getRole().getName() != null) {
