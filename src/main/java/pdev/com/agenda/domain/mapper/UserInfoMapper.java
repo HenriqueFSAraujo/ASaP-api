@@ -63,7 +63,7 @@ public class UserInfoMapper {
         response.setEmail(entity.getEmail());
         response.setPassword(entity.getPassword());
         response.setIsFirstLogin(entity.isFirstLogin());
-        response.isActive();
+        response.setActive(true);
 
         if (entity.getRole() != null && entity.getRole().getName() != null) {
             response.setRoleName(entity.getRole().getName().name());
