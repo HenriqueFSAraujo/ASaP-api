@@ -53,6 +53,6 @@ public class UserInfo {
     private boolean isFirstLogin;
 
     @Column(name = "isactive")
-    private boolean isActive;
+    private boolean active;
 
 }

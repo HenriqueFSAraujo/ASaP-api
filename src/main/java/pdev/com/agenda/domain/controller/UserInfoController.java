@@ -59,4 +59,10 @@ public class UserInfoController {
         userInfoService.resetPassword(request.getEmail(), request.getNewPassword());
         return ResponseEntity.ok("Senha redefinida com sucesso.");
     }
+
+    @PutMapping("/{id}/deactivate")
+    public ResponseEntity<String> deactivateUser(@PathVariable Long id) {
+        userInfoService.deactivateUser(id);
+        return ResponseEntity.ok("Usuário desativado com sucesso.");
+    }
 }
