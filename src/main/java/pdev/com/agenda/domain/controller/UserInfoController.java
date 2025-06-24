@@ -54,9 +54,11 @@ public class UserInfoController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/reset-password")
-    public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordRequest request) {
-        userInfoService.resetPassword(request.getEmail(), request.getNewPassword());
+    @PutMapping("/{id}/reset-password")
+    public ResponseEntity<String> resetPassword(
+            @PathVariable Long id,
+            @RequestBody ResetPasswordRequest request) {
+        userInfoService.resetPassword(id, request);
         return ResponseEntity.ok("Senha redefinida com sucesso.");
     }
 

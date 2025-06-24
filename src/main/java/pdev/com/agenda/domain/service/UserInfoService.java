@@ -3,6 +3,7 @@ package pdev.com.agenda.domain.service;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pdev.com.agenda.domain.UserInfoResponse;
+import pdev.com.agenda.domain.dto.ResetPasswordRequest;
 import pdev.com.agenda.domain.dto.UserInfoDTO;
 import pdev.com.agenda.domain.entity.UserInfo;
 import pdev.com.agenda.domain.mapper.UserInfoMapper;
@@ -56,11 +57,16 @@ public class UserInfoService {
         repository.deleteById(id);
     }
 
-    public void resetPassword(String email, String newPassword) {
-        UserInfo user = repository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado com e-mail: " + email));
 
-        user.setPassword(newPassword);
+    public void resetPassword(Long id, ResetPasswordRequest request) {
+        UserInfo user = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com ID: " + id));
+
+        if (!user.getPassword().equals(request.getCurrentPassWord())) {
+            throw new IllegalArgumentException("Senha atual incorreta.");
+        }
+
+        user.setPassword(request.getNewPassword());
         repository.save(user);
     }
 
