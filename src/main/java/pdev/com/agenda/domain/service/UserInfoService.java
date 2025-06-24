@@ -65,7 +65,7 @@ public class UserInfoService {
         if (!user.getPassword().equals(request.getCurrentPassWord())) {
             throw new IllegalArgumentException("Senha atual incorreta.");
         }
-
+        user.setFirstLogin(false);
         user.setPassword(request.getNewPassword());
         repository.save(user);
     }
