@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pdev.com.agenda.domain.UserInfoResponse;
+import pdev.com.agenda.domain.dto.ResetPasswordRequest;
 import pdev.com.agenda.domain.dto.UserInfoDTO;
 import pdev.com.agenda.domain.service.UserInfoService;
 
@@ -51,5 +52,11 @@ public class UserInfoController {
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
         userInfoService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordRequest request) {
+        userInfoService.resetPassword(request.getEmail(), request.getNewPassword());
+        return ResponseEntity.ok("Senha redefinida com sucesso.");
     }
 }

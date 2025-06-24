@@ -1,5 +1,6 @@
 package pdev.com.agenda.domain.service;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pdev.com.agenda.domain.UserInfoResponse;
 import pdev.com.agenda.domain.dto.UserInfoDTO;
@@ -53,5 +54,13 @@ public class UserInfoService {
             throw new EntityNotFoundException("Usuário não encontrado com ID: " + id);
         }
         repository.deleteById(id);
+    }
+
+    public void resetPassword(String email, String newPassword) {
+        UserInfo user = repository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado com e-mail: " + email));
+
+        user.setPassword(newPassword);
+        repository.save(user);
     }
 }
