@@ -9,6 +9,7 @@ public class UserInfoDTO {
     @JsonIgnore
     private Long userId;
     private String name;
+    @JsonIgnore
     private String userName;
     private String roleName;
     private String cpf;
