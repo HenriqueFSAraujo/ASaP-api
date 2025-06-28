@@ -8,6 +8,7 @@ import pdev.com.agenda.domain.dto.UserInfoDTO;
 import pdev.com.agenda.domain.entity.UserInfo;
 import pdev.com.agenda.domain.mapper.UserInfoMapper;
 import pdev.com.agenda.domain.repository.UserInfoRepository;
+import pdev.com.agenda.util.ValidationUtil;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -37,17 +38,42 @@ public class UserInfoService {
     }
 
     public UserInfoDTO create(UserInfoDTO dto) {
+        validateUserInfo(dto);
         UserInfo entity = mapper.toEntity(dto);
         return mapper.toDTO(repository.save(entity));
     }
+
 
     public UserInfoDTO update(Long id, UserInfoDTO dto) {
         UserInfo entity = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com ID: " + id));
 
+        validateUserInfo(dto);
         entity.setName(dto.getName());
         entity.setUserName(dto.getUserName());
+        entity.setEmail(dto.getEmail());
+        entity.setCpf(dto.getCpf());
+
         return mapper.toDTO(repository.save(entity));
+    }
+
+    private void validateUserInfo(UserInfoDTO dto) {
+        if (!ValidationUtil.isValidEmail(dto.getEmail())) {
+            throw new IllegalArgumentException("E-mail inválido.");
+        }
+        if (!ValidationUtil.isValidUserName(dto.getUserName())) {
+            throw new IllegalArgumentException("Nome de usuário inválido. Use apenas letras, números e '.', '-', '_'");
+        }
+        if (!ValidationUtil.isValidCPF(dto.getCpf())) {
+            throw new IllegalArgumentException("CPF inválido.");
+        }
+
+        if (repository.existsByEmail(dto.getEmail())) {
+            throw new IllegalArgumentException("E-mail já cadastrado.");
+        }
+        if (repository.existsByUserName(dto.getUserName())) {
+            throw new IllegalArgumentException("Nome de usuário já cadastrado.");
+        }
     }
 
     public void delete(Long id) {
