@@ -26,9 +26,7 @@ public class AuthService {
         if (!user.getPassword().equals(request.getPassword())) {
             throw new BadCredentialsException("Senha inválida");
         }
-
         String token = jwtUtil.generateToken(user);
-
         user.setToken(token);
         userLoginRepository.save(user);
 

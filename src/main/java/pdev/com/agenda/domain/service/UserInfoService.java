@@ -61,9 +61,7 @@ public class UserInfoService {
         if (!ValidationUtil.isValidEmail(dto.getEmail())) {
             throw new IllegalArgumentException("E-mail inválido.");
         }
-        if (!ValidationUtil.isValidUserName(dto.getUserName())) {
-            throw new IllegalArgumentException("Nome de usuário inválido. Use apenas letras, números e '.', '-', '_'");
-        }
+
         if (!ValidationUtil.isValidCPF(dto.getCpf())) {
             throw new IllegalArgumentException("CPF inválido.");
         }
