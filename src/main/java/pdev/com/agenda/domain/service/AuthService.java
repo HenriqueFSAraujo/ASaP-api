@@ -19,6 +19,7 @@ public class AuthService {
     @Autowired
     private TokenService jwtUtil;
 
+
     public UserLoginResponse login(UserLoginRequest request) {
         UserInfo user = userLoginRepository.findByUserName(request.getUserName())
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
