@@ -4,9 +4,6 @@ import org.springframework.web.bind.annotation.*;
 import pdev.com.agenda.domain.dto.ProcessoDeBolsaDTO;
 import pdev.com.agenda.domain.dto.ProcessoDeBolsaResponse;
 import pdev.com.agenda.domain.service.ProcessoDeBolsaService;
-
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/processo-bolsas")
 public class ProcessoDeBolsaController {
