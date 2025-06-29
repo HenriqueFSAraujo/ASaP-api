@@ -11,9 +11,10 @@ import java.math.BigDecimal;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProcessoDeBolsaResponse {
+public class PessoaComDeficienciaDTO {
+
     private Long id;
-    private boolean vaiParticipar;
-    private boolean jaFoiContemplado;
-    private BigDecimal percentual;
+    private String nome;
+    private String tipoDeficiencia;
+    private BigDecimal despesaMensal;
 }

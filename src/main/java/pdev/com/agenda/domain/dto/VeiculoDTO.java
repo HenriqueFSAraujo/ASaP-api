@@ -5,15 +5,14 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProcessoDeBolsaResponse {
+public class VeiculoDTO {
+
     private Long id;
-    private boolean vaiParticipar;
-    private boolean jaFoiContemplado;
-    private BigDecimal percentual;
+    private String marcaModelo;
+    private Integer anoFabricacao;
+    private String utilizacao;
 }

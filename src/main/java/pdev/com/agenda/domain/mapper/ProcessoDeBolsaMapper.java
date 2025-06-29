@@ -3,7 +3,7 @@ package pdev.com.agenda.domain.mapper;
 
 
 import org.springframework.stereotype.Component;
-import pdev.com.agenda.domain.controller.ProcessoDeBolsa;
+import pdev.com.agenda.domain.entity.ProcessoDeBolsa;
 import pdev.com.agenda.domain.dto.ProcessoDeBolsaDTO;
 import pdev.com.agenda.domain.dto.ProcessoDeBolsaResponse;
 

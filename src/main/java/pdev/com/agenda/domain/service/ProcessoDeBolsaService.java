@@ -1,10 +1,13 @@
 package pdev.com.agenda.domain.service;
 import org.springframework.stereotype.Service;
-import pdev.com.agenda.domain.controller.ProcessoDeBolsa;
-import pdev.com.agenda.domain.dto.ProcessoDeBolsaDTO;
 import pdev.com.agenda.domain.dto.ProcessoDeBolsaResponse;
+import pdev.com.agenda.domain.entity.ProcessoDeBolsa;
+import pdev.com.agenda.domain.dto.ProcessoDeBolsaDTO;
+
 import pdev.com.agenda.domain.mapper.ProcessoDeBolsaMapper;
 import pdev.com.agenda.domain.repository.ProcessoDeBolsaRepository;
+
+
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,9 +37,6 @@ public class ProcessoDeBolsaService {
     }
 
     public ProcessoDeBolsaResponse create(ProcessoDeBolsaDTO dto) {
-        if (dto.getPercentual() != 0 && dto.getPercentual() != 50 && dto.getPercentual() != 100) {
-            throw new IllegalArgumentException("O campo 'percentual' deve ser 50 ou 100.");
-        }
 
         ProcessoDeBolsa entity = mapper.toEntity(dto);
         return mapper.toResponse(repository.save(entity));

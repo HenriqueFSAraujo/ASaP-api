@@ -2,6 +2,8 @@ package pdev.com.agenda.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,8 +14,8 @@ import pdev.com.agenda.domain.enuns.FornecimentoEnergiaEnum;
 import pdev.com.agenda.domain.enuns.SituacaoImovelEnum;
 import pdev.com.agenda.domain.enuns.TipoImovelEnum;
 
-@Getter
-@Setter
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class CondicoesHabitacionaisDTO {

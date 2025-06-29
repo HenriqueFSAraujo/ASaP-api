@@ -1,4 +1,4 @@
-package pdev.com.agenda.domain.controller;
+package pdev.com.agenda.domain.entity;
 
 
 import lombok.AllArgsConstructor;
@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 
 @Table(name = "processo_de_bolsa")
 @Entity
@@ -26,6 +27,6 @@ public class ProcessoDeBolsa {
 
     private boolean vaiParticipar;
     private boolean jaFoiContemplado;
-    private int percentual;
+    private BigDecimal percentual;
 
 }

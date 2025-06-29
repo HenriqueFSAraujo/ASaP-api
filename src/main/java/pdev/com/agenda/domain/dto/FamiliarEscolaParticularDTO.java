@@ -7,13 +7,15 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProcessoDeBolsaResponse {
+public class FamiliarEscolaParticularDTO {
+
     private Long id;
-    private boolean vaiParticipar;
-    private boolean jaFoiContemplado;
-    private BigDecimal percentual;
+    private String nome;
+    private String escola;
+    private BigDecimal valorMensal;
 }
