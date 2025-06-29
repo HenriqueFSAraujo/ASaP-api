@@ -36,18 +36,16 @@ public class BensPosses {
     private UserInfo userInfo;
 
     @OneToMany(mappedBy = "bensPosses", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Column(nullable = true)
     private List<Veiculo> veiculos;
 
     @OneToMany(mappedBy = "bensPosses", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Column(nullable = true)
     private List<FamiliarEscolaParticular> familiaresEscola;
 
     @OneToMany(mappedBy = "bensPosses", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Column(nullable = true)
     private List<PessoaComDeficiencia> pessoasComDeficiencia;
 
     @OneToMany(mappedBy = "bensPosses", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Column(nullable = true)
     private List<DespesaMensal> despesasMensais;
+
+
 }

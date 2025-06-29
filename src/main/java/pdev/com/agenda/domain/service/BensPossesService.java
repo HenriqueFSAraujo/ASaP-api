@@ -59,6 +59,8 @@ public class BensPossesService {
                 .peek(d -> d.setBensPosses(bens))
                 .toList();
 
+
+
         bens.setVeiculos(veiculos);
         bens.setFamiliaresEscola(familiares);
         bens.setPessoasComDeficiencia(deficiencias);

@@ -1,5 +1,7 @@
 package pdev.com.agenda.domain.service;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pdev.com.agenda.domain.UserInfoResponse;
@@ -15,15 +17,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class UserInfoService {
 
     private final UserInfoRepository repository;
     private final UserInfoMapper mapper;
 
-    public UserInfoService(UserInfoRepository repository, UserInfoMapper mapper) {
-        this.repository = repository;
-        this.mapper = mapper;
-    }
 
     public List<UserInfoResponse> findAll() {
         return repository.findAll().stream()

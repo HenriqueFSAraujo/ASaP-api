@@ -14,7 +14,6 @@ import java.util.List;
 public class BensPossesCompletoDTO {
 
     private Long userInfoId;
-
     private List<VeiculoDTO> veiculos;
     private List<FamiliarEscolaParticularDTO> familiaresEscola;
     private List<PessoaComDeficienciaDTO> pessoasComDeficiencia;
