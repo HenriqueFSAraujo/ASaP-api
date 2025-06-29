@@ -54,7 +54,7 @@ public class UserInfoController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/reset-password/{id}/")
+    @PutMapping("/reset-password/{id}")
     public ResponseEntity<String> resetPassword(
             @PathVariable Long id,
             @RequestBody ResetPasswordRequest request) {
@@ -62,7 +62,7 @@ public class UserInfoController {
         return ResponseEntity.ok("Senha redefinida com sucesso.");
     }
 
-    @PutMapping("/deactivate/{id}/")
+    @PutMapping("/deactivate/{id}")
     public ResponseEntity<String> deactivateUser(@PathVariable Long id) {
         userInfoService.deactivateUser(id);
         return ResponseEntity.ok("Usuário desativado com sucesso.");
