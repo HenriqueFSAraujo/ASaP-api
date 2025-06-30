@@ -36,9 +36,7 @@ public class FormService {
     public FormDadosPessoaisDTO updateDadosPessoais(Long id, FormDadosPessoaisDTO dto) {
         FormDadosPessoais existing = dadosPessoaisRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Dados pessoais não encontrados"));
-
         existing.setFullName(dto.getFullName());
-
         FormDadosPessoais updated = dadosPessoaisRepository.save(existing);
         return dadosPessoaisMapper.toDto(updated);
     }
