@@ -35,31 +35,35 @@ public class FormEnderecoCandidatoDTO {
     @JsonProperty("residenceType")
     private String residencia;
 
-    @JsonProperty("transportUsage")
-    private String transporteEducacional;
+    private Long userId;
 
-    @JsonProperty("travelTime")
-    private String tempoDeslocamento;
 
-    @JsonProperty("extracurricularActivities")
-    private String atividadesContraturno;
-
-    @JsonProperty("homePhone")
-    private String telefoneResidencial;
-
-    @JsonProperty("workPhone")
-    private String telefoneTrabalho;
-
-    @JsonProperty("mobilePhone")
-    private String telefoneCelular;
-
-    @JsonProperty("email")
-    private String emailConfirmacao;
-
-    @JsonProperty("legalGuardian")
-    private String responsavelLegal;
-
-    @JsonProperty("studySegment")
-    private String segmento2025;
+//
+//    @JsonProperty("transportUsage")
+//    private String transporteEducacional;
+//
+//    @JsonProperty("travelTime")
+//    private String tempoDeslocamento;
+//
+//    @JsonProperty("extracurricularActivities")
+//    private String atividadesContraturno;
+//
+//    @JsonProperty("homePhone")
+//    private String telefoneResidencial;
+//
+//    @JsonProperty("workPhone")
+//    private String telefoneTrabalho;
+//
+//    @JsonProperty("mobilePhone")
+//    private String telefoneCelular;
+//
+//    @JsonProperty("email")
+//    private String emailConfirmacao;
+//
+//    @JsonProperty("legalGuardian")
+//    private String responsavelLegal;
+//
+//    @JsonProperty("studySegment")
+//    private String segmento2025;
 }
 
