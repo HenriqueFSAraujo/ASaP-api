@@ -36,6 +36,8 @@ public class FormCondicoesHabitacionaisService {
             entidade.setEsgotoSanitario(dto.getEsgotoSanitario());
             entidade.setFornecimentoEnergia(dto.getFornecimentoEnergia());
             entidade.setAbastecimentoAgua(dto.getAbastecimentoAgua());
+            entidade.setDoencasCronicas(dto.getDoencasCronicas());
+            entidade.setCondicoesDeSaudeCasosNaFamilia(dto.getCondicoesDeSaudeCasosNaFamilia());
         } else {
             entidade = new FormCondicoesHabitacionais();
             entidade.setSituacaoImovel(dto.getSituacaoImovel());
@@ -44,6 +46,8 @@ public class FormCondicoesHabitacionaisService {
             entidade.setEsgotoSanitario(dto.getEsgotoSanitario());
             entidade.setFornecimentoEnergia(dto.getFornecimentoEnergia());
             entidade.setAbastecimentoAgua(dto.getAbastecimentoAgua());
+            entidade.setDoencasCronicas(dto.getDoencasCronicas());
+            entidade.setCondicoesDeSaudeCasosNaFamilia(dto.getCondicoesDeSaudeCasosNaFamilia());
             entidade.setUser(user);
         }
 
@@ -55,6 +59,8 @@ public class FormCondicoesHabitacionaisService {
                 .esgotoSanitario(salvo.getEsgotoSanitario())
                 .fornecimentoEnergia(salvo.getFornecimentoEnergia())
                 .abastecimentoAgua(salvo.getAbastecimentoAgua())
+                .CondicoesDeSaudeCasosNaFamilia(salvo.getCondicoesDeSaudeCasosNaFamilia())
+                .doencasCronicas(salvo.getDoencasCronicas())
                 .userId(salvo.getUser().getId())
                 .build();
     }

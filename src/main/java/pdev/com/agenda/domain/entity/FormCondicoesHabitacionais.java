@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pdev.com.agenda.domain.enuns.AbastecimentoAguaEnum;
+import pdev.com.agenda.domain.enuns.CondicoesDeSaudeCasosNaFamilia;
+import pdev.com.agenda.domain.enuns.DoencasCronicas;
 import pdev.com.agenda.domain.enuns.EsgotoSanitarioEnum;
 import pdev.com.agenda.domain.enuns.EstruturaFisicaEnum;
 import pdev.com.agenda.domain.enuns.FornecimentoEnergiaEnum;
@@ -50,6 +52,12 @@ public class FormCondicoesHabitacionais {
 
     @Enumerated(EnumType.STRING)
     private AbastecimentoAguaEnum abastecimentoAgua;
+
+    @Enumerated(EnumType.STRING)
+    private DoencasCronicas doencasCronicas;
+
+    @Enumerated(EnumType.STRING)
+    private CondicoesDeSaudeCasosNaFamilia CondicoesDeSaudeCasosNaFamilia;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)

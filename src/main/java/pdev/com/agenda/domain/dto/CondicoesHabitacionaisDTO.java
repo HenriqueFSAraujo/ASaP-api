@@ -8,6 +8,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pdev.com.agenda.domain.enuns.AbastecimentoAguaEnum;
+import pdev.com.agenda.domain.enuns.CondicoesDeSaudeCasosNaFamilia;
+import pdev.com.agenda.domain.enuns.DoencasCronicas;
 import pdev.com.agenda.domain.enuns.EsgotoSanitarioEnum;
 import pdev.com.agenda.domain.enuns.EstruturaFisicaEnum;
 import pdev.com.agenda.domain.enuns.FornecimentoEnergiaEnum;
@@ -37,6 +39,13 @@ public class CondicoesHabitacionaisDTO {
 
     @JsonProperty("abastecimentoAgua")
     private AbastecimentoAguaEnum abastecimentoAgua;
+
+    @JsonProperty("CondicoesDeSaudeCasosNaFamilia")
+    private CondicoesDeSaudeCasosNaFamilia CondicoesDeSaudeCasosNaFamilia;
+
+    @JsonProperty("doencasCronicas")
+    private DoencasCronicas doencasCronicas;
+
 
     private Long userId;
 }
