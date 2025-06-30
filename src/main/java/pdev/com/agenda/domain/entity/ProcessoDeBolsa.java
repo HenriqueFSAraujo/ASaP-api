@@ -34,6 +34,6 @@ public class ProcessoDeBolsa {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
-    private UserInfo userId;
+    private UserInfo user;
 
 }
