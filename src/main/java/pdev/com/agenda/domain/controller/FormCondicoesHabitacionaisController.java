@@ -25,8 +25,8 @@ public class FormCondicoesHabitacionaisController {
 
 
     @PostMapping
-    public ResponseEntity<FormCondicoesHabitacionais> create(@RequestBody CondicoesHabitacionaisDTO dto) {
-        FormCondicoesHabitacionais created = service.create(dto);
+    public ResponseEntity<CondicoesHabitacionaisDTO> create(@RequestBody CondicoesHabitacionaisDTO dto) {
+        CondicoesHabitacionaisDTO created = service.salvarOuAtualizar(dto);
         return ResponseEntity.ok(created);
     }
 
