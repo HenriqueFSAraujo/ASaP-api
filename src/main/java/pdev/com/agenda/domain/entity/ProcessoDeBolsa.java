@@ -30,7 +30,7 @@ public class ProcessoDeBolsa {
 
     private boolean vaiParticipar;
     private boolean jaFoiContemplado;
-    private BigDecimal percentual;
+    private String percentual;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)

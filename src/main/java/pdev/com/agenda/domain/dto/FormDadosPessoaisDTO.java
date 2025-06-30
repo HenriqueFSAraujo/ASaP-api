@@ -47,4 +47,6 @@ public class FormDadosPessoaisDTO {
     @JsonProperty("educasenso")
     private String numEducasenso;
 
+    private Long userId;
+
 }

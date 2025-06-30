@@ -15,6 +15,6 @@ public class ProcessoDeBolsaResponse {
     private Long id;
     private boolean vaiParticipar;
     private boolean jaFoiContemplado;
-    private BigDecimal percentual;
+    private String percentual;
     private Long userId;
 }

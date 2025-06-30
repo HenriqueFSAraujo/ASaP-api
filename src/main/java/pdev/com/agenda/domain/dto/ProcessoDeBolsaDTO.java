@@ -16,6 +16,5 @@ public class ProcessoDeBolsaDTO {
     private boolean vaiParticipar;
     private boolean jaFoiContemplado;
     private Long userId;
-    @JsonIgnore
-    private BigDecimal percentual;
+    private String percentual;
 }
