@@ -16,11 +16,8 @@ public class FormDadosPessoaisDTO {
 
     private Long id;
 
-    @JsonProperty("username")
+    @JsonProperty("fullName")
     private String fullName;
-
-    @JsonProperty("login")
-    private String login;
 
     @JsonProperty("email")
     private String email;
