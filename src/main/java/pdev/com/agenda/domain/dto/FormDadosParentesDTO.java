@@ -42,4 +42,6 @@ public class FormDadosParentesDTO {
 
     @JsonProperty ("residesWithBothParents" )
     private String residesWithBothParents;
+
+    private Long userId;
 }

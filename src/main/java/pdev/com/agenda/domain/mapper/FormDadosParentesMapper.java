@@ -3,6 +3,7 @@ package pdev.com.agenda.domain.mapper;
 import org.springframework.stereotype.Component;
 import pdev.com.agenda.domain.dto.FormDadosParentesDTO;
 import pdev.com.agenda.domain.entity.FormDadosParentes;
+import pdev.com.agenda.domain.entity.UserInfo;
 
 @Component
 public class FormDadosParentesMapper {
@@ -24,6 +25,10 @@ public class FormDadosParentesMapper {
         dto.setParent2MaritalStatus(entity.getParent2MaritalStatus());
         dto.setResidesWithBothParents(entity.getResidesWithBothParents());
 
+        UserInfo user = new UserInfo();
+        user.setId(entity.getUser().getId());
+        dto.setUserId(user.getId());
+
         return dto;
     }
 
@@ -43,6 +48,10 @@ public class FormDadosParentesMapper {
         entity.setParent2Phone(dto.getParent2Phone());
         entity.setParent2MaritalStatus(dto.getParent2MaritalStatus());
         entity.setResidesWithBothParents(dto.getResidesWithBothParents());
+
+        UserInfo user = new UserInfo();
+        user.setId(dto.getUserId());
+        entity.setUser(user);
 
         return entity;
     }

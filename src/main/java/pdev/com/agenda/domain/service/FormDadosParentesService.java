@@ -4,12 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pdev.com.agenda.domain.dto.FormDadosParentesDTO;
 import pdev.com.agenda.domain.entity.FormDadosParentes;
+import pdev.com.agenda.domain.entity.UserInfo;
 import pdev.com.agenda.domain.mapper.FormDadosParentesMapper;
 import pdev.com.agenda.domain.repository.FormDadosParentesRepository;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,8 +37,30 @@ public class FormDadosParentesService {
 
     @Transactional
     public FormDadosParentesDTO create(FormDadosParentesDTO dto) {
-        FormDadosParentes entity = mapper.toEntity(dto);
-        entity.setId(null); // Garantir que é uma nova entidade
+        UserInfo user = new UserInfo();
+        user.setId(dto.getUserId());
+
+        Optional<FormDadosParentes> existente = repository.findByUser(user);
+
+        FormDadosParentes entity;
+        if (existente.isPresent()) {
+            // Atualiza os campos da entidade existente
+            entity = existente.get();
+            entity.setParent1Cpf(dto.getParent1Cpf());
+            entity.setParent1FullName(dto.getParent1FullName());
+            entity.setParent1Phone(dto.getParent1Phone());
+            entity.setParent1MaritalStatus(dto.getParent1MaritalStatus());
+            entity.setParent2Cpf(dto.getParent2Cpf());
+            entity.setParent2FullName(dto.getParent2FullName());
+            entity.setParent2Phone(dto.getParent2Phone());
+            entity.setParent2MaritalStatus(dto.getParent2MaritalStatus());
+            entity.setResidesWithBothParents(dto.getResidesWithBothParents());
+        } else {
+            // Criação de nova entidade
+            entity = mapper.toEntity(dto);
+            entity.setId(null); // garantir novo registro
+        }
+
         FormDadosParentes savedEntity = repository.save(entity);
         return mapper.toDTO(savedEntity);
     }
