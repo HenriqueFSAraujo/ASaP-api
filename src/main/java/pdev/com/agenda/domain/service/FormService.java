@@ -38,7 +38,6 @@ public class FormService {
                 .orElseThrow(() -> new EntityNotFoundException("Dados pessoais não encontrados"));
 
         existing.setFullName(dto.getFullName());
-        existing.setLogin(dto.getLogin());
 
         FormDadosPessoais updated = dadosPessoaisRepository.save(existing);
         return dadosPessoaisMapper.toDto(updated);
