@@ -25,7 +25,7 @@ public class ProcessoDeBolsaMapper {
 
         UserInfo user = new UserInfo();
         user.setId(dto.getUserId());
-        entity.setUserId(user);
+        entity.setUser(user);
 
         return entity;
     }
@@ -36,7 +36,7 @@ public class ProcessoDeBolsaMapper {
         response.setVaiParticipar(entity.isVaiParticipar());
         response.setJaFoiContemplado(entity.isJaFoiContemplado());
         response.setPercentual(entity.getPercentual());
-        response.setUserId(entity.getUserId().getId());
+        response.setUserId(entity.getUser().getId());
 
         return response;
     }
