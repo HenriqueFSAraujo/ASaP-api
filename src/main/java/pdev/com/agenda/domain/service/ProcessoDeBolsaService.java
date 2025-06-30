@@ -4,12 +4,14 @@ import pdev.com.agenda.domain.dto.ProcessoDeBolsaResponse;
 import pdev.com.agenda.domain.entity.ProcessoDeBolsa;
 import pdev.com.agenda.domain.dto.ProcessoDeBolsaDTO;
 
+import pdev.com.agenda.domain.entity.UserInfo;
 import pdev.com.agenda.domain.mapper.ProcessoDeBolsaMapper;
 import pdev.com.agenda.domain.repository.ProcessoDeBolsaRepository;
 
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,11 +39,22 @@ public class ProcessoDeBolsaService {
     }
 
     public ProcessoDeBolsaResponse create(ProcessoDeBolsaDTO dto) {
+        Long userId = dto.getUserId();
+        UserInfo user = new UserInfo();
+        user.setId(userId);
+        Optional<ProcessoDeBolsa> existente = repository.findByUser(user);
 
-        ProcessoDeBolsa entity = mapper.toEntity(dto);
+        ProcessoDeBolsa entity;
+        if (existente.isPresent()) {
+            entity = existente.get();
+            entity.setVaiParticipar(dto.isVaiParticipar());
+            entity.setJaFoiContemplado(dto.isJaFoiContemplado());
+            entity.setPercentual(dto.getPercentual());
+        } else {
+            entity = mapper.toEntity(dto);
+        }
         return mapper.toResponse(repository.save(entity));
     }
-
     public ProcessoDeBolsaResponse update(Long id, ProcessoDeBolsaDTO dto) {
         ProcessoDeBolsa entity = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Processo não encontrado com ID: " + id));
