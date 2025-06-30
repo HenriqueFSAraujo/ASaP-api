@@ -37,4 +37,6 @@ public class CondicoesHabitacionaisDTO {
 
     @JsonProperty("abastecimentoAgua")
     private AbastecimentoAguaEnum abastecimentoAgua;
+
+    private Long userId;
 }

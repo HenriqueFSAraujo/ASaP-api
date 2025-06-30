@@ -14,9 +14,12 @@ import pdev.com.agenda.domain.enuns.TipoImovelEnum;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -47,4 +50,8 @@ public class FormCondicoesHabitacionais {
 
     @Enumerated(EnumType.STRING)
     private AbastecimentoAguaEnum abastecimentoAgua;
+
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserInfo user;
 }

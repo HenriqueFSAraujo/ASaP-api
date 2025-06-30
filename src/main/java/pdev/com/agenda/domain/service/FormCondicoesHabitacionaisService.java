@@ -5,8 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import pdev.com.agenda.domain.dto.CondicoesHabitacionaisDTO;
 import pdev.com.agenda.domain.entity.FormCondicoesHabitacionais;
+import pdev.com.agenda.domain.entity.UserInfo;
 import pdev.com.agenda.domain.repository.FormCondicoesHabitacionaisRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,9 +20,43 @@ public class FormCondicoesHabitacionaisService {
     private FormCondicoesHabitacionaisRepository repository;
 
 
-    public FormCondicoesHabitacionais create(CondicoesHabitacionaisDTO dto) {
-        FormCondicoesHabitacionais entity = mapDtoToEntity(dto);
-        return repository.save(entity);
+    @Transactional
+    public CondicoesHabitacionaisDTO salvarOuAtualizar(CondicoesHabitacionaisDTO dto) {
+        UserInfo user = new UserInfo();
+        user.setId(dto.getUserId());
+
+        Optional<FormCondicoesHabitacionais> existente = repository.findByUser(user);
+
+        FormCondicoesHabitacionais entidade;
+        if (existente.isPresent()) {
+            entidade = existente.get();
+            entidade.setSituacaoImovel(dto.getSituacaoImovel());
+            entidade.setTipoImovel(dto.getTipoImovel());
+            entidade.setEstruturaFisica(dto.getEstruturaFisica());
+            entidade.setEsgotoSanitario(dto.getEsgotoSanitario());
+            entidade.setFornecimentoEnergia(dto.getFornecimentoEnergia());
+            entidade.setAbastecimentoAgua(dto.getAbastecimentoAgua());
+        } else {
+            entidade = new FormCondicoesHabitacionais();
+            entidade.setSituacaoImovel(dto.getSituacaoImovel());
+            entidade.setTipoImovel(dto.getTipoImovel());
+            entidade.setEstruturaFisica(dto.getEstruturaFisica());
+            entidade.setEsgotoSanitario(dto.getEsgotoSanitario());
+            entidade.setFornecimentoEnergia(dto.getFornecimentoEnergia());
+            entidade.setAbastecimentoAgua(dto.getAbastecimentoAgua());
+            entidade.setUser(user);
+        }
+
+        FormCondicoesHabitacionais salvo = repository.save(entidade);
+        return CondicoesHabitacionaisDTO.builder()
+                .situacaoImovel(salvo.getSituacaoImovel())
+                .tipoImovel(salvo.getTipoImovel())
+                .estruturaFisica(salvo.getEstruturaFisica())
+                .esgotoSanitario(salvo.getEsgotoSanitario())
+                .fornecimentoEnergia(salvo.getFornecimentoEnergia())
+                .abastecimentoAgua(salvo.getAbastecimentoAgua())
+                .userId(salvo.getUser().getId())
+                .build();
     }
 
     public Optional<FormCondicoesHabitacionais> getById(Long id) {
@@ -51,15 +87,4 @@ public class FormCondicoesHabitacionaisService {
         repository.deleteById(id);
     }
 
-
-    private FormCondicoesHabitacionais mapDtoToEntity(CondicoesHabitacionaisDTO dto) {
-        FormCondicoesHabitacionais entity = new FormCondicoesHabitacionais();
-        entity.setSituacaoImovel(dto.getSituacaoImovel());
-        entity.setTipoImovel(dto.getTipoImovel());
-        entity.setEstruturaFisica(dto.getEstruturaFisica());
-        entity.setEsgotoSanitario(dto.getEsgotoSanitario());
-        entity.setFornecimentoEnergia(dto.getFornecimentoEnergia());
-        entity.setAbastecimentoAgua(dto.getAbastecimentoAgua());
-        return entity;
-    }
 }
