@@ -8,5 +8,7 @@ import lombok.Getter;
 public enum FornecimentoEnergiaEnum {
     COMPANHIA_ELETRICA,
     GERADOR,
-    OUTRO
+    OUTRO,
+    EXISTENTE,
+    INEXISTENTE
 }
