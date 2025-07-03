@@ -93,11 +93,11 @@ public class UserInfoService {
         repository.save(user);
     }
 
-    public void deactivateUser(Long id) {
+    public void changeUserStatus(Long id, boolean isActive) {
         UserInfo user = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com ID: " + id));
 
-        user.setActive(false);
+        user.setActive(isActive);
         repository.save(user);
     }
 }

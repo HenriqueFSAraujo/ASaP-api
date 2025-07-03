@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pdev.com.agenda.domain.UserInfoResponse;
 import pdev.com.agenda.domain.dto.ResetPasswordRequest;
+import pdev.com.agenda.domain.dto.StatusDTO;
 import pdev.com.agenda.domain.dto.UserInfoDTO;
 import pdev.com.agenda.domain.service.UserInfoService;
 
@@ -62,9 +63,10 @@ public class UserInfoController {
         return ResponseEntity.ok("Senha redefinida com sucesso.");
     }
 
-    @PutMapping("/deactivate/{id}")
-    public ResponseEntity<String> deactivateUser(@PathVariable Long id) {
-        userInfoService.deactivateUser(id);
-        return ResponseEntity.ok("Usuário desativado com sucesso.");
+    @PutMapping("/status/{id}")
+    public ResponseEntity<String> changeUserStatus(@PathVariable Long id, @RequestBody StatusDTO statusDTO) {
+        userInfoService.changeUserStatus(id, statusDTO.isActive());
+        String status = statusDTO.isActive() ? "ativado" : "desativado";
+        return ResponseEntity.ok("Usuário " + status + " com sucesso.");
     }
 }
