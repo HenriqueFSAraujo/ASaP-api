@@ -9,6 +9,7 @@ import java.time.LocalDate;
 @Data
 public class ParecerSocioeconomicoRequest {
 
+    private Long userId;
     private String nomeAluno;
     private LocalDate dataNascimentoAluno;
     private String segmentoCursar2025;

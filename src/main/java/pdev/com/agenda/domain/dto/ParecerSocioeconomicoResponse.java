@@ -14,7 +14,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class ParecerSocioeconomicoResponse {
 
-    private Long id;
+
+    private Long userId;
     private String nomeAluno;
     private LocalDate dataNascimentoAluno;
     private String segmentoCursar2025;
