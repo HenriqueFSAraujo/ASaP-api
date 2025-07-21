@@ -4,16 +4,4 @@ ALTER TABLE parecer_socioeconomico
     ALTER COLUMN nome_responsavel TYPE VARCHAR(250),
     ALTER COLUMN cpf_responsavel TYPE VARCHAR(250),
     ALTER COLUMN telefone_responsavel TYPE VARCHAR(250),
-    ALTER COLUMN renda_bruta_familiar TYPE VARCHAR(250),
-    ALTER COLUMN quantidade_pessoas_familia TYPE VARCHAR(250),
-    ALTER COLUMN renda_per_capita TYPE VARCHAR(250),
-    ALTER COLUMN renda_per_capita_salario_minimo TYPE VARCHAR(250),
-    ALTER COLUMN percentual_lc187 TYPE VARCHAR(250),
-    ALTER COLUMN beneficiario_programa_renda TYPE VARCHAR(250),
-    ALTER COLUMN reside_proximo_unidade_escolar TYPE VARCHAR(250),
-    ALTER COLUMN candidato_com_deficiencia TYPE VARCHAR(250),
-    ALTER COLUMN doenca_grave_ou_deficiencia_familiar TYPE VARCHAR(250),
-    ALTER COLUMN quantidade_menores_dezoito_anos TYPE VARCHAR(250),
-    ALTER COLUMN aspectos_relevantes TYPE VARCHAR(250),
-    ALTER COLUMN resultado_socioeconomico TYPE VARCHAR(250),
-    ALTER COLUMN data_finalizacao_parecer TYPE VARCHAR(250);
+    ALTER COLUMN resultado_socioeconomico TYPE VARCHAR(250);
