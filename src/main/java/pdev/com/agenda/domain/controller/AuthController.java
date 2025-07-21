@@ -12,7 +12,7 @@ import pdev.com.agenda.domain.service.AuthService;
 import pdev.com.agenda.domain.service.UserLoginService;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("api/auth")
 public class AuthController {
 
     @Autowired
