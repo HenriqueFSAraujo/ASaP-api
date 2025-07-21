@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pdev.com.agenda.domain.dto.ParecerSocioeconomicoRequest;
 import pdev.com.agenda.domain.dto.ParecerSocioeconomicoResponse;
 import pdev.com.agenda.domain.service.ParecerSocioeconomicoService;
+import pdev.com.agenda.domain.service.PdfGeneratorService;
 
 import java.util.List;
 
@@ -23,6 +24,8 @@ import java.util.List;
 public class ParecerSocioeconomicoController {
 
     private final ParecerSocioeconomicoService service;
+    private final PdfGeneratorService pdfGeneratorService;
+
 
     @PostMapping
     public ResponseEntity<ParecerSocioeconomicoResponse> criar(@RequestBody ParecerSocioeconomicoRequest request) {
@@ -48,6 +51,16 @@ public class ParecerSocioeconomicoController {
         return service.atualizar(id, request)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/{id}/pdf-base64")
+    public ResponseEntity<String> gerarPdfBase64(@PathVariable Long id) {
+        try {
+            String base64 = pdfGeneratorService.generateParecerPdfBase64(id);
+            return ResponseEntity.ok(base64);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Erro ao gerar PDF: " + e.getMessage());
+        }
     }
 
     @DeleteMapping("/{id}")
