@@ -49,7 +49,7 @@ public class ParecerSocioeconomico {
     @Column(name = "renda_bruta_familiar")
     private BigDecimal rendaBrutaFamiliar;
 
-    @Column(name = "totalComponentesFamilar")
+    @Column(name = "total_componentes_familiar")
     private Integer totalComponentesFamilar;
 
     @Column(name = "renda_per_capita")
