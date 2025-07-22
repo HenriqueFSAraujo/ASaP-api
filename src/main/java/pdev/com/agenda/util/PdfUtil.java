@@ -16,7 +16,7 @@ public class PdfUtil {
         map.put("cpfResponsavel", p.getCpfResponsavel());
         map.put("telefoneResponsavel", p.getTelefoneResponsavel());
         map.put("rendaBrutaFamiliar", String.valueOf(p.getRendaBrutaFamiliar()));
-        map.put("quantidadePessoasFamilia", String.valueOf(p.getQuantidadePessoasFamilia()));
+        map.put("quantidadePessoasFamilia", String.valueOf(p.getTotalComponentesFamilar()));
         map.put("rendaPerCapita", String.valueOf(p.getRendaPerCapita()));
         map.put("rendaPerCapitaSalarioMinimo", String.valueOf(p.getRendaPerCapitaSalarioMinimo()));
         map.put("percentualLc187", String.valueOf(p.getPercentualLc187()));
