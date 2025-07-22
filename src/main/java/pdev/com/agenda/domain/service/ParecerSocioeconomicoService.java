@@ -32,6 +32,7 @@ public class ParecerSocioeconomicoService {
     public Optional<ParecerSocioeconomicoResponse> buscarPorId(Long id) {
         return repository.findById(id)
                 .map(mapper::toDTO);
+
     }
 
     @Transactional
