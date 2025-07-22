@@ -1,33 +1,83 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
+    <meta charset="UTF-8">
     <style>
-        body { font-family: Helvetica; }
-        h1 { text-align: center; }
-        .label { font-weight: bold; }
-        .item { margin-bottom: 10px; }
+        body {
+            font-family: Helvetica, sans-serif;
+            margin: 40px;
+            font-size: 12px;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 20px;
+            color: #1a1a1a;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+            text-align: left;
+            padding: 8px;
+        }
+
+        td {
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+            vertical-align: top;
+        }
+
+        .section-title {
+            background-color: #eaeaea;
+            font-weight: bold;
+            padding: 10px;
+            font-size: 14px;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
+
 <h1>Parecer Socioeconômico</h1>
-<div class='item'><span class='label'>Nome do Aluno:</span> [[nomeAluno]]</div>
-<div class='item'><span class='label'>Data de Nascimento:</span> [[dataNascimentoAluno]]</div>
-<div class='item'><span class='label'>Segmento:</span> [[segmentoCursar2025]]</div>
-<div class='item'><span class='label'>Nome do Responsável:</span> [[nomeResponsavel]]</div>
-<div class='item'><span class='label'>CPF do Responsável:</span> [[cpfResponsavel]]</div>
-<div class='item'><span class='label'>Telefone do Responsável:</span> [[telefoneResponsavel]]</div>
-<div class='item'><span class='label'>Renda Bruta Familiar:</span> [[rendaBrutaFamiliar]]</div>
-<div class='item'><span class='label'>Pessoas na Família:</span> [[quantidadePessoasFamilia]]</div>
-<div class='item'><span class='label'>Renda per capita:</span> [[rendaPerCapita]]</div>
-<div class='item'><span class='label'>Renda per capita em SM:</span> [[rendaPerCapitaSalarioMinimo]]</div>
-<div class='item'><span class='label'>Percentual LC 187:</span> [[percentualLc187]]</div>
-<div class='item'><span class='label'>Beneficiário de programa:</span> [[beneficiarioProgramaRenda]]</div>
-<div class='item'><span class='label'>Reside próximo da escola:</span> [[resideProximoUnidadeEscolar]]</div>
-<div class='item'><span class='label'>Candidato com deficiência:</span> [[candidatoComDeficiencia]]</div>
-<div class='item'><span class='label'>Doença grave na família:</span> [[doencaGraveOuDeficienciaFamiliar]]</div>
-<div class='item'><span class='label'>Qtd menores de 18:</span> [[quantidadeMenoresDezoitoAnos]]</div>
-<div class='item'><span class='label'>Aspectos relevantes:</span> [[aspectosRelevantes]]</div>
-<div class='item'><span class='label'>Resultado final:</span> [[resultadoSocioeconomico]]</div>
-<div class='item'><span class='label'>Data de finalização:</span> [[dataFinalizacaoParecer]]</div>
+
+<table>
+    <tr><th colspan="2" class="section-title">Informações do Aluno</th></tr>
+    <tr><td>Nome do Aluno:</td><td>[[nomeAluno]]</td></tr>
+    <tr><td>Data de Nascimento:</td><td>[[dataNascimentoAluno]]</td></tr>
+    <tr><td>Segmento a cursar em 2025:</td><td>[[segmentoCursar2025]]</td></tr>
+
+    <tr><th colspan="2" class="section-title">Informações do Responsável</th></tr>
+    <tr><td>Nome:</td><td>[[nomeResponsavel]]</td></tr>
+    <tr><td>CPF:</td><td>[[cpfResponsavel]]</td></tr>
+    <tr><td>Telefone:</td><td>[[telefoneResponsavel]]</td></tr>
+
+    <tr><th colspan="2" class="section-title">Renda e Dados Familiares</th></tr>
+    <tr><td>Renda Bruta Familiar:</td><td>[[rendaBrutaFamiliar]]</td></tr>
+    <tr><td>Total de Componentes Familiares:</td><td>[[quantidadePessoasFamilia]]</td></tr>
+    <tr><td>Renda per capita:</td><td>[[rendaPerCapita]]</td></tr>
+    <tr><td>Renda per capita (em SM):</td><td>[[rendaPerCapitaSalarioMinimo]]</td></tr>
+    <tr><td>Percentual LC 187:</td><td>[[percentualLc187]]</td></tr>
+    <tr><td>Beneficiário de programa de renda:</td><td>[[beneficiarioProgramaRenda]]</td></tr>
+
+    <tr><th colspan="2" class="section-title">Critérios Sociais</th></tr>
+    <tr><td>Reside próximo da escola:</td><td>[[resideProximoUnidadeEscolar]]</td></tr>
+    <tr><td>Candidato com deficiência:</td><td>[[candidatoComDeficiencia]]</td></tr>
+    <tr><td>Doença grave ou deficiência na família:</td><td>[[doencaGraveOuDeficienciaFamiliar]]</td></tr>
+    <tr><td>Quantidade de menores de 18 anos:</td><td>[[quantidadeMenoresDezoitoAnos]]</td></tr>
+    <tr><td>Aspectos relevantes:</td><td>[[aspectosRelevantes]]</td></tr>
+
+    <tr><th colspan="2" class="section-title">Resultado</th></tr>
+    <tr><td>Resultado final:</td><td>[[resultadoSocioeconomico]]</td></tr>
+    <tr><td>Data de finalização:</td><td>[[dataFinalizacaoParecer]]</td></tr>
+</table>
+
 </body>
 </html>
