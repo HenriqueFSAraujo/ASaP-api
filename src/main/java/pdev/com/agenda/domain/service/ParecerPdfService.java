@@ -28,7 +28,7 @@ public class ParecerPdfService {
         ParecerSocioeconomico parecer = repository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Parecer não encontrado"));
 
-        String html = loadAndFillTemplate("templates/parecer.html", PdfUtil.getDadosMap(parecer));
+        String html = loadAndFillTemplate("templates/parecer-socioeconomico.html", PdfUtil.getDadosMap(parecer));
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         Document document = new Document();
