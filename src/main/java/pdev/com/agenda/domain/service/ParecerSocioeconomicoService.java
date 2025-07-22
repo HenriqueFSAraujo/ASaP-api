@@ -20,6 +20,7 @@ public class ParecerSocioeconomicoService {
     private final ParecerSocioeconomicoRepository repository;
     private final ParecerSocioeconomicoMapper mapper;
 
+
     @Transactional
     public ParecerSocioeconomicoResponse salvar(ParecerSocioeconomicoRequest request) {
         ParecerSocioeconomico entity = mapper.toEntity(request);
