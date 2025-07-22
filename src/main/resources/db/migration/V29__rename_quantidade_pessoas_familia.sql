@@ -1,0 +1,2 @@
+ALTER TABLE parecer_socioeconomico
+RENAME COLUMN quantidade_pessoas_familia TO total_componentes_familar;
