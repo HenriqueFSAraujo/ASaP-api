@@ -26,7 +26,7 @@ public class ParecerSocioeconomicoResponse {
     private Integer totalComponentesFamilar;
     private BigDecimal rendaPerCapita;
     private BigDecimal rendaPerCapitaSalarioMinimo;
-    private Double percentualLc187;
+    private String percentualLc187;
     private Boolean beneficiarioProgramaRenda;
     private Boolean resideProximoUnidadeEscolar;
     private Boolean candidatoComDeficiencia;

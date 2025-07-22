@@ -59,7 +59,7 @@ public class ParecerSocioeconomico {
     private BigDecimal rendaPerCapitaSalarioMinimo;
 
     @Column(name = "percentual_lc_187")
-    private Double percentualLc187;
+    private String percentualLc187;
 
     @Column(name = "beneficiario_programa_renda")
     private Boolean beneficiarioProgramaRenda;
