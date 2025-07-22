@@ -27,7 +27,7 @@ public class ParecerSocioeconomicoMapper {
         entity.setCpfResponsavel(dto.getCpfResponsavel());
         entity.setTelefoneResponsavel(dto.getTelefoneResponsavel());
         entity.setRendaBrutaFamiliar(dto.getRendaBrutaFamiliar());
-        entity.setQuantidadePessoasFamilia(dto.getQuantidadePessoasFamilia());
+        entity.setTotalComponentesFamilar(dto.getTotalComponentesFamilar());
         entity.setRendaPerCapita(dto.getRendaPerCapita());
         entity.setRendaPerCapitaSalarioMinimo(dto.getRendaPerCapitaSalarioMinimo());
         entity.setPercentualLc187(dto.getPercentualLc187());
@@ -55,7 +55,7 @@ public class ParecerSocioeconomicoMapper {
         dto.setCpfResponsavel(entity.getCpfResponsavel());
         dto.setTelefoneResponsavel(entity.getTelefoneResponsavel());
         dto.setRendaBrutaFamiliar(entity.getRendaBrutaFamiliar());
-        dto.setQuantidadePessoasFamilia(entity.getQuantidadePessoasFamilia());
+        dto.setTotalComponentesFamilar(entity.getTotalComponentesFamilar());
         dto.setRendaPerCapita(entity.getRendaPerCapita());
         dto.setRendaPerCapitaSalarioMinimo(entity.getRendaPerCapitaSalarioMinimo());
         dto.setPercentualLc187(entity.getPercentualLc187());
@@ -87,8 +87,8 @@ public class ParecerSocioeconomicoMapper {
         if (dto.getCpfResponsavel() != null) entity.setCpfResponsavel(dto.getCpfResponsavel());
         if (dto.getTelefoneResponsavel() != null) entity.setTelefoneResponsavel(dto.getTelefoneResponsavel());
         if (dto.getRendaBrutaFamiliar() != null) entity.setRendaBrutaFamiliar(dto.getRendaBrutaFamiliar());
-        if (dto.getQuantidadePessoasFamilia() != null)
-            entity.setQuantidadePessoasFamilia(dto.getQuantidadePessoasFamilia());
+        if (dto.getTotalComponentesFamilar() != null)
+            entity.setTotalComponentesFamilar(dto.getTotalComponentesFamilar());
         if (dto.getRendaPerCapita() != null) entity.setRendaPerCapita(dto.getRendaPerCapita());
         if (dto.getRendaPerCapitaSalarioMinimo() != null)
             entity.setRendaPerCapitaSalarioMinimo(dto.getRendaPerCapitaSalarioMinimo());

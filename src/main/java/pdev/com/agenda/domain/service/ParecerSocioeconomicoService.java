@@ -1,7 +1,6 @@
 package pdev.com.agenda.domain.service;
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 import pdev.com.agenda.domain.dto.ParecerSocioeconomicoRequest;
 import pdev.com.agenda.domain.dto.ParecerSocioeconomicoResponse;

@@ -23,7 +23,7 @@ public class ParecerSocioeconomicoResponse {
     private String cpfResponsavel;
     private String telefoneResponsavel;
     private BigDecimal rendaBrutaFamiliar;
-    private Integer quantidadePessoasFamilia;
+    private Integer totalComponentesFamilar;
     private BigDecimal rendaPerCapita;
     private BigDecimal rendaPerCapitaSalarioMinimo;
     private Double percentualLc187;
