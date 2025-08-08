@@ -8,6 +8,7 @@ import pdev.com.agenda.domain.entity.FormCondicoesHabitacionais;
 import pdev.com.agenda.domain.entity.UserInfo;
 import pdev.com.agenda.domain.repository.FormCondicoesHabitacionaisRepository;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -65,10 +66,15 @@ public class FormCondicoesHabitacionaisService {
                 .build();
     }
 
-    public Optional<FormCondicoesHabitacionais> getById(Long id) {
-        return repository.findById(id);
+    @Transactional
+    public Optional<FormCondicoesHabitacionais> getByUserId(Long userId) {
+        return repository.findByUser_Id(userId)
+                .or(() -> {
+                    throw new EntityNotFoundException(
+                            "Condições habitacionais não encontradas para o usuário: " + userId
+                    );
+                });
     }
-
     public List<FormCondicoesHabitacionais> getAll() {
         return repository.findAll();
     }

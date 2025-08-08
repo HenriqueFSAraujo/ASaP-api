@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface FormCondicoesHabitacionaisRepository extends JpaRepository<FormCondicoesHabitacionais, Long> {
 
     Optional<FormCondicoesHabitacionais> findByUser(UserInfo user);
+    Optional<FormCondicoesHabitacionais> findByUser_Id(Long userId);
 }

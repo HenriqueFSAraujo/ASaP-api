@@ -1,5 +1,6 @@
 package pdev.com.agenda.domain.controller;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,9 +19,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/form-condicoes-habitacionais")
+@AllArgsConstructor
 public class FormCondicoesHabitacionaisController {
 
-    @Autowired
+
     private FormCondicoesHabitacionaisService service;
 
 
@@ -32,8 +34,8 @@ public class FormCondicoesHabitacionaisController {
 
     @GetMapping("/{id}")
     public ResponseEntity<FormCondicoesHabitacionais> getById(@PathVariable Long id) {
-        return service.getById(id)
-                .map(entity -> ResponseEntity.ok(entity))
+        return service.getByUserId(id)
+                .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
