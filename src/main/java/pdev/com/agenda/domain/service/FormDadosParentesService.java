@@ -28,11 +28,18 @@ public class FormDadosParentesService {
                 .collect(Collectors.toList());
     }
 
-
     public FormDadosParentesDTO findById(Long id) {
         return repository.findById(id)
                 .map(mapper::toDTO)
                 .orElseThrow(() -> new EntityNotFoundException("Dados dos pais não encontrados com ID: " + id));
+    }
+
+    @Transactional
+    public FormDadosParentesDTO findByUserId(Long userId) {
+        return repository.findByUser_Id(userId)
+                .map(mapper::toDTO)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Dados dos pais não encontrados para o usuário com ID: " + userId));
     }
 
     @Transactional
@@ -44,7 +51,6 @@ public class FormDadosParentesService {
 
         FormDadosParentes entity;
         if (existente.isPresent()) {
-            // Atualiza os campos da entidade existente
             entity = existente.get();
             entity.setParent1Cpf(dto.getParent1Cpf());
             entity.setParent1FullName(dto.getParent1FullName());
@@ -56,9 +62,8 @@ public class FormDadosParentesService {
             entity.setParent2MaritalStatus(dto.getParent2MaritalStatus());
             entity.setResidesWithBothParents(dto.getResidesWithBothParents());
         } else {
-            // Criação de nova entidade
             entity = mapper.toEntity(dto);
-            entity.setId(null); // garantir novo registro
+            entity.setId(null);
         }
 
         FormDadosParentes savedEntity = repository.save(entity);
@@ -83,13 +88,5 @@ public class FormDadosParentesService {
         repository.deleteById(id);
     }
 
-
-
-    public List<FormDadosParentesDTO> findByParent1Cpf(String cpf) {
-        return repository.findByParent1Cpf(cpf)
-                .stream()
-                .map(mapper::toDTO)
-                .collect(Collectors.toList());
-    }
 
 }
