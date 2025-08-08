@@ -12,4 +12,5 @@ import java.util.Optional;
 public interface FormEnderecoCandidatoRepository  extends JpaRepository<FormEnderecoCandidato, Long> {
     Optional<FormEnderecoCandidato> findByCep(String cep);
     Optional<FormEnderecoCandidato> findByUser(UserInfo user);
+    Optional<FormEnderecoCandidato> findByUser_Id(Long userId);
 }

@@ -26,23 +26,20 @@ public class FormEnderecoCandidatoController {
     private final FormEnderecoCandidatoService enderecoService;
 
     @PostMapping
-    public ResponseEntity<FormEnderecoCandidatoDTO> criarEndereco(
-            @Valid @RequestBody FormEnderecoCandidatoDTO enderecoDTO) {
+    public ResponseEntity<FormEnderecoCandidatoDTO> criarEndereco(@Valid @RequestBody FormEnderecoCandidatoDTO enderecoDTO) {
         FormEnderecoCandidatoDTO novoEndereco = enderecoService.criarEndereco(enderecoDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(novoEndereco);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FormEnderecoCandidatoDTO> atualizarEndereco(
-            @PathVariable Long id,
-            @Valid @RequestBody FormEnderecoCandidatoDTO enderecoDTO) {
+    public ResponseEntity<FormEnderecoCandidatoDTO> atualizarEndereco(@PathVariable Long id, @Valid @RequestBody FormEnderecoCandidatoDTO enderecoDTO) {
         FormEnderecoCandidatoDTO enderecoAtualizado = enderecoService.atualizarEndereco(id, enderecoDTO);
         return ResponseEntity.ok(enderecoAtualizado);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<FormEnderecoCandidatoDTO> buscarPorId(@PathVariable Long id) {
-        FormEnderecoCandidatoDTO endereco = enderecoService.buscarPorId(id);
+        FormEnderecoCandidatoDTO endereco = enderecoService.buscarPorUserId(id);
         return ResponseEntity.ok(endereco);
     }
 

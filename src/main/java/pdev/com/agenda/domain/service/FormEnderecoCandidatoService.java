@@ -25,11 +25,9 @@ public class FormEnderecoCandidatoService {
 
     @Transactional
     public FormEnderecoCandidatoDTO criarEndereco(FormEnderecoCandidatoDTO enderecoDTO) {
-        // Criando instância do usuário com base no ID vindo do DTO
         UserInfo user = new UserInfo();
         user.setId(enderecoDTO.getUserId());
 
-        // Buscando se já existe endereço para este usuário
         Optional<FormEnderecoCandidato> existente = enderecoRepository.findByUser(user);
 
         FormEnderecoCandidato endereco;
@@ -42,18 +40,26 @@ public class FormEnderecoCandidatoService {
             endereco.setCidade(enderecoDTO.getCidade());
             endereco.setPontoReferencia(enderecoDTO.getPontoReferencia());
             endereco.setResidencia(enderecoDTO.getResidencia());
-            // user já está setado
         } else {
             endereco = enderecoMapper.toEntity(enderecoDTO);
-            endereco.setId(null); // Força criação de novo
+            endereco.setId(null);
         }
 
         FormEnderecoCandidato enderecoSalvo = enderecoRepository.save(endereco);
         return enderecoMapper.toDto(enderecoSalvo);
     }
 
+    @Transactional
+    public FormEnderecoCandidatoDTO buscarPorUserId(Long userId) {
+        FormEnderecoCandidato endereco = enderecoRepository
+                .findByUser_Id(userId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Endereço do candidato não encontrado para o usuário: " + userId));
+
+        return enderecoMapper.toDto(endereco);
+    }
+
     public FormEnderecoCandidatoDTO atualizarEndereco(Long id, FormEnderecoCandidatoDTO enderecoDTO) {
-        //validarEndereco(enderecoDTO);
 
         FormEnderecoCandidato enderecoExistente = enderecoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Endereço não encontrado com ID: " + id));
@@ -64,15 +70,15 @@ public class FormEnderecoCandidatoService {
         enderecoExistente.setCidade(enderecoDTO.getCidade());
         enderecoExistente.setPontoReferencia(enderecoDTO.getPontoReferencia());
         enderecoExistente.setResidencia(enderecoDTO.getResidencia());
-//        enderecoExistente.setTransporteEducacional(enderecoDTO.getTransporteEducacional());
-//        enderecoExistente.setTempoDeslocamento(enderecoDTO.getTempoDeslocamento());
-//        enderecoExistente.setAtividadesContraturno(enderecoDTO.getAtividadesContraturno());
-//        enderecoExistente.setTelefoneResidencial(enderecoDTO.getTelefoneResidencial());
-//        enderecoExistente.setTelefoneTrabalho(enderecoDTO.getTelefoneTrabalho());
-//        enderecoExistente.setTelefoneCelular(enderecoDTO.getTelefoneCelular());
-//        enderecoExistente.setEmailConfirmacao(enderecoDTO.getEmailConfirmacao());
-//        enderecoExistente.setResponsavelLegal(enderecoDTO.getResponsavelLegal());
-//        enderecoExistente.setSegmento2025(enderecoDTO.getSegmento2025());
+        enderecoExistente.setTransporteEducacional(enderecoDTO.getTransporteEducacional());
+        enderecoExistente.setTempoDeslocamento(enderecoDTO.getTempoDeslocamento());
+        enderecoExistente.setAtividadesContraturno(enderecoDTO.getAtividadesContraturno());
+        enderecoExistente.setTelefoneResidencial(enderecoDTO.getTelefoneResidencial());
+        enderecoExistente.setTelefoneTrabalho(enderecoDTO.getTelefoneTrabalho());
+        enderecoExistente.setTelefoneCelular(enderecoDTO.getTelefoneCelular());
+        enderecoExistente.setEmailConfirmacao(enderecoDTO.getEmailConfirmacao());
+        enderecoExistente.setResponsavelLegal(enderecoDTO.getResponsavelLegal());
+        enderecoExistente.setSegmento2025(enderecoDTO.getSegmento2025());
 
         FormEnderecoCandidato enderecoAtualizado = enderecoRepository.save(enderecoExistente);
         return enderecoMapper.toDto(enderecoAtualizado);
