@@ -2,6 +2,7 @@ package pdev.com.agenda.domain.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pdev.com.agenda.domain.dto.BensPossesCompletoDTO;
 import pdev.com.agenda.domain.entity.BensPosses;
 import pdev.com.agenda.domain.entity.DespesaMensal;
@@ -16,6 +17,7 @@ import pdev.com.agenda.domain.mapper.VeiculoMapper;
 import pdev.com.agenda.domain.repository.BensPossesRepository;
 import pdev.com.agenda.domain.repository.UserInfoRepository;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -68,4 +70,11 @@ public class BensPossesService {
 
         return bensPossesRepository.save(bens);
     }
+    @Transactional(readOnly = true)
+    public BensPosses buscarPorUserId(Long userId) {
+        return bensPossesRepository.findWithItensByUserInfoId(userId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Bens/Posse não encontrado para o usuário: " + userId));
+    }
+
 }
