@@ -14,8 +14,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class FormDadosPessoaisDTO {
 
-    private Long id;
-
     @JsonProperty("fullName")
     private String fullName;
 
