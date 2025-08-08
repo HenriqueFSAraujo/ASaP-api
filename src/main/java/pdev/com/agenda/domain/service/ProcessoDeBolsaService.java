@@ -1,4 +1,6 @@
 package pdev.com.agenda.domain.service;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 import pdev.com.agenda.domain.dto.ProcessoDeBolsaResponse;
 import pdev.com.agenda.domain.entity.ProcessoDeBolsa;
@@ -15,15 +17,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class ProcessoDeBolsaService {
 
     private final ProcessoDeBolsaRepository repository;
     private final ProcessoDeBolsaMapper mapper;
 
-    public ProcessoDeBolsaService(ProcessoDeBolsaRepository repository, ProcessoDeBolsaMapper mapper) {
-        this.repository = repository;
-        this.mapper = mapper;
-    }
 
     public List<ProcessoDeBolsaResponse> findAll() {
         return repository.findAll()
@@ -32,8 +31,8 @@ public class ProcessoDeBolsaService {
                 .collect(Collectors.toList());
     }
 
-    public ProcessoDeBolsaResponse findById(Long id) {
-        ProcessoDeBolsa entity = repository.findById(id)
+    public ProcessoDeBolsaResponse findByUserId(Long id) {
+        ProcessoDeBolsa entity = repository.findByUserId(id)
                 .orElseThrow(() -> new EntityNotFoundException("Processo não encontrado com ID: " + id));
         return mapper.toResponse(entity);
     }
@@ -42,7 +41,7 @@ public class ProcessoDeBolsaService {
         Long userId = dto.getUserId();
         UserInfo user = new UserInfo();
         user.setId(userId);
-        Optional<ProcessoDeBolsa> existente = repository.findByUser(user);
+        Optional<ProcessoDeBolsa> existente = repository.findByUserId(user.getId());
 
         ProcessoDeBolsa entity;
         if (existente.isPresent()) {

@@ -15,8 +15,8 @@ public class ProcessoDeBolsaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProcessoDeBolsaResponse> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(service.findById(id));
+    public ResponseEntity<ProcessoDeBolsaResponse> findByUserId(@PathVariable Long id) {
+        return ResponseEntity.ok(service.findByUserId(id));
     }
 
     @PostMapping
