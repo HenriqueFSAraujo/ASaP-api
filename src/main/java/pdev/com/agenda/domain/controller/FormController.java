@@ -23,7 +23,7 @@ public class FormController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<FormDadosPessoais> getFormById(@PathVariable Long id) {
+    public ResponseEntity<FormDadosPessoais> getByUserId(@PathVariable Long id) {
         return ResponseEntity.ok(formService.getFormById(id));
     }
 
