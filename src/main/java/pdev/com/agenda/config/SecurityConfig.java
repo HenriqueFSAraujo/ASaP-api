@@ -29,51 +29,66 @@ public class SecurityConfig {
     private final CustomAuthorizationFilterConfig securityFilter;
     private final UserDetailsService userDetailsService;
     private final TokenService tokenService;
-    private final AuthenticationManager authenticationManager;
 
-    private static final String[] SWAGGER_WHITELIST = {
-
-            "/v3/api-docs/**",
-            "/swagger-ui/**",
-            "/swagger-ui.html",
+    private static final String[] AUTH_WHITELIST = {
+            "/v2/api-docs",
+            "/swagger-resources",
             "/swagger-resources/**",
-            "/webjars/**",
             "/configuration/ui",
             "/configuration/security",
-            "/v2/api-docs"
+            "/swagger-ui.html",
+            "/webjars/**",
+            "/swagger-ui/**",
+            "/api/auth/login",
+            "/api/users",
+            "/api/**"
+
     };
 
-    private static final String[] PUBLIC_ENDPOINTS = {
-            "/api/auth/login",
-            "/api/users" // deixe aqui só se cadastro for público
-    };
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http,
-                                                   AuthenticationConfiguration authConfig) throws Exception {
-
-        AuthenticationManager am = authConfig.getAuthenticationManager();
-
-        CustomAuthenticationFilterConfig authFilter =
-                new CustomAuthenticationFilterConfig(am, tokenService);
-        authFilter.setRequiresAuthenticationRequestMatcher(
-                new org.springframework.security.web.util.matcher.AntPathRequestMatcher("/api/auth/login", "POST")
-        );
-
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors().and()
+                .cors()
+                .and()
                 .csrf().disable()
-                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .antMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
-                        .antMatchers(SWAGGER_WHITELIST).permitAll()
-                        .antMatchers(PUBLIC_ENDPOINTS).permitAll()
+                        .antMatchers(AUTH_WHITELIST).permitAll()
                         .anyRequest().authenticated()
                 )
-                .addFilter(authFilter)
+                .addFilter(new CustomAuthenticationFilterConfig(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class)), tokenService))
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
+    }
+
+
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(new BCryptPasswordEncoder());
+        return authProvider;
+    }
+
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
+
+    @Bean
+    public UrlBasedCorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173", "http://localhost:3000", "https://agostinianas.netlify.app"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }
 
