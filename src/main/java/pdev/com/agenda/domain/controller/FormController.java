@@ -23,8 +23,8 @@ public class FormController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<FormDadosPessoais> getByUserId(@PathVariable Long id) {
-        return ResponseEntity.ok(formService.getFormById(id));
+    public ResponseEntity<FormDadosPessoaisDTO> getByUserId(@PathVariable Long id) {
+        return ResponseEntity.ok(formService.getByUserId(id));
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
