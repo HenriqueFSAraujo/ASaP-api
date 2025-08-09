@@ -17,7 +17,7 @@ public class SwaggerConfig {
 
     @Bean
     public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2)
+        return new Docket(DocumentationType.OAS_30)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("pdev.com.agenda.api"))
                 .paths(PathSelectors.any())
@@ -28,9 +28,9 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("Spring Boot REST API")
-                .description("Aplicação de Agendamento de Consultas")
+                .description("Aplicação de cadastro de Bolsas e Gestao de Alunos")
                 .version("1.0.0")
-                .contact(new Contact("Renan Lessa", "http://github.com/paneladev", "paneladev@gmail.com"))
+                .contact(new Contact("Henrique Araujo", "https://github.com/HenriqueFSAraujo/MSaT_APP ", "rickfer2010@gmail.com"))
                 .build();
     }
 }
