@@ -1,34 +1,32 @@
 package pdev.com.agenda.domain.service;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pdev.com.agenda.domain.entity.DocumentosGeraisPdf;
-import pdev.com.agenda.domain.entity.Usuario;
+import pdev.com.agenda.domain.entity.UserInfo;
 import pdev.com.agenda.domain.repository.DocumentosGeraisPdfRepository;
-import pdev.com.agenda.domain.repository.UsuarioRepository;
+import pdev.com.agenda.domain.repository.UserInfoRepository;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class DocumentosGeraisPdfService {
-    private final DocumentosGeraisPdfRepository pdfRepository;
-    private final UsuarioRepository usuarioRepository;
 
-    public DocumentosGeraisPdfService(DocumentosGeraisPdfRepository pdfRepository, UsuarioRepository usuarioRepository) {
-        this.pdfRepository = pdfRepository;
-        this.usuarioRepository = usuarioRepository;
-    }
+    private final DocumentosGeraisPdfRepository pdfRepository;
+    private final UserInfoRepository usuarioRepository;
 
     @Transactional
     public DocumentosGeraisPdf salvarPdf(Long userId, String campo, MultipartFile file) throws Exception {
-        Optional<Usuario> usuarioOpt = usuarioRepository.findById(userId);
+        Optional<UserInfo> usuarioOpt = usuarioRepository.findById(userId);
         if (usuarioOpt.isEmpty()) {
             throw new IllegalArgumentException("Usuário não encontrado");
         }
         DocumentosGeraisPdf pdf = pdfRepository.findById(userId).orElse(new DocumentosGeraisPdf());
-        pdf.setUsuario(usuarioOpt.get());
+        pdf.setUserInfo(usuarioOpt.get());
         pdf.setDataUpload(LocalDateTime.now());
         byte[] conteudo = file.getBytes();
         switch (campo) {
@@ -58,5 +56,3 @@ public class DocumentosGeraisPdfService {
         return pdfRepository.findById(id);
     }
 }
-
-

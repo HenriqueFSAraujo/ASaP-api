@@ -21,7 +21,7 @@ public class DocumentosGeraisPdf {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private Usuario usuario;
+    private UserInfo userInfo;
 
     @Lob
     private byte[] singleRegistryRegistration;
@@ -61,4 +61,3 @@ public class DocumentosGeraisPdf {
     @Column(name = "data_upload", nullable = false)
     private LocalDateTime dataUpload;
 }
-

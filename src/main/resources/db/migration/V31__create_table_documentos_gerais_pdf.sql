@@ -19,6 +19,5 @@ CREATE TABLE documentos_gerais_pdf (
     family_composition BYTEA,
     government_program BYTEA,
     data_upload TIMESTAMP NOT NULL DEFAULT NOW(),
-    CONSTRAINT fk_user_documentos_gerais_pdf FOREIGN KEY (user_id) REFERENCES usuario(id)
+    CONSTRAINT fk_user_documentos_gerais_pdf FOREIGN KEY (user_id) REFERENCES user_info(id)
 );
-

@@ -21,6 +21,8 @@ import java.util.Optional;
 public class DocumentosGeraisPdfController {
     private final DocumentosGeraisPdfService pdfService;
 
+    //http://localhost:8080/api/documentos-gerais-pdf/download/1/singleRegistryRegistration -- exemplo de download
+    //localhost:8080/api/documentos-gerais-pdf/upload/singleRegistry   Registration -- exemplo de upload
     @Operation(summary = "Upload de PDF para um campo específico", description = "Faz o upload de um arquivo PDF para o campo informado de um usuário.")
     @PostMapping("/upload/{campo}")
     public ResponseEntity<String> uploadPdf(
