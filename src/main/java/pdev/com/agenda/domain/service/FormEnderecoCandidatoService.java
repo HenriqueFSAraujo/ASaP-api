@@ -109,9 +109,9 @@ public class FormEnderecoCandidatoService {
     }
 
     public List<FormEnderecoCandidatoDTO> buscarPorCep(String cep) {
-        return enderecoRepository.findByCep(cep)
+        Optional<FormEnderecoCandidato> result = enderecoRepository.findByZipCode(cep);
+        return result.map(enderecoMapper::toDto)
                 .stream()
-                .map(enderecoMapper::toDto)
                 .collect(Collectors.toList());
     }
 }

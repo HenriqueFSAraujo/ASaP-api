@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface FormEnderecoCandidatoRepository  extends JpaRepository<FormEnderecoCandidato, Long> {
-    Optional<FormEnderecoCandidato> findByCep(String cep);
+    Optional<FormEnderecoCandidato> findByZipCode(String zipCode);
     Optional<FormEnderecoCandidato> findByUser(UserInfo user);
     Optional<FormEnderecoCandidato> findByUser_Id(Long userId);
 }
