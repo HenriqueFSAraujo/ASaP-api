@@ -22,24 +22,31 @@ public class FormEnderecoCandidatoService {
     private final FormEnderecoCandidatoRepository enderecoRepository;
     private final FormEnderecoCandidatoMapper enderecoMapper;
 
-
     @Transactional
     public FormEnderecoCandidatoDTO criarEndereco(FormEnderecoCandidatoDTO enderecoDTO) {
         UserInfo user = new UserInfo();
         user.setId(enderecoDTO.getUserId());
-
         Optional<FormEnderecoCandidato> existente = enderecoRepository.findByUser(user);
-
         FormEnderecoCandidato endereco;
-
         if (existente.isPresent()) {
             endereco = existente.get();
-            endereco.setCep(enderecoDTO.getCep());
-            endereco.setEndereco(enderecoDTO.getEndereco());
-            endereco.setBairro(enderecoDTO.getBairro());
-            endereco.setCidade(enderecoDTO.getCidade());
-            endereco.setPontoReferencia(enderecoDTO.getPontoReferencia());
-            endereco.setResidencia(enderecoDTO.getResidencia());
+            endereco.setActivityDescription(enderecoDTO.getActivityDescription());
+            endereco.setAddress(enderecoDTO.getAddress());
+            endereco.setAfterSchoolActivities(enderecoDTO.getAfterSchoolActivities());
+            endereco.setCity(enderecoDTO.getCity());
+            endereco.setCommutingTime(enderecoDTO.getCommutingTime());
+            endereco.setElectricitySource(enderecoDTO.getElectricitySource());
+            endereco.setHasSewage(enderecoDTO.getHasSewage());
+            endereco.setNeighborhood(enderecoDTO.getNeighborhood());
+            endereco.setReferencePoint(enderecoDTO.getReferencePoint());
+            endereco.setResidenceType(enderecoDTO.getResidenceType());
+            endereco.setStructureType(enderecoDTO.getStructureType());
+            endereco.setStructureTypeOthers(enderecoDTO.getStructureTypeOthers());
+            endereco.setTransportType(enderecoDTO.getTransportType());
+            endereco.setTransportTypeOthers(enderecoDTO.getTransportTypeOthers());
+            endereco.setWaterSupply(enderecoDTO.getWaterSupply());
+            endereco.setWeeklyFrequency(enderecoDTO.getWeeklyFrequency());
+            endereco.setZipCode(enderecoDTO.getZipCode());
         } else {
             endereco = enderecoMapper.toEntity(enderecoDTO);
             endereco.setId(null);
@@ -64,32 +71,26 @@ public class FormEnderecoCandidatoService {
         FormEnderecoCandidato enderecoExistente = enderecoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Endereço não encontrado com ID: " + id));
 
-        enderecoExistente.setCep(enderecoDTO.getCep());
-        enderecoExistente.setEndereco(enderecoDTO.getEndereco());
-        enderecoExistente.setBairro(enderecoDTO.getBairro());
-        enderecoExistente.setCidade(enderecoDTO.getCidade());
-        enderecoExistente.setPontoReferencia(enderecoDTO.getPontoReferencia());
-        enderecoExistente.setResidencia(enderecoDTO.getResidencia());
-        enderecoExistente.setTransporteEducacional(enderecoDTO.getTransporteEducacional());
-        enderecoExistente.setTempoDeslocamento(enderecoDTO.getTempoDeslocamento());
-        enderecoExistente.setAtividadesContraturno(enderecoDTO.getAtividadesContraturno());
-        enderecoExistente.setTelefoneResidencial(enderecoDTO.getTelefoneResidencial());
-        enderecoExistente.setTelefoneTrabalho(enderecoDTO.getTelefoneTrabalho());
-        enderecoExistente.setTelefoneCelular(enderecoDTO.getTelefoneCelular());
-        enderecoExistente.setEmailConfirmacao(enderecoDTO.getEmailConfirmacao());
-        enderecoExistente.setResponsavelLegal(enderecoDTO.getResponsavelLegal());
-        enderecoExistente.setSegmento2025(enderecoDTO.getSegmento2025());
+        enderecoExistente.setActivityDescription(enderecoDTO.getActivityDescription());
+        enderecoExistente.setAddress(enderecoDTO.getAddress());
+        enderecoExistente.setAfterSchoolActivities(enderecoDTO.getAfterSchoolActivities());
+        enderecoExistente.setCity(enderecoDTO.getCity());
+        enderecoExistente.setCommutingTime(enderecoDTO.getCommutingTime());
+        enderecoExistente.setElectricitySource(enderecoDTO.getElectricitySource());
+        enderecoExistente.setHasSewage(enderecoDTO.getHasSewage());
+        enderecoExistente.setNeighborhood(enderecoDTO.getNeighborhood());
+        enderecoExistente.setReferencePoint(enderecoDTO.getReferencePoint());
+        enderecoExistente.setResidenceType(enderecoDTO.getResidenceType());
+        enderecoExistente.setStructureType(enderecoDTO.getStructureType());
+        enderecoExistente.setStructureTypeOthers(enderecoDTO.getStructureTypeOthers());
+        enderecoExistente.setTransportType(enderecoDTO.getTransportType());
+        enderecoExistente.setTransportTypeOthers(enderecoDTO.getTransportTypeOthers());
+        enderecoExistente.setWaterSupply(enderecoDTO.getWaterSupply());
+        enderecoExistente.setWeeklyFrequency(enderecoDTO.getWeeklyFrequency());
+        enderecoExistente.setZipCode(enderecoDTO.getZipCode());
 
         FormEnderecoCandidato enderecoAtualizado = enderecoRepository.save(enderecoExistente);
         return enderecoMapper.toDto(enderecoAtualizado);
-    }
-
-
-    public FormEnderecoCandidatoDTO buscarPorId(Long id) {
-        FormEnderecoCandidato endereco = enderecoRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Endereço não encontrado com ID: " + id));
-
-        return enderecoMapper.toDto(endereco);
     }
 
 
@@ -112,25 +113,5 @@ public class FormEnderecoCandidatoService {
                 .stream()
                 .map(enderecoMapper::toDto)
                 .collect(Collectors.toList());
-    }
-
-
-    private void validarEndereco(FormEnderecoCandidatoDTO enderecoDTO) {
-        if (enderecoDTO.getCep() == null || enderecoDTO.getCep().isBlank()) {
-            throw new IllegalArgumentException("CEP é obrigatório");
-        }
-
-        if (enderecoDTO.getEndereco() == null || enderecoDTO.getEndereco().isBlank()) {
-            throw new IllegalArgumentException("Endereço é obrigatório");
-        }
-
-        if (enderecoDTO.getCidade() == null || enderecoDTO.getCidade().isBlank()) {
-            throw new IllegalArgumentException("Cidade é obrigatória");
-        }
-
-
-        if (!enderecoDTO.getCep().matches("\\d{5}-?\\d{3}")) {
-            throw new IllegalArgumentException("CEP deve estar no formato 00000-000");
-        }
     }
 }

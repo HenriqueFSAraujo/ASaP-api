@@ -20,8 +20,6 @@ public class FormDadosParentesController {
 
     private final FormDadosParentesService service;
 
-
-
     @GetMapping("/{id}")
     public ResponseEntity<FormDadosParentesDTO> findByUserId(@PathVariable Long id) {
         return ResponseEntity.ok(service.findByUserId(id));

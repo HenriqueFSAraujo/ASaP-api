@@ -5,9 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Data
 @Builder
@@ -17,51 +15,56 @@ public class FormEnderecoCandidatoDTO {
 
     private Long id;
 
-    @JsonProperty("zipCode")
-    private String cep;
+    @JsonProperty("activityDescription")
+    private String activityDescription;
 
     @JsonProperty("address")
-    private String endereco;
+    private String address;
 
-    @JsonProperty("neighborhood")
-    private String bairro;
+    @JsonProperty("afterSchoolActivities")
+    private String afterSchoolActivities;
 
     @JsonProperty("city")
-    private String cidade;
+    private String city;
+
+    @JsonProperty("commutingTime")
+    private String commutingTime;
+
+    @JsonProperty("electricitySource")
+    private String electricitySource;
+
+    @JsonProperty("hasSewage")
+    private String hasSewage;
+
+    @JsonProperty("neighborhood")
+    private String neighborhood;
 
     @JsonProperty("referencePoint")
-    private String pontoReferencia;
+    private String referencePoint;
 
     @JsonProperty("residenceType")
-    private String residencia;
+    private String residenceType;
+
+    @JsonProperty("structureType")
+    private String structureType;
+
+    @JsonProperty("structureTypeOthers")
+    private String structureTypeOthers;
+
+    @JsonProperty("transportType")
+    private String transportType;
+
+    @JsonProperty("transportTypeOthers")
+    private String transportTypeOthers;
+
+    @JsonProperty("waterSupply")
+    private String waterSupply;
+
+    @JsonProperty("weeklyFrequency")
+    private String weeklyFrequency;
+
+    @JsonProperty("zipCode")
+    private String zipCode;
 
     private Long userId;
-
-    @JsonProperty("transportUsage")
-    private String transporteEducacional;
-
-    @JsonProperty("travelTime")
-    private String tempoDeslocamento;
-
-    @JsonProperty("extracurricularActivities")
-    private String atividadesContraturno;
-
-    @JsonProperty("homePhone")
-    private String telefoneResidencial;
-
-    @JsonProperty("workPhone")
-    private String telefoneTrabalho;
-
-    @JsonProperty("mobilePhone")
-    private String telefoneCelular;
-
-    @JsonProperty("email")
-    private String emailConfirmacao;
-
-    @JsonProperty("legalGuardian")
-    private String responsavelLegal;
-
-    @JsonProperty("studySegment")
-    private String segmento2025;
 }
-

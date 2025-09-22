@@ -12,30 +12,28 @@ public class FormEnderecoCandidatoMapper {
         if (dto == null) {
             return null;
         }
-
         FormEnderecoCandidato entity = new FormEnderecoCandidato();
         entity.setId(dto.getId());
-        entity.setCep(dto.getCep());
-        entity.setEndereco(dto.getEndereco());
-        entity.setBairro(dto.getBairro());
-        entity.setCidade(dto.getCidade());
-        entity.setPontoReferencia(dto.getPontoReferencia());
-        entity.setResidencia(dto.getResidencia());
-//        entity.setTransporteEducacional(dto.getTransporteEducacional());
-//        entity.setTempoDeslocamento(dto.getTempoDeslocamento());
-//        entity.setAtividadesContraturno(dto.getAtividadesContraturno());
-//        entity.setTelefoneResidencial(dto.getTelefoneResidencial());
-//        entity.setTelefoneTrabalho(dto.getTelefoneTrabalho());
-//        entity.setTelefoneCelular(dto.getTelefoneCelular());
-//        entity.setEmailConfirmacao(dto.getEmailConfirmacao());
-//        entity.setResponsavelLegal(dto.getResponsavelLegal());
-//        entity.setSegmento2025(dto.getSegmento2025());
-
+        entity.setActivityDescription(dto.getActivityDescription());
+        entity.setAddress(dto.getAddress());
+        entity.setAfterSchoolActivities(dto.getAfterSchoolActivities());
+        entity.setCity(dto.getCity());
+        entity.setCommutingTime(dto.getCommutingTime());
+        entity.setElectricitySource(dto.getElectricitySource());
+        entity.setHasSewage(dto.getHasSewage());
+        entity.setNeighborhood(dto.getNeighborhood());
+        entity.setReferencePoint(dto.getReferencePoint());
+        entity.setResidenceType(dto.getResidenceType());
+        entity.setStructureType(dto.getStructureType());
+        entity.setStructureTypeOthers(dto.getStructureTypeOthers());
+        entity.setTransportType(dto.getTransportType());
+        entity.setTransportTypeOthers(dto.getTransportTypeOthers());
+        entity.setWaterSupply(dto.getWaterSupply());
+        entity.setWeeklyFrequency(dto.getWeeklyFrequency());
+        entity.setZipCode(dto.getZipCode());
         UserInfo user = new UserInfo();
         user.setId(dto.getUserId());
         entity.setUser(user);
-
-
         return entity;
     }
 
@@ -43,29 +41,26 @@ public class FormEnderecoCandidatoMapper {
         if (entity == null) {
             return null;
         }
-
         FormEnderecoCandidatoDTO dto = new FormEnderecoCandidatoDTO();
         dto.setId(entity.getId());
-        dto.setCep(entity.getCep());
-        dto.setEndereco(entity.getEndereco());
-        dto.setBairro(entity.getBairro());
-        dto.setCidade(entity.getCidade());
-        dto.setPontoReferencia(entity.getPontoReferencia());
-        dto.setResidencia(entity.getResidencia());
-//        dto.setTransporteEducacional(entity.getTransporteEducacional());
-//        dto.setTempoDeslocamento(entity.getTempoDeslocamento());
-//        dto.setAtividadesContraturno(entity.getAtividadesContraturno());
-//        dto.setTelefoneResidencial(entity.getTelefoneResidencial());
-//        dto.setTelefoneTrabalho(entity.getTelefoneTrabalho());
-//        dto.setTelefoneCelular(entity.getTelefoneCelular());
-//        dto.setEmailConfirmacao(entity.getEmailConfirmacao());
-//        dto.setResponsavelLegal(entity.getResponsavelLegal());
-//        dto.setSegmento2025(entity.getSegmento2025());
-
-        UserInfo user = new UserInfo();
-        user.setId(entity.getUser().getId());
-        dto.setUserId(user.getId());
-
+        dto.setActivityDescription(entity.getActivityDescription());
+        dto.setAddress(entity.getAddress());
+        dto.setAfterSchoolActivities(entity.getAfterSchoolActivities());
+        dto.setCity(entity.getCity());
+        dto.setCommutingTime(entity.getCommutingTime());
+        dto.setElectricitySource(entity.getElectricitySource());
+        dto.setHasSewage(entity.getHasSewage());
+        dto.setNeighborhood(entity.getNeighborhood());
+        dto.setReferencePoint(entity.getReferencePoint());
+        dto.setResidenceType(entity.getResidenceType());
+        dto.setStructureType(entity.getStructureType());
+        dto.setStructureTypeOthers(entity.getStructureTypeOthers());
+        dto.setTransportType(entity.getTransportType());
+        dto.setTransportTypeOthers(entity.getTransportTypeOthers());
+        dto.setWaterSupply(entity.getWaterSupply());
+        dto.setWeeklyFrequency(entity.getWeeklyFrequency());
+        dto.setZipCode(entity.getZipCode());
+        dto.setUserId(entity.getUser().getId());
         return dto;
     }
 }

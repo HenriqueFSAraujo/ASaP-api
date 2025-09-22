@@ -23,52 +23,58 @@ public class FormEnderecoCandidato {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "cep")
-    private String cep;
+    @Column(name = "descricao_atividade")
+    private String activityDescription;
 
     @Column(name = "endereco")
-    private String endereco;
+    private String address;
 
-    @Column(name = "bairro")
-    private String bairro;
+    @Column(name = "atividades_contraturno")
+    private String afterSchoolActivities;
 
     @Column(name = "cidade")
-    private String cidade;
+    private String city;
+
+    @Column(name = "tempo_deslocamento")
+    private String commutingTime;
+
+    @Column(name = "fonte_energia")
+    private String electricitySource;
+
+    @Column(name = "tem_esgoto")
+    private String hasSewage;
+
+    @Column(name = "bairro")
+    private String neighborhood;
 
     @Column(name = "ponto_referencia")
-    private String pontoReferencia;
+    private String referencePoint;
 
     @Column(name = "residencia")
-    private String residencia;
+    private String residenceType;
+
+    @Column(name = "tipo_estrutura")
+    private String structureType;
+
+    @Column(name = "tipo_estrutura_outros")
+    private String structureTypeOthers;
+
+    @Column(name = "tipo_transporte")
+    private String transportType;
+
+    @Column(name = "tipo_transporte_outros")
+    private String transportTypeOthers;
+
+    @Column(name = "abastecimento_agua")
+    private String waterSupply;
+
+    @Column(name = "frequencia_semanal")
+    private String weeklyFrequency;
+
+    @Column(name = "cep")
+    private String zipCode;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private UserInfo user;
-
-    @Column(name = "transporte_educacional")
-    private String transporteEducacional;
-
-    @Column(name = "tempo_deslocamento")
-    private String tempoDeslocamento;
-
-    @Column(name = "atividades_contraturno")
-    private String atividadesContraturno;
-
-    @Column(name = "telefone_residencial")
-    private String telefoneResidencial;
-
-    @Column(name = "telefone_trabalho")
-    private String telefoneTrabalho;
-
-    @Column(name = "telefone_celular")
-    private String telefoneCelular;
-
-    @Column(name = "email_confirmacao")
-    private String emailConfirmacao;
-
-    @Column(name = "responsavel_legal")
-    private String responsavelLegal;
-
-    @Column(name = "segmento_2025")
-    private String segmento2025;
 }

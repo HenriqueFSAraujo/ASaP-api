@@ -6,11 +6,10 @@ import org.springframework.transaction.annotation.Transactional;
 import pdev.com.agenda.domain.dto.FormDadosPessoaisDTO;
 import pdev.com.agenda.domain.entity.FormDadosPessoais;
 import pdev.com.agenda.domain.mapper.FormDadosPessoaisMapper;
-import pdev.com.agenda.domain.mapper.FormEnderecoCandidatoMapper;
-import pdev.com.agenda.domain.repository.FormEnderecoCandidatoRepository;
 import pdev.com.agenda.domain.repository.FormRepository;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,17 +20,29 @@ public class FormService {
     private final FormDadosPessoaisMapper dadosPessoaisMapper;
 
     public FormDadosPessoaisDTO createDadosPessoais(FormDadosPessoaisDTO dto) {
-        FormDadosPessoais entity = dadosPessoaisMapper.toEntity(dto);
-        entity.setId(null);
+        Long userId = dto.getUserId();
+
+        Optional<FormDadosPessoais> existente = dadosPessoaisRepository.findByUserId(userId);
+        FormDadosPessoais entity;
+        if (existente.isPresent()) {
+            entity = existente.get();
+            // Atualiza todos os campos necessários
+            entity.setFullName(dto.getFullName());
+            entity.setEmail(dto.getEmail());
+            entity.setCpf(dto.getCpf());
+            entity.setCpfBolsista(dto.getCpfBolsista());
+            entity.setPhone(dto.getPhone());
+            entity.setGender(dto.getGender());
+            entity.setDataNascimento(dto.getDataNascimento());
+            entity.setPcd(dto.getPcd());
+            entity.setNumEducasenso(dto.getNumEducasenso());
+
+        } else {
+            entity = dadosPessoaisMapper.toEntity(dto);
+            entity.setId(null);
+        }
         FormDadosPessoais saved = dadosPessoaisRepository.save(entity);
         return dadosPessoaisMapper.toDto(saved);
-    }
-
-    @Transactional(readOnly = true)
-    public FormDadosPessoais getFormById(Long id) {
-        return dadosPessoaisRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "Formulário de dados pessoais não encontrado com ID: " + id));
     }
 
     @Transactional(readOnly = true)
@@ -41,31 +52,4 @@ public class FormService {
                         "Formulário de dados pessoais não encontrado para o usuário: " + userId));
         return dadosPessoaisMapper.toDto(entity);
     }
-    @Transactional
-    public FormDadosPessoaisDTO updateDadosPessoais(Long id, FormDadosPessoaisDTO dto) {
-        FormDadosPessoais existing = dadosPessoaisRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Dados pessoais não encontrados"));
-
-        existing.setFullName(dto.getFullName());
-        // ... outros campos
-
-        FormDadosPessoais updated = dadosPessoaisRepository.save(existing);
-        return dadosPessoaisMapper.toDto(updated);
-    }
-
-    @Transactional
-    public FormDadosPessoaisDTO updateByUserId(Long userId, FormDadosPessoaisDTO dto) {
-        FormDadosPessoais existing = dadosPessoaisRepository.findByUserId(userId)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "Dados pessoais não encontrados para o usuário: " + userId));
-
-        existing.setFullName(dto.getFullName());
-        // ... outros campos
-
-        FormDadosPessoais updated = dadosPessoaisRepository.save(existing);
-        return dadosPessoaisMapper.toDto(updated);
-    }
-
-
 }
-

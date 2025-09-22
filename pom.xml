@@ -9,7 +9,7 @@
 		<relativePath/>
 	</parent>
 	<groupId>pdev.com</groupId>
-	<artifactId>agenda</artifactId>
+	<artifactId>educabolsas</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>agenda</name>
 	<description>Projeto para Cadastro Social de Bolsas</description>

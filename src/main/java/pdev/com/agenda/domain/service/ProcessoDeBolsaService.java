@@ -1,15 +1,13 @@
 package pdev.com.agenda.domain.service;
+
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
+import pdev.com.agenda.domain.dto.ProcessoDeBolsaDTO;
 import pdev.com.agenda.domain.dto.ProcessoDeBolsaResponse;
 import pdev.com.agenda.domain.entity.ProcessoDeBolsa;
-import pdev.com.agenda.domain.dto.ProcessoDeBolsaDTO;
-
 import pdev.com.agenda.domain.entity.UserInfo;
 import pdev.com.agenda.domain.mapper.ProcessoDeBolsaMapper;
 import pdev.com.agenda.domain.repository.ProcessoDeBolsaRepository;
-
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
@@ -46,9 +44,11 @@ public class ProcessoDeBolsaService {
         ProcessoDeBolsa entity;
         if (existente.isPresent()) {
             entity = existente.get();
+
             entity.setVaiParticipar(dto.isVaiParticipar());
             entity.setJaFoiContemplado(dto.isJaFoiContemplado());
             entity.setPercentual(dto.getPercentual());
+
         } else {
             entity = mapper.toEntity(dto);
         }
@@ -72,4 +72,3 @@ public class ProcessoDeBolsaService {
         repository.deleteById(id);
     }
 }
-

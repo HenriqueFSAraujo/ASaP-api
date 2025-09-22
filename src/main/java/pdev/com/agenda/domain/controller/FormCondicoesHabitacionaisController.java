@@ -1,7 +1,6 @@
 package pdev.com.agenda.domain.controller;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,9 +21,7 @@ import java.util.List;
 @AllArgsConstructor
 public class FormCondicoesHabitacionaisController {
 
-
     private FormCondicoesHabitacionaisService service;
-
 
     @PostMapping
     public ResponseEntity<CondicoesHabitacionaisDTO> create(@RequestBody CondicoesHabitacionaisDTO dto) {
