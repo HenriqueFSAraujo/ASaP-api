@@ -36,7 +36,6 @@ public class FormCondicoesHabitacionaisController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-
     @GetMapping
     public ResponseEntity<List<FormCondicoesHabitacionais>> getAll() {
         List<FormCondicoesHabitacionais> list = service.getAll();
