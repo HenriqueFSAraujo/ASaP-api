@@ -85,8 +85,10 @@ public class ParecerSocioeconomico {
     @Column(name = "data_finalizacao_parecer")
     private LocalDate dataFinalizacaoParecer;
 
+    @Column(name = "status")
+    private String status;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserInfo user;
 }
-

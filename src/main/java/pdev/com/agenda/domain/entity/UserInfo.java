@@ -55,4 +55,6 @@ public class UserInfo {
     @Column(name = "isactive")
     private boolean active;
 
+    @Column(name = "status")
+    private String status;
 }

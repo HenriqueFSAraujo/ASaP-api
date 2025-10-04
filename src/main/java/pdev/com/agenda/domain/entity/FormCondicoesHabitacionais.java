@@ -13,6 +13,7 @@ import pdev.com.agenda.domain.enuns.FornecimentoEnergiaEnum;
 import pdev.com.agenda.domain.enuns.SituacaoImovelEnum;
 import pdev.com.agenda.domain.enuns.TipoImovelEnum;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -62,4 +63,7 @@ public class FormCondicoesHabitacionais {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private UserInfo user;
+
+    @Column(name = "status")
+    private String status;
 }

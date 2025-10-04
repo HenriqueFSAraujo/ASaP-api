@@ -27,4 +27,6 @@ public class Usuario {
     @NotBlank
     private String senha;
 
+    @Column(name = "status")
+    private String status;
 }

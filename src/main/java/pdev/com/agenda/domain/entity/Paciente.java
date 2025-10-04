@@ -23,4 +23,7 @@ public class Paciente {
     @OneToMany
     @JoinColumn(name = "paciente_id")
     private List<Endereco> enderecos;
+
+    @Column(name = "status")
+    private String status;
 }

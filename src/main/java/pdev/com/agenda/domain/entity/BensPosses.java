@@ -47,5 +47,8 @@ public class BensPosses {
     @OneToMany(mappedBy = "bensPosses", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DespesaMensal> despesasMensais;
 
+    @Column(name = "status")
+    private String status;
+
 
 }

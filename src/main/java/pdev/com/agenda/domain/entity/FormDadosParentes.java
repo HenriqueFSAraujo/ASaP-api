@@ -55,8 +55,10 @@ public class FormDadosParentes {
     @Column (name = "residesWithBothParents" )
     private String residesWithBothParents;
 
+    @Column(name = "status")
+    private String status;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private UserInfo user;
 }
-

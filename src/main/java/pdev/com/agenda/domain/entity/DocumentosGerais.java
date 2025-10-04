@@ -75,4 +75,7 @@ public class DocumentosGerais {
 
     @Column(columnDefinition = "TEXT")
     private String governmentProgram;
+
+    @Column(name = "status")
+    private String status;
 }

@@ -1,6 +1,5 @@
 package pdev.com.agenda.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 @Data
@@ -16,7 +15,5 @@ public class UserInfoResponse{
     private String password;
     private boolean isActive;
 
-    public void setIsFirstLogin(boolean firstLogin) {
 
-    }
 }

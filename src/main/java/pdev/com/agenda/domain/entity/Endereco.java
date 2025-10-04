@@ -18,6 +18,8 @@ public class Endereco {
     private Long numero;
     private String complemento;
     private String bairro;
+    @Column(name = "status")
+    private String status;
 
 
 }

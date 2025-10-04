@@ -74,6 +74,9 @@ public class FormEnderecoCandidato {
     @Column(name = "cep")
     private String zipCode;
 
+    @Column(name = "status")
+    private String status;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private UserInfo user;

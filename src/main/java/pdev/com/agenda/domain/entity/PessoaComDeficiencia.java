@@ -40,4 +40,7 @@ public class PessoaComDeficiencia {
     @ManyToOne
     @JoinColumn(name = "bens_posses_id", nullable = true)
     private BensPosses bensPosses;
+
+    @Column(name = "status")
+    private String status;
 }

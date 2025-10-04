@@ -37,6 +37,9 @@ public class FamiliarEscolaParticular {
     @Column(nullable = true)
     private BigDecimal valorMensal;
 
+    @Column(name = "status")
+    private String status;
+
     @ManyToOne
     @JoinColumn(name = "bens_posses_id", nullable = true)
     private BensPosses bensPosses;

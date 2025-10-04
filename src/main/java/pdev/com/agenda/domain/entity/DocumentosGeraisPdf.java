@@ -60,4 +60,7 @@ public class DocumentosGeraisPdf {
 
     @Column(name = "data_upload", nullable = false)
     private LocalDateTime dataUpload;
+
+    @Column(name = "status")
+    private String status;
 }

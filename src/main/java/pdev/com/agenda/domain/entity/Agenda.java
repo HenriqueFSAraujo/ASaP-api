@@ -27,4 +27,7 @@ public class Agenda {
 
     @ManyToOne
     private Paciente paciente;
+
+    @Column(name = "status")
+    private String status;
 }

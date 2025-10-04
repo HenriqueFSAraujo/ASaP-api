@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pdev.com.agenda.domain.enuns.RoleEnum;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -30,4 +31,7 @@ public class Role {
 
     @Enumerated(EnumType.STRING)
     private RoleEnum name;
+
+    @Column(name = "status")
+    private String status;
 }
