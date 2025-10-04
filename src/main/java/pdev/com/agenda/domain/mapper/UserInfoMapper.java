@@ -40,7 +40,6 @@ public class UserInfoMapper {
         return entity;
     }
 
-
     public UserInfoDTO toDTO(UserInfo entity) {
         UserInfoDTO dto = new UserInfoDTO();
         dto.setUserId(entity.getId());
