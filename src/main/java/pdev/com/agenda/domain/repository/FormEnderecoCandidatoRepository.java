@@ -13,4 +13,8 @@ public interface FormEnderecoCandidatoRepository  extends JpaRepository<FormEnde
     Optional<FormEnderecoCandidato> findByZipCode(String zipCode);
     Optional<FormEnderecoCandidato> findByUser(UserInfo user);
     Optional<FormEnderecoCandidato> findByUser_Id(Long userId);
+
+    default Optional<FormEnderecoCandidato> findByUserId(Long userId) {
+        return findByUser_Id(userId);
+    }
 }

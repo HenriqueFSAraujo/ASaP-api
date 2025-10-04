@@ -17,4 +17,7 @@ public interface FormDadosParentesRepository extends JpaRepository<FormDadosPare
 
     Optional<FormDadosParentes> findByUser_Id(Long userId);
 
+    default Optional<FormDadosParentes> findByUserId(Long userId) {
+        return findByUser_Id(userId);
+    }
 }

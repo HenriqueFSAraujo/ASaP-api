@@ -3,10 +3,12 @@ package pdev.com.agenda.domain.mapper;
 import org.springframework.stereotype.Component;
 import pdev.com.agenda.domain.UserInfoResponse;
 import pdev.com.agenda.domain.dto.UserInfoDTO;
+import pdev.com.agenda.domain.dto.FormsStatusDTO;
 import pdev.com.agenda.domain.entity.Role;
 import pdev.com.agenda.domain.entity.UserInfo;
 import pdev.com.agenda.domain.enuns.RoleEnum;
 import pdev.com.agenda.domain.repository.RoleRepository;
+import pdev.com.agenda.domain.dto.UserInfoWithStatusDTO;
 
 
 
@@ -72,5 +74,10 @@ public class UserInfoMapper {
         }
 
         return response;
+    }
+
+    public UserInfoWithStatusDTO toWithStatusDTO(UserInfo entity, FormsStatusDTO formsStatus) {
+        UserInfoDTO userInfoDTO = toDTO(entity);
+        return new UserInfoWithStatusDTO(userInfoDTO, formsStatus);
     }
 }

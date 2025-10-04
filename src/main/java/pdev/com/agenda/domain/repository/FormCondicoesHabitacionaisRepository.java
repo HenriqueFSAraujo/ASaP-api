@@ -12,4 +12,8 @@ public interface FormCondicoesHabitacionaisRepository extends JpaRepository<Form
 
     Optional<FormCondicoesHabitacionais> findByUser(UserInfo user);
     Optional<FormCondicoesHabitacionais> findByUser_Id(Long userId);
+
+    default Optional<FormCondicoesHabitacionais> findByUserId(Long userId) {
+        return findByUser_Id(userId);
+    }
 }

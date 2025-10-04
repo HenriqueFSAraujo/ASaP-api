@@ -14,4 +14,6 @@ public interface BensPossesRepository extends JpaRepository<BensPosses, Long> {
             "veiculos", "familiaresEscola", "pessoasComDeficiencia", "despesasMensais"
     })
     Optional<BensPosses> findWithItensByUserInfoId(Long userId);
+
+    Optional<BensPosses> findByUserId(Long userId);
 }

@@ -20,7 +20,6 @@ public class UserInfoDTO {
     private String cpf;
     private String email;
     private boolean isFirstLogin;
-
     @JsonIgnore
     private String password;
     @JsonIgnore

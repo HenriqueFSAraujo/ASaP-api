@@ -46,11 +46,4 @@ public class FormService {
         return dadosPessoaisMapper.toDto(saved);
     }
 
-    @Transactional(readOnly = true)
-    public FormDadosPessoaisDTO getByUserId(Long userId) {
-        FormDadosPessoais entity = dadosPessoaisRepository.findByUserId(userId)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "Formulário de dados pessoais não encontrado para o usuário: " + userId));
-        return dadosPessoaisMapper.toDto(entity);
-    }
 }
