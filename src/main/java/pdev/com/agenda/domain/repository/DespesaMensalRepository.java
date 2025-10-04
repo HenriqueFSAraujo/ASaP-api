@@ -2,9 +2,8 @@ package pdev.com.agenda.domain.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import pdev.com.agenda.domain.entity.DespesaMensal;
-import java.util.Optional;
+import java.util.List;
 
 public interface DespesaMensalRepository extends JpaRepository<DespesaMensal, Long> {
-    Optional<DespesaMensal> findByUserId(Long userId);
+    List<DespesaMensal> findByBensPosses_UserInfoId(Long userInfoId);
 }
-

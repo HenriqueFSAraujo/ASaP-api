@@ -11,6 +11,7 @@ import pdev.com.agenda.domain.entity.BensPosses;
 import pdev.com.agenda.domain.entity.DespesaMensal;
 import pdev.com.agenda.domain.entity.DocumentosGeraisPdf;
 import pdev.com.agenda.domain.entity.Endereco;
+import pdev.com.agenda.domain.entity.ProcessoDeBolsa;
 import pdev.com.agenda.domain.entity.UserInfo;
 import pdev.com.agenda.domain.mapper.UserInfoMapper;
 import pdev.com.agenda.domain.repository.BensPossesRepository;
@@ -70,7 +71,7 @@ public class UserInfoService {
                 .orElse(null);
         dto.setBensPossesStatus(status);
         found = found || status != null;
-        status = despesaMensalRepository.findByUserId(userId).stream()
+        status = despesaMensalRepository.findByBensPosses_UserInfoId(userId).stream()
                 .map(DespesaMensal::getStatus)
                 .findFirst()
                 .orElse(null);
@@ -112,8 +113,8 @@ public class UserInfoService {
                 .orElse(null);
         dto.setFormEnderecoCandidatoStatus(status);
         found = found || status != null;
-        status = processoDeBolsaRepository.findByUserId(userId).stream()
-                .map(pdev.com.agenda.domain.entity.ProcessoDeBolsa::getStatus)
+        status = processoDeBolsaRepository.findByUser_Id(userId).stream()
+                .map(ProcessoDeBolsa::getStatus)
                 .findFirst()
                 .orElse(null);
         dto.setProcessoDeBolsaStatus(status);

@@ -11,6 +11,7 @@ import java.util.Optional;
 @Repository
 public interface FormRepository extends JpaRepository<FormDadosPessoais, Long> {
 
+    // Verifique se o campo userId existe na entidade FormDadosPessoais. Se não existir, ajuste para o relacionamento correto
     Optional<FormDadosPessoais> findByUserId(Long userId);
     boolean existsByUserId(Long userId);
 }
