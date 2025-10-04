@@ -1,6 +1,6 @@
 -- Migration para adicionar a coluna 'status' em todas as entidades
 ALTER TABLE agenda ADD COLUMN status VARCHAR(255);
-ALTER TABLE bens_posse ADD COLUMN status VARCHAR(255);
+ALTER TABLE bens_posses ADD COLUMN status VARCHAR(255);
 ALTER TABLE despesa_mensal ADD COLUMN status VARCHAR(255);
 ALTER TABLE documentos_gerais ADD COLUMN status VARCHAR(255);
 ALTER TABLE documentos_gerais_pdf ADD COLUMN status VARCHAR(255);
@@ -18,4 +18,3 @@ ALTER TABLE roles ADD COLUMN status VARCHAR(255);
 ALTER TABLE user_info ADD COLUMN status VARCHAR(255);
 ALTER TABLE usuario ADD COLUMN status VARCHAR(255);
 ALTER TABLE veiculos ADD COLUMN status VARCHAR(255);
-
