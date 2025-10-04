@@ -1,8 +1,6 @@
 package pdev.com.agenda.domain.service;
 
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import pdev.com.agenda.domain.UserInfoResponse;
 import pdev.com.agenda.domain.dto.FormsStatusDTO;
@@ -91,31 +89,31 @@ public class UserInfoService {
         dto.setEnderecoStatus(status);
         found = found || status != null;
         status = formCondicoesHabitacionaisRepository.findByUserId(userId).stream()
-                .map(f -> f.getStatus())
+                .map(pdev.com.agenda.domain.entity.FormCondicoesHabitacionais::getStatus)
                 .findFirst()
                 .orElse(null);
         dto.setFormCondicoesHabitacionaisStatus(status);
         found = found || status != null;
         status = formDadosParentesRepository.findByUserId(userId).stream()
-                .map(f -> f.getStatus())
+                .map(pdev.com.agenda.domain.entity.FormDadosParentes::getStatus)
                 .findFirst()
                 .orElse(null);
         dto.setFormDadosParentesStatus(status);
         found = found || status != null;
         status = formDadosPessoaisRepository.findByUserId(userId).stream()
-                .map(f -> f.getStatus())
+                .map(pdev.com.agenda.domain.entity.FormDadosPessoais::getStatus)
                 .findFirst()
                 .orElse(null);
         dto.setFormDadosPessoaisStatus(status);
         found = found || status != null;
         status = formEnderecoCandidatoRepository.findByUserId(userId).stream()
-                .map(f -> f.getStatus())
+                .map(pdev.com.agenda.domain.entity.FormEnderecoCandidato::getStatus)
                 .findFirst()
                 .orElse(null);
         dto.setFormEnderecoCandidatoStatus(status);
         found = found || status != null;
         status = processoDeBolsaRepository.findByUserId(userId).stream()
-                .map(f -> f.getStatus())
+                .map(pdev.com.agenda.domain.entity.ProcessoDeBolsa::getStatus)
                 .findFirst()
                 .orElse(null);
         dto.setProcessoDeBolsaStatus(status);
