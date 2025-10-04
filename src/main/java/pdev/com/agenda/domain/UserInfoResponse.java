@@ -15,5 +15,7 @@ public class UserInfoResponse{
     private String password;
     private boolean isActive;
 
+    public void setIsFirstLogin(boolean firstLogin) {
 
+    }
 }
