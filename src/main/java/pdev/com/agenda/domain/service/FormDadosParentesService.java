@@ -66,7 +66,7 @@ public class FormDadosParentesService {
             entity = mapper.toEntity(dto);
             entity.setId(null);
         }
-
+        entity.setStatus("PENDENTE");
         FormDadosParentes savedEntity = repository.save(entity);
         return mapper.toDTO(savedEntity);
     }
@@ -77,6 +77,7 @@ public class FormDadosParentesService {
                 .orElseThrow(() -> new EntityNotFoundException("Dados dos pais não encontrados com ID: " + id));
 
         mapper.updateEntityFromDTO(existingEntity, dto);
+        existingEntity.setStatus("PENDENTE");
         FormDadosParentes updatedEntity = repository.save(existingEntity);
         return mapper.toDTO(updatedEntity);
     }

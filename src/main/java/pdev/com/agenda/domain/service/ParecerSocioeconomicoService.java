@@ -24,6 +24,7 @@ public class ParecerSocioeconomicoService {
     @Transactional
     public ParecerSocioeconomicoResponse salvar(ParecerSocioeconomicoRequest request) {
         ParecerSocioeconomico entity = mapper.toEntity(request);
+        entity.setStatus("PENDENTE");
         ParecerSocioeconomico salvo = repository.save(entity);
         return mapper.toDTO(salvo);
     }
@@ -47,6 +48,7 @@ public class ParecerSocioeconomicoService {
     public Optional<ParecerSocioeconomicoResponse> atualizar(Long id, ParecerSocioeconomicoRequest request) {
         return repository.findById(id).map(entity -> {
             mapper.updateEntityFromDTO(entity, request);
+            entity.setStatus("ATIVO");
             ParecerSocioeconomico atualizado = repository.save(entity);
             return mapper.toDTO(atualizado);
         });

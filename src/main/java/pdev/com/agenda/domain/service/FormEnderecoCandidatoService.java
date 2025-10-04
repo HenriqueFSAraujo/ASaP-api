@@ -47,9 +47,11 @@ public class FormEnderecoCandidatoService {
             endereco.setWaterSupply(enderecoDTO.getWaterSupply());
             endereco.setWeeklyFrequency(enderecoDTO.getWeeklyFrequency());
             endereco.setZipCode(enderecoDTO.getZipCode());
+            endereco.setStatus("PENDENTE");
         } else {
             endereco = enderecoMapper.toEntity(enderecoDTO);
             endereco.setId(null);
+            endereco.setStatus("PENDENTE");
         }
 
         FormEnderecoCandidato enderecoSalvo = enderecoRepository.save(endereco);
@@ -88,6 +90,7 @@ public class FormEnderecoCandidatoService {
         enderecoExistente.setWaterSupply(enderecoDTO.getWaterSupply());
         enderecoExistente.setWeeklyFrequency(enderecoDTO.getWeeklyFrequency());
         enderecoExistente.setZipCode(enderecoDTO.getZipCode());
+        enderecoExistente.setStatus("PENDENTE");
 
         FormEnderecoCandidato enderecoAtualizado = enderecoRepository.save(enderecoExistente);
         return enderecoMapper.toDto(enderecoAtualizado);

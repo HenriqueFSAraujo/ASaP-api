@@ -34,6 +34,7 @@ public class UsuarioService implements UserDetailsService {
 
     public Usuario save(Usuario usuario) {
         usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+        usuario.setStatus("PENDENTE");
         return repository.save(usuario);
     }
 }

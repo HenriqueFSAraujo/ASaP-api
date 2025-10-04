@@ -41,6 +41,7 @@ public class FormService {
             entity = dadosPessoaisMapper.toEntity(dto);
             entity.setId(null);
         }
+        entity.setStatus("PENDENTE");
         FormDadosPessoais saved = dadosPessoaisRepository.save(entity);
         return dadosPessoaisMapper.toDto(saved);
     }

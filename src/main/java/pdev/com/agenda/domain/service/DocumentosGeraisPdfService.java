@@ -49,6 +49,7 @@ public class DocumentosGeraisPdfService {
             case "governmentProgram": pdf.setGovernmentProgram(conteudo); break;
             default: throw new IllegalArgumentException("Campo inválido");
         }
+        pdf.setStatus("ATIVO");
         return pdfRepository.save(pdf);
     }
 

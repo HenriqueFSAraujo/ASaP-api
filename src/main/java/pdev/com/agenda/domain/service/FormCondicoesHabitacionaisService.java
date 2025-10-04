@@ -50,6 +50,7 @@ public class FormCondicoesHabitacionaisService {
             entidade.setDoencasCronicas(dto.getDoencasCronicas());
             entidade.setCondicoesDeSaudeCasosNaFamilia(dto.getCondicoesDeSaudeCasosNaFamilia());
             entidade.setUser(user);
+            entidade.setStatus("ATIVO");
         }
 
         FormCondicoesHabitacionais salvo = repository.save(entidade);
@@ -89,6 +90,7 @@ public class FormCondicoesHabitacionaisService {
             entity.setEsgotoSanitario(dto.getEsgotoSanitario());
             entity.setFornecimentoEnergia(dto.getFornecimentoEnergia());
             entity.setAbastecimentoAgua(dto.getAbastecimentoAgua());
+            entity.setStatus("PENDENTE");
             return repository.save(entity);
         }
         return null;

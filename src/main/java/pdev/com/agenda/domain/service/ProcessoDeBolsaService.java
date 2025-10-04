@@ -44,14 +44,13 @@ public class ProcessoDeBolsaService {
         ProcessoDeBolsa entity;
         if (existente.isPresent()) {
             entity = existente.get();
-
             entity.setVaiParticipar(dto.isVaiParticipar());
             entity.setJaFoiContemplado(dto.isJaFoiContemplado());
             entity.setPercentual(dto.getPercentual());
-
         } else {
             entity = mapper.toEntity(dto);
         }
+        entity.setStatus("PENDENTE");
         return mapper.toResponse(repository.save(entity));
     }
     public ProcessoDeBolsaResponse update(Long id, ProcessoDeBolsaDTO dto) {
@@ -61,7 +60,7 @@ public class ProcessoDeBolsaService {
         entity.setVaiParticipar(dto.isVaiParticipar());
         entity.setJaFoiContemplado(dto.isJaFoiContemplado());
         entity.setPercentual(dto.getPercentual());
-
+        entity.setStatus("PENDENTE");
         return mapper.toResponse(repository.save(entity));
     }
 

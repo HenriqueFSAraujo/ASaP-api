@@ -16,6 +16,6 @@ public class UserInfoResponse{
     private boolean isActive;
 
     public void setIsFirstLogin(boolean firstLogin) {
-
+        this.isFirstLogin = firstLogin;
     }
 }

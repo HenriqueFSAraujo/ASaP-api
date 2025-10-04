@@ -31,7 +31,7 @@ public class PacienteService {
         if (existeCpf) {
             throw new BusinessException("Cpf já cadastrado!");
         }
-
+        paciente.setStatus("PENDENTE");
         return repository.save(paciente);
     }
 

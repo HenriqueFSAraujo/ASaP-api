@@ -39,6 +39,7 @@ public class UserInfoService {
     public UserInfoDTO create(UserInfoDTO dto) {
         validateUserInfo(dto);
         UserInfo entity = mapper.toEntity(dto);
+        entity.setStatus("PENDENTE");
         return mapper.toDTO(repository.save(entity));
     }
 
@@ -52,7 +53,7 @@ public class UserInfoService {
         entity.setUserName(dto.getUserName());
         entity.setEmail(dto.getEmail());
         entity.setCpf(dto.getCpf());
-
+        entity.setStatus("PENDENTE");
         return mapper.toDTO(repository.save(entity));
     }
 

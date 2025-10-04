@@ -40,7 +40,6 @@ public class BensPossesService {
         BensPosses bens = new BensPosses();
         bens.setUserInfo(user);
 
-        // Mapear e associar cada lista
         List<Veiculo> veiculos = dto.getVeiculos().stream()
                 .map(veiculoMapper::toEntity)
                 .peek(v -> v.setBensPosses(bens))
@@ -61,13 +60,11 @@ public class BensPossesService {
                 .peek(d -> d.setBensPosses(bens))
                 .toList();
 
-
-
         bens.setVeiculos(veiculos);
         bens.setFamiliaresEscola(familiares);
         bens.setPessoasComDeficiencia(deficiencias);
         bens.setDespesasMensais(despesas);
-
+        bens.setStatus("PENDENTE");
         return bensPossesRepository.save(bens);
     }
     @Transactional(readOnly = true)
