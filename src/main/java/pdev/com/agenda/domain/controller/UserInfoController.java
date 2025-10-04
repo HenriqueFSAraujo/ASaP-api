@@ -13,6 +13,7 @@ import pdev.com.agenda.domain.UserInfoResponse;
 import pdev.com.agenda.domain.dto.ResetPasswordRequest;
 import pdev.com.agenda.domain.dto.StatusDTO;
 import pdev.com.agenda.domain.dto.UserInfoDTO;
+import pdev.com.agenda.domain.dto.UserInfoWithStatusDTO;
 import pdev.com.agenda.domain.service.UserInfoService;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public class UserInfoController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserInfoDTO> getUserById(@PathVariable Long id) {
+    public ResponseEntity<UserInfoWithStatusDTO> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(userInfoService.findById(id));
     }
 
