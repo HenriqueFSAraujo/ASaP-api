@@ -2,8 +2,8 @@
 ALTER TABLE agenda ADD COLUMN status VARCHAR(255);
 ALTER TABLE bens_posses ADD COLUMN status VARCHAR(255);
 ALTER TABLE despesa_mensal ADD COLUMN status VARCHAR(255);
+ALTER TABLE documentos_gerais ADD COLUMN status VARCHAR(255);
 
-ALTER TABLE documentos_gerais_pdf ADD COLUMN status VARCHAR(255);
 ALTER TABLE endereco ADD COLUMN status VARCHAR(255);
 ALTER TABLE familiar_escola_particular ADD COLUMN status VARCHAR(255);
 ALTER TABLE form_condicoes_habitacionais ADD COLUMN status VARCHAR(255);
