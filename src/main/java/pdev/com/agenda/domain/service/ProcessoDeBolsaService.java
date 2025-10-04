@@ -30,7 +30,7 @@ public class ProcessoDeBolsaService {
     }
 
     public ProcessoDeBolsaResponse findByUserId(Long id) {
-        ProcessoDeBolsa entity = repository.findByUserId(id)
+        ProcessoDeBolsa entity = repository.findByUser_Id(id)
                 .orElseThrow(() -> new EntityNotFoundException("Processo não encontrado com ID: " + id));
         return mapper.toResponse(entity);
     }
@@ -39,7 +39,7 @@ public class ProcessoDeBolsaService {
         Long userId = dto.getUserId();
         UserInfo user = new UserInfo();
         user.setId(userId);
-        Optional<ProcessoDeBolsa> existente = repository.findByUserId(user.getId());
+        Optional<ProcessoDeBolsa> existente = repository.findByUser_Id(user.getId());
 
         ProcessoDeBolsa entity;
         if (existente.isPresent()) {
