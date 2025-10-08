@@ -60,70 +60,70 @@ public class UserInfoService {
         return mapper.toWithStatusDTO(entity, status);
     }
 
-    public FormsStatusDTO getFormsAllStatus (Long userId) {
+    public FormsStatusDTO getFormsAllStatus(Long userId) {
         FormsStatusDTO dto = new FormsStatusDTO();
         boolean found = false;
         String status;
         status = bensPossesRepository.findByUserInfoId(userId) != null ?
-    bensPossesRepository.findByUserInfoId(userId).stream()
-        .map(BensPosses::getStatus)
-        .findFirst()
-        .orElse(null) : null;
-        dto.setBensPossesStatus(status);
+                bensPossesRepository.findByUserInfoId(userId).stream()
+                        .map(BensPosses::getStatus)
+                        .findFirst()
+                        .orElse(null) : null;
+        dto.setBensPossesStatus(status != null ? status : "PENDENTE");
         found = found || status != null;
         status = despesaMensalRepository.findByBensPosses_UserInfoId(userId) != null ?
-    despesaMensalRepository.findByBensPosses_UserInfoId(userId).stream()
-        .map(DespesaMensal::getStatus)
-        .findFirst()
-        .orElse(null) : null;
-        dto.setDespesaMensalStatus(status);
+                despesaMensalRepository.findByBensPosses_UserInfoId(userId).stream()
+                        .map(DespesaMensal::getStatus)
+                        .findFirst()
+                        .orElse(null) : null;
+        dto.setDespesaMensalStatus(status != null ? status : "PENDENTE");
         found = found || status != null;
         status = documentosGeraisPdfRepository.findByUserInfoId(userId) != null ?
-    documentosGeraisPdfRepository.findByUserInfoId(userId).stream()
-        .map(DocumentosGeraisPdf::getStatus)
-        .findFirst()
-        .orElse(null) : null;
-        dto.setDocumentosGeraisPdfStatus(status);
+                documentosGeraisPdfRepository.findByUserInfoId(userId).stream()
+                        .map(DocumentosGeraisPdf::getStatus)
+                        .findFirst()
+                        .orElse(null) : null;
+        dto.setDocumentosGeraisPdfStatus(status != null ? status : "PENDENTE");
         found = found || status != null;
         status = enderecoRepository.findByUserInfoId(userId)
-    .map(Endereco::getStatus)
-    .orElse(null);
-        dto.setEnderecoStatus(status);
+                .map(Endereco::getStatus)
+                .orElse(null);
+        dto.setEnderecoStatus(status != null ? status : "PENDENTE");
         found = found || status != null;
         status = formCondicoesHabitacionaisRepository.findByUserId(userId) != null ?
-    formCondicoesHabitacionaisRepository.findByUserId(userId).stream()
-        .map(pdev.com.agenda.domain.entity.FormCondicoesHabitacionais::getStatus)
-        .findFirst()
-        .orElse(null) : null;
-        dto.setFormCondicoesHabitacionaisStatus(status);
+                formCondicoesHabitacionaisRepository.findByUserId(userId).stream()
+                        .map(pdev.com.agenda.domain.entity.FormCondicoesHabitacionais::getStatus)
+                        .findFirst()
+                        .orElse(null) : null;
+        dto.setFormCondicoesHabitacionaisStatus(status != null ? status : "PENDENTE");
         found = found || status != null;
         status = formDadosParentesRepository.findByUserId(userId) != null ?
-    formDadosParentesRepository.findByUserId(userId).stream()
-        .map(pdev.com.agenda.domain.entity.FormDadosParentes::getStatus)
-        .findFirst()
-        .orElse(null) : null;
-        dto.setFormDadosParentesStatus(status);
+                formDadosParentesRepository.findByUserId(userId).stream()
+                        .map(pdev.com.agenda.domain.entity.FormDadosParentes::getStatus)
+                        .findFirst()
+                        .orElse(null) : null;
+        dto.setFormDadosParentesStatus(status != null ? status : "PENDENTE");
         found = found || status != null;
         status = formDadosPessoaisRepository.findByUserId(userId) != null ?
-    formDadosPessoaisRepository.findByUserId(userId).stream()
-        .map(pdev.com.agenda.domain.entity.FormDadosPessoais::getStatus)
-        .findFirst()
-        .orElse(null) : null;
-        dto.setFormDadosPessoaisStatus(status);
+                formDadosPessoaisRepository.findByUserId(userId).stream()
+                        .map(pdev.com.agenda.domain.entity.FormDadosPessoais::getStatus)
+                        .findFirst()
+                        .orElse(null) : null;
+        dto.setFormDadosPessoaisStatus(status != null ? status : "PENDENTE");
         found = found || status != null;
         status = formEnderecoCandidatoRepository.findByUserId(userId) != null ?
-    formEnderecoCandidatoRepository.findByUserId(userId).stream()
-        .map(pdev.com.agenda.domain.entity.FormEnderecoCandidato::getStatus)
-        .findFirst()
-        .orElse(null) : null;
-        dto.setFormEnderecoCandidatoStatus(status);
+                formEnderecoCandidatoRepository.findByUserId(userId).stream()
+                        .map(pdev.com.agenda.domain.entity.FormEnderecoCandidato::getStatus)
+                        .findFirst()
+                        .orElse(null) : null;
+        dto.setFormEnderecoCandidatoStatus(status != null ? status : "PENDENTE");
         found = found || status != null;
         status = processoDeBolsaRepository.findByUser_Id(userId) != null ?
-    processoDeBolsaRepository.findByUser_Id(userId).stream()
-        .map(ProcessoDeBolsa::getStatus)
-        .findFirst()
-        .orElse(null) : null;
-        dto.setProcessoDeBolsaStatus(status);
+                processoDeBolsaRepository.findByUser_Id(userId).stream()
+                        .map(ProcessoDeBolsa::getStatus)
+                        .findFirst()
+                        .orElse(null) : null;
+        dto.setProcessoDeBolsaStatus(status != null ? status : "PENDENTE");
         found = found || status != null;
         if (!found) {
             throw new EntityNotFoundException("Nenhuma entidade encontrada para o usuário: " + userId);
