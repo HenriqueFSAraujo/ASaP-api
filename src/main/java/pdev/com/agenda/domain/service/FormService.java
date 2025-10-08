@@ -21,7 +21,6 @@ public class FormService {
 
     public FormDadosPessoaisDTO createDadosPessoais(FormDadosPessoaisDTO dto) {
         Long userId = dto.getUserId();
-
         Optional<FormDadosPessoais> existente = dadosPessoaisRepository.findByUserId(userId);
         FormDadosPessoais entity;
         if (existente.isPresent()) {

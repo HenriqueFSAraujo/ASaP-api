@@ -61,7 +61,6 @@ public class FormDadosParentesService {
             entity.setParent2Phone(dto.getParent2Phone());
             entity.setParent2MaritalStatus(dto.getParent2MaritalStatus());
             entity.setResidesWithBothParents(dto.getResidesWithBothParents());
-            // O campo user é atualizado apenas se necessário
         } else {
             entity = mapper.toEntity(dto);
             entity.setId(null);

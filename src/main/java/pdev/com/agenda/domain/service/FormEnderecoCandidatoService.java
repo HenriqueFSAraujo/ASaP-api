@@ -96,7 +96,6 @@ public class FormEnderecoCandidatoService {
         return enderecoMapper.toDto(enderecoAtualizado);
     }
 
-
     public List<FormEnderecoCandidatoDTO> listarTodos() {
         return enderecoRepository.findAll()
                 .stream()

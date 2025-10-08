@@ -82,9 +82,8 @@ public class UserInfoService {
                 .orElse(null);
         dto.setDocumentosGeraisPdfStatus(status);
         found = found || status != null;
-        status = enderecoRepository.findByUserInfoId(userId).stream()
+        status = enderecoRepository.findByUserInfoId(userId)
                 .map(Endereco::getStatus)
-                .findFirst()
                 .orElse(null);
         dto.setEnderecoStatus(status);
         found = found || status != null;
