@@ -26,7 +26,6 @@ public class FormService {
         FormDadosPessoais entity;
         if (existente.isPresent()) {
             entity = existente.get();
-            // Atualiza todos os campos necessários
             entity.setFullName(dto.getFullName());
             entity.setEmail(dto.getEmail());
             entity.setCpf(dto.getCpf());
@@ -35,13 +34,14 @@ public class FormService {
             entity.setGender(dto.getGender());
             entity.setDataNascimento(dto.getDataNascimento());
             entity.setPcd(dto.getPcd());
+            entity.setStatus("PENDENTE");
             entity.setNumEducasenso(dto.getNumEducasenso());
 
         } else {
             entity = dadosPessoaisMapper.toEntity(dto);
             entity.setId(null);
         }
-        entity.setStatus("PENDENTE");
+
         FormDadosPessoais saved = dadosPessoaisRepository.save(entity);
         return dadosPessoaisMapper.toDto(saved);
     }

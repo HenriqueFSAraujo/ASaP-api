@@ -53,7 +53,6 @@ public class UserInfoService {
                 .collect(Collectors.toList());
     }
 
-
     public UserInfoWithStatusDTO findById(Long id) {
         UserInfo entity = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com ID: " + id));
@@ -132,7 +131,6 @@ public class UserInfoService {
         return mapper.toDTO(repository.save(entity));
     }
 
-
     public UserInfoDTO update(Long id, UserInfoDTO dto) {
         UserInfo entity = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com ID: " + id));
@@ -169,7 +167,6 @@ public class UserInfoService {
         }
         repository.deleteById(id);
     }
-
 
     public void resetPassword(Long id, ResetPasswordRequest request) {
         UserInfo user = repository.findById(id)

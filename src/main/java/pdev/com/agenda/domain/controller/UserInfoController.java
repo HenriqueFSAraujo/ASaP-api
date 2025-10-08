@@ -1,5 +1,6 @@
 package pdev.com.agenda.domain.controller;
 
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,13 +21,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
+@AllArgsConstructor
 public class UserInfoController {
 
     private final UserInfoService userInfoService;
-
-    public UserInfoController(UserInfoService userInfoService) {
-        this.userInfoService = userInfoService;
-    }
 
     @GetMapping
     public ResponseEntity<List<UserInfoResponse>> getAllUsers() {
