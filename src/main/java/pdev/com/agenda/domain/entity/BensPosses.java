@@ -19,7 +19,7 @@ import java.util.List;
 
 
 @Entity
-@Table(name = "bens_posse")
+@Table(name = "bens_posses")
 @Getter
 @Setter
 @NoArgsConstructor

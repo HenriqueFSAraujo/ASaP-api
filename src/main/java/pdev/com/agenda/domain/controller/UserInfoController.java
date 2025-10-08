@@ -39,8 +39,12 @@ public class UserInfoController {
     }
 
     @PostMapping
-    public ResponseEntity<UserInfoDTO> createUser(@RequestBody UserInfoDTO dto) {
-        return ResponseEntity.ok(userInfoService.create(dto));
+    public ResponseEntity<?> createUser(@RequestBody UserInfoDTO dto) {
+        try {
+            return ResponseEntity.ok(userInfoService.create(dto));
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
     }
 
     @PutMapping("/{id}")
