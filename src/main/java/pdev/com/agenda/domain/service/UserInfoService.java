@@ -11,6 +11,10 @@ import pdev.com.agenda.domain.entity.BensPosses;
 import pdev.com.agenda.domain.entity.DespesaMensal;
 import pdev.com.agenda.domain.entity.DocumentosGeraisPdf;
 import pdev.com.agenda.domain.entity.Endereco;
+import pdev.com.agenda.domain.entity.FormCondicoesHabitacionais;
+import pdev.com.agenda.domain.entity.FormDadosParentes;
+import pdev.com.agenda.domain.entity.FormDadosPessoais;
+import pdev.com.agenda.domain.entity.FormEnderecoCandidato;
 import pdev.com.agenda.domain.entity.ProcessoDeBolsa;
 import pdev.com.agenda.domain.entity.UserInfo;
 import pdev.com.agenda.domain.mapper.UserInfoMapper;
@@ -62,70 +66,54 @@ public class UserInfoService {
 
     public FormsStatusDTO getFormsAllStatus(Long userId) {
         FormsStatusDTO dto = new FormsStatusDTO();
-        boolean found = false;
-        String status;
-        status = bensPossesRepository.findByUserInfoId(userId) != null ?
-                bensPossesRepository.findByUserInfoId(userId).stream()
-                        .map(BensPosses::getStatus)
-                        .findFirst()
-                        .orElse(null) : null;
-        dto.setBensPossesStatus(status != null ? status : "PENDENTE");
-        found = found || status != null;
-        status = despesaMensalRepository.findByBensPosses_UserInfoId(userId) != null ?
-                despesaMensalRepository.findByBensPosses_UserInfoId(userId).stream()
-                        .map(DespesaMensal::getStatus)
-                        .findFirst()
-                        .orElse(null) : null;
-        dto.setDespesaMensalStatus(status != null ? status : "PENDENTE");
-        found = found || status != null;
-        status = documentosGeraisPdfRepository.findByUserInfoId(userId) != null ?
-                documentosGeraisPdfRepository.findByUserInfoId(userId).stream()
-                        .map(DocumentosGeraisPdf::getStatus)
-                        .findFirst()
-                        .orElse(null) : null;
-        dto.setDocumentosGeraisPdfStatus(status != null ? status : "PENDENTE");
-        found = found || status != null;
-        status = enderecoRepository.findByUserInfoId(userId)
-                .map(Endereco::getStatus)
-                .orElse(null);
-        dto.setEnderecoStatus(status != null ? status : "PENDENTE");
-        found = found || status != null;
-        status = formCondicoesHabitacionaisRepository.findByUserId(userId) != null ?
-                formCondicoesHabitacionaisRepository.findByUserId(userId).stream()
-                        .map(pdev.com.agenda.domain.entity.FormCondicoesHabitacionais::getStatus)
-                        .findFirst()
-                        .orElse(null) : null;
-        dto.setFormCondicoesHabitacionaisStatus(status != null ? status : "PENDENTE");
-        found = found || status != null;
-        status = formDadosParentesRepository.findByUserId(userId) != null ?
-                formDadosParentesRepository.findByUserId(userId).stream()
-                        .map(pdev.com.agenda.domain.entity.FormDadosParentes::getStatus)
-                        .findFirst()
-                        .orElse(null) : null;
-        dto.setFormDadosParentesStatus(status != null ? status : "PENDENTE");
-        found = found || status != null;
-        status = formDadosPessoaisRepository.findByUserId(userId) != null ?
-                formDadosPessoaisRepository.findByUserId(userId).stream()
-                        .map(pdev.com.agenda.domain.entity.FormDadosPessoais::getStatus)
-                        .findFirst()
-                        .orElse(null) : null;
-        dto.setFormDadosPessoaisStatus(status != null ? status : "PENDENTE");
-        found = found || status != null;
-        status = formEnderecoCandidatoRepository.findByUserId(userId) != null ?
-                formEnderecoCandidatoRepository.findByUserId(userId).stream()
-                        .map(pdev.com.agenda.domain.entity.FormEnderecoCandidato::getStatus)
-                        .findFirst()
-                        .orElse(null) : null;
-        dto.setFormEnderecoCandidatoStatus(status != null ? status : "PENDENTE");
-        found = found || status != null;
-        status = processoDeBolsaRepository.findByUser_Id(userId) != null ?
-                processoDeBolsaRepository.findByUser_Id(userId).stream()
-                        .map(ProcessoDeBolsa::getStatus)
-                        .findFirst()
-                        .orElse(null) : null;
-        dto.setProcessoDeBolsaStatus(status != null ? status : "PENDENTE");
-        found = found || status != null;
-        if (!found) {
+
+        String bensPossesStatus = bensPossesRepository.findByUserInfoId(userId)
+                .stream().findFirst().map(BensPosses::getStatus).orElse(null);
+        dto.setBensPossesStatus(bensPossesStatus != null ? bensPossesStatus : "PENDENTE");
+
+        String despesaMensalStatus = despesaMensalRepository.findByBensPosses_UserInfoId(userId)
+                .stream().findFirst().map(DespesaMensal::getStatus).orElse(null);
+        dto.setDespesaMensalStatus(despesaMensalStatus != null ? despesaMensalStatus : "PENDENTE");
+
+        String documentosGeraisPdfStatus = documentosGeraisPdfRepository.findByUserInfoId(userId)
+                .map(DocumentosGeraisPdf::getStatus).orElse(null);
+        dto.setDocumentosGeraisPdfStatus(documentosGeraisPdfStatus != null ? documentosGeraisPdfStatus : "PENDENTE");
+
+        String enderecoStatus = enderecoRepository.findByUserInfoId(userId)
+                .map(Endereco::getStatus).orElse(null);
+        dto.setEnderecoStatus(enderecoStatus != null ? enderecoStatus : "PENDENTE");
+
+        String condicoesStatus = formCondicoesHabitacionaisRepository.findByUserId(userId)
+                .stream().findFirst().map(FormCondicoesHabitacionais::getStatus).orElse(null);
+        dto.setFormCondicoesHabitacionaisStatus(condicoesStatus != null ? condicoesStatus : "PENDENTE");
+
+        String parentesStatus = formDadosParentesRepository.findByUserId(userId)
+                .stream().findFirst().map(FormDadosParentes::getStatus).orElse(null);
+        dto.setFormDadosParentesStatus(parentesStatus != null ? parentesStatus : "PENDENTE");
+
+        String pessoaisStatus = formDadosPessoaisRepository.findByUserId(userId)
+                .stream().findFirst().map(FormDadosPessoais::getStatus).orElse(null);
+        dto.setFormDadosPessoaisStatus(pessoaisStatus != null ? pessoaisStatus : "PENDENTE");
+
+        String enderecoCandidatoStatus = formEnderecoCandidatoRepository.findByUserId(userId)
+                .stream().findFirst().map(FormEnderecoCandidato::getStatus).orElse(null);
+        dto.setFormEnderecoCandidatoStatus(enderecoCandidatoStatus != null ? enderecoCandidatoStatus : "PENDENTE");
+
+        String processoDeBolsaStatus = processoDeBolsaRepository.findByUser_Id(userId)
+                .map(ProcessoDeBolsa::getStatus).orElse(null);
+        dto.setProcessoDeBolsaStatus(processoDeBolsaStatus != null ? processoDeBolsaStatus : "PENDENTE");
+
+        boolean allPending = "PENDENTE".equals(dto.getBensPossesStatus()) &&
+                "PENDENTE".equals(dto.getDespesaMensalStatus()) &&
+                "PENDENTE".equals(dto.getDocumentosGeraisPdfStatus()) &&
+                "PENDENTE".equals(dto.getEnderecoStatus()) &&
+                "PENDENTE".equals(dto.getFormCondicoesHabitacionaisStatus()) &&
+                "PENDENTE".equals(dto.getFormDadosParentesStatus()) &&
+                "PENDENTE".equals(dto.getFormDadosPessoaisStatus()) &&
+                "PENDENTE".equals(dto.getFormEnderecoCandidatoStatus()) &&
+                "PENDENTE".equals(dto.getProcessoDeBolsaStatus());
+
+        if (allPending) {
             throw new EntityNotFoundException("Nenhuma entidade encontrada para o usuário: " + userId);
         }
         return dto;
