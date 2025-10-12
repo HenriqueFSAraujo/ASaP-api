@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-
 @Data
 @Builder
 @NoArgsConstructor
@@ -17,4 +15,6 @@ public class ProcessoDeBolsaResponse {
     private boolean jaFoiContemplado;
     private String percentual;
     private Long userId;
+    private String segmentoAno;
+    private String serieAno;
 }

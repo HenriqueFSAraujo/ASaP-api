@@ -14,4 +14,6 @@ public class ProcessoDeBolsaDTO {
     private boolean jaFoiContemplado;
     private Long userId;
     private String percentual;
+    private String segmentoAno;
+    private String serieAno;
 }

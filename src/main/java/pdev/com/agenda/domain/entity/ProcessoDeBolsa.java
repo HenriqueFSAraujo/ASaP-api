@@ -28,8 +28,13 @@ public class ProcessoDeBolsa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "vai_participar")
     private boolean vaiParticipar;
+
+    @Column(name = "ja_foi_contemplado")
     private boolean jaFoiContemplado;
+
+    @Column(name = "percentual")
     private String percentual;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -38,4 +43,10 @@ public class ProcessoDeBolsa {
 
     @Column(name = "status")
     private String status;
+
+    @Column(name = "segmento_ano")
+    private String segmentoAno;
+
+    @Column(name = "serie_ano")
+    private String serieAno;
 }

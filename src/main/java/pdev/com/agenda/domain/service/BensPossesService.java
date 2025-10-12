@@ -69,6 +69,9 @@ public class BensPossesService {
     }
     @Transactional(readOnly = true)
     public BensPosses buscarPorUserId(Long userId) {
+        if (userId == null) {
+            throw new IllegalArgumentException("userId não pode ser nulo");
+        }
         return bensPossesRepository.findWithItensByUserInfoId(userId)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Bens/Posse não encontrado para o usuário: " + userId));

@@ -47,11 +47,14 @@ public class ProcessoDeBolsaService {
             entity.setVaiParticipar(dto.isVaiParticipar());
             entity.setJaFoiContemplado(dto.isJaFoiContemplado());
             entity.setPercentual(dto.getPercentual());
+            entity.setSegmentoAno(dto.getSegmentoAno());
+            entity.setSerieAno(dto.getSerieAno());
         } else {
             entity = mapper.toEntity(dto);
         }
-        entity.setStatus("PENDENTE");
-        return mapper.toResponse(repository.save(entity));
+        entity.setUser(user);
+        repository.save(entity);
+        return mapper.toResponse(entity);
     }
     public ProcessoDeBolsaResponse update(Long id, ProcessoDeBolsaDTO dto) {
         ProcessoDeBolsa entity = repository.findById(id)
