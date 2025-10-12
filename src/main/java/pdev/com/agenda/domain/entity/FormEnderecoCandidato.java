@@ -23,55 +23,55 @@ public class FormEnderecoCandidato {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "descricao_atividade")
+    @Column(name = "activityDescription")
     private String activityDescription;
 
-    @Column(name = "endereco")
+    @Column(name = "address")
     private String address;
 
-    @Column(name = "atividades_contraturno")
+    @Column(name = "afterSchoolActivities")
     private String afterSchoolActivities;
 
-    @Column(name = "cidade")
+    @Column(name = "city")
     private String city;
 
-    @Column(name = "tempo_deslocamento")
+    @Column(name = "commutingTime")
     private String commutingTime;
 
-    @Column(name = "fonte_energia")
+    @Column(name = "electricitySource")
     private String electricitySource;
 
-    @Column(name = "tem_esgoto")
+    @Column(name = "hasSewage")
     private String hasSewage;
 
-    @Column(name = "bairro")
+    @Column(name = "neighborhood")
     private String neighborhood;
 
-    @Column(name = "ponto_referencia")
+    @Column(name = "referencePoint")
     private String referencePoint;
 
-    @Column(name = "residencia")
+    @Column(name = "residenceType")
     private String residenceType;
 
-    @Column(name = "tipo_estrutura")
+    @Column(name = "structureType")
     private String structureType;
 
-    @Column(name = "tipo_estrutura_outros")
+    @Column(name = "structureTypeOthers")
     private String structureTypeOthers;
 
-    @Column(name = "tipo_transporte")
+    @Column(name = "transportType")
     private String transportType;
 
-    @Column(name = "tipo_transporte_outros")
+    @Column(name = "transportTypeOthers")
     private String transportTypeOthers;
 
-    @Column(name = "abastecimento_agua")
+    @Column(name = "waterSupply")
     private String waterSupply;
 
-    @Column(name = "frequencia_semanal")
+    @Column(name = "weeklyFrequency")
     private String weeklyFrequency;
 
-    @Column(name = "cep")
+    @Column(name = "zipCode")
     private String zipCode;
 
     @Column(name = "status")
