@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class FormEnderecoCandidatoDTO {
 
-    private Long id;
 
     @JsonProperty("activityDescription")
     private String activityDescription;
@@ -66,5 +65,6 @@ public class FormEnderecoCandidatoDTO {
     @JsonProperty("zipCode")
     private String zipCode;
 
+    @JsonProperty("userId")
     private Long userId;
 }
