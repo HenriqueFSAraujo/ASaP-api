@@ -13,7 +13,6 @@ public class FormEnderecoCandidatoMapper {
             return null;
         }
         FormEnderecoCandidato entity = new FormEnderecoCandidato();
-        entity.setId(dto.getId());
         entity.setActivityDescription(dto.getActivityDescription());
         entity.setAddress(dto.getAddress());
         entity.setAfterSchoolActivities(dto.getAfterSchoolActivities());
@@ -42,7 +41,6 @@ public class FormEnderecoCandidatoMapper {
             return null;
         }
         FormEnderecoCandidatoDTO dto = new FormEnderecoCandidatoDTO();
-        dto.setId(entity.getId());
         dto.setActivityDescription(entity.getActivityDescription());
         dto.setAddress(entity.getAddress());
         dto.setAfterSchoolActivities(entity.getAfterSchoolActivities());
@@ -60,7 +58,9 @@ public class FormEnderecoCandidatoMapper {
         dto.setWaterSupply(entity.getWaterSupply());
         dto.setWeeklyFrequency(entity.getWeeklyFrequency());
         dto.setZipCode(entity.getZipCode());
-        dto.setUserId(entity.getUser().getId());
+        if (entity.getUser() != null) {
+            dto.setUserId(entity.getUser().getId());
+        }
         return dto;
     }
 }
