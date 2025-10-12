@@ -5,9 +5,11 @@ DO $$ BEGIN
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='address') THEN
         ALTER TABLE endereco_candidatos RENAME COLUMN endereco TO address;
     END IF;
-    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='afterschoolactivities') THEN
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='afterschoolactivities')
+       AND NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='afterschoolactivities') THEN
         ALTER TABLE endereco_candidatos RENAME COLUMN afterschoolactivities TO afterSchoolActivities;
-    ELSIF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='afterschoolactivities') AND NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='afterschoolactivities') THEN
+    ELSIF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='afterschoolactivities')
+       AND NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='afterschoolactivities') THEN
         ALTER TABLE endereco_candidatos RENAME COLUMN atividades_contraturno TO afterSchoolActivities;
     END IF;
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='city') THEN
