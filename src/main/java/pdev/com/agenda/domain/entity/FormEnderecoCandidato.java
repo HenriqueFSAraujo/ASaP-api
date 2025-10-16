@@ -62,7 +62,7 @@ public class FormEnderecoCandidato {
     @Column(name = "transporttype")
     private String transportType;
 
-    @Column(name = "transporttpeothers")
+    @Column(name = "transporttypeothers")
     private String transportTypeOthers;
 
     @Column(name = "waterSupply")
