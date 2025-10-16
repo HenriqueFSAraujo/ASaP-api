@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class FormEnderecoCandidatoDTO {
 
-
     @JsonProperty("activityDescription")
     private String activityDescription;
 
