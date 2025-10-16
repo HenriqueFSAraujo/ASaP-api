@@ -29,16 +29,16 @@ public class FormEnderecoCandidato {
     @Column(name = "address")
     private String address;
 
-    @Column(name = "afterSchoolActivities")
+    @Column(name = "afterschoolactivities")
     private String afterSchoolActivities;
 
     @Column(name = "city")
     private String city;
 
-    @Column(name = "commutingTime")
+    @Column(name = "commutingtime")
     private String commutingTime;
 
-    @Column(name = "electricitySource")
+    @Column(name = "electricitysource")
     private String electricitySource;
 
     @Column(name = "hasSewage")
@@ -47,28 +47,28 @@ public class FormEnderecoCandidato {
     @Column(name = "neighborhood")
     private String neighborhood;
 
-    @Column(name = "referencePoint")
+    @Column(name = "referencepoint")
     private String referencePoint;
 
-    @Column(name = "residenceType")
+    @Column(name = "residencetype")
     private String residenceType;
 
-    @Column(name = "structureType")
+    @Column(name = "structuretype")
     private String structureType;
 
-    @Column(name = "structureTypeOthers")
+    @Column(name = "structuretypeothers")
     private String structureTypeOthers;
 
-    @Column(name = "transportType")
+    @Column(name = "transporttype")
     private String transportType;
 
-    @Column(name = "transportTypeOthers")
+    @Column(name = "transporttpeothers")
     private String transportTypeOthers;
 
     @Column(name = "waterSupply")
     private String waterSupply;
 
-    @Column(name = "weeklyFrequency")
+    @Column(name = "weeklyfrequency")
     private String weeklyFrequency;
 
     @Column(name = "zipCode")
