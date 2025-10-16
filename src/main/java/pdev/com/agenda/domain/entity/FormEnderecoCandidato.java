@@ -41,7 +41,7 @@ public class FormEnderecoCandidato {
     @Column(name = "electricitysource")
     private String electricitySource;
 
-    @Column(name = "hasSewage")
+    @Column(name = "hassewage")
     private String hasSewage;
 
     @Column(name = "neighborhood")
@@ -65,13 +65,13 @@ public class FormEnderecoCandidato {
     @Column(name = "transporttypeothers")
     private String transportTypeOthers;
 
-    @Column(name = "waterSupply")
+    @Column(name = "watersupply")
     private String waterSupply;
 
     @Column(name = "weeklyfrequency")
     private String weeklyFrequency;
 
-    @Column(name = "zipCode")
+    @Column(name = "zipcode")
     private String zipCode;
 
     @Column(name = "status")
