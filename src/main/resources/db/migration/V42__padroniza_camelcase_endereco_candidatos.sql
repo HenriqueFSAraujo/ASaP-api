@@ -1,72 +1,71 @@
 DO $$ BEGIN
     -- activityDescription
-    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='activitydescription') THEN
-        ALTER TABLE endereco_candidatos RENAME COLUMN activitydescription TO activityDescription;
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='descricao_atividade') THEN
+        ALTER TABLE endereco_candidatos RENAME COLUMN descricao_atividade TO activityDescription;
     END IF;
     -- address
-    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='address') AND NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='address') THEN
-        -- already correct
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='endereco') THEN
+        ALTER TABLE endereco_candidatos RENAME COLUMN endereco TO address;
     END IF;
     -- afterSchoolActivities
-    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='afterschoolactivities') THEN
-        ALTER TABLE endereco_candidatos RENAME COLUMN afterschoolactivities TO afterSchoolActivities;
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='atividades_contraturno') THEN
+        ALTER TABLE endereco_candidatos RENAME COLUMN atividades_contraturno TO afterSchoolActivities;
     END IF;
     -- city
-    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='city') AND NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='city') THEN
-        -- already correct
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='cidade') THEN
+        ALTER TABLE endereco_candidatos RENAME COLUMN cidade TO city;
     END IF;
     -- commutingTime
-    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='commutingtime') THEN
-        ALTER TABLE endereco_candidatos RENAME COLUMN commutingtime TO commutingTime;
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='tempo_deslocamento') THEN
+        ALTER TABLE endereco_candidatos RENAME COLUMN tempo_deslocamento TO commutingTime;
     END IF;
     -- electricitySource
-    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='electricitysource') THEN
-        ALTER TABLE endereco_candidatos RENAME COLUMN electricitysource TO electricitySource;
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='fonte_energia') THEN
+        ALTER TABLE endereco_candidatos RENAME COLUMN fonte_energia TO electricitySource;
     END IF;
     -- hasSewage
-    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='hassewage') THEN
-        ALTER TABLE endereco_candidatos RENAME COLUMN hassewage TO hasSewage;
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='tem_esgoto') THEN
+        ALTER TABLE endereco_candidatos RENAME COLUMN tem_esgoto TO hasSewage;
     END IF;
     -- neighborhood
-    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='neighborhood') AND NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='neighborhood') THEN
-        -- already correct
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='bairro') THEN
+        ALTER TABLE endereco_candidatos RENAME COLUMN bairro TO neighborhood;
     END IF;
     -- referencePoint
-    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='referencepoint') THEN
-        ALTER TABLE endereco_candidatos RENAME COLUMN referencepoint TO referencePoint;
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='ponto_referencia') THEN
+        ALTER TABLE endereco_candidatos RENAME COLUMN ponto_referencia TO referencePoint;
     END IF;
     -- residenceType
-    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='residencetype') THEN
-        ALTER TABLE endereco_candidatos RENAME COLUMN residencetype TO residenceType;
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='residencia') THEN
+        ALTER TABLE endereco_candidatos RENAME COLUMN residencia TO residenceType;
     END IF;
     -- structureType
-    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='structuretype') THEN
-        ALTER TABLE endereco_candidatos RENAME COLUMN structuretype TO structureType;
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='tipo_estrutura') THEN
+        ALTER TABLE endereco_candidatos RENAME COLUMN tipo_estrutura TO structureType;
     END IF;
     -- structureTypeOthers
-    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='structuretypeothers') THEN
-        ALTER TABLE endereco_candidatos RENAME COLUMN structuretypeothers TO structureTypeOthers;
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='tipo_estrutura_outros') THEN
+        ALTER TABLE endereco_candidatos RENAME COLUMN tipo_estrutura_outros TO structureTypeOthers;
     END IF;
     -- transportType
-    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='transporttype') THEN
-        ALTER TABLE endereco_candidatos RENAME COLUMN transporttype TO transportType;
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='tipo_transporte') THEN
+        ALTER TABLE endereco_candidatos RENAME COLUMN tipo_transporte TO transportType;
     END IF;
     -- transportTypeOthers
-    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='transporttypeothers') THEN
-        ALTER TABLE endereco_candidatos RENAME COLUMN transporttypeothers TO transportTypeOthers;
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='tipo_transporte_outros') THEN
+        ALTER TABLE endereco_candidatos RENAME COLUMN tipo_transporte_outros TO transportTypeOthers;
     END IF;
     -- waterSupply
-    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='watersupply') THEN
-        ALTER TABLE endereco_candidatos RENAME COLUMN watersupply TO waterSupply;
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='abastecimento_agua') THEN
+        ALTER TABLE endereco_candidatos RENAME COLUMN abastecimento_agua TO waterSupply;
     END IF;
     -- weeklyFrequency
-    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='weeklyfrequency') THEN
-        ALTER TABLE endereco_candidatos RENAME COLUMN weeklyfrequency TO weeklyFrequency;
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='frequencia_semanal') THEN
+        ALTER TABLE endereco_candidatos RENAME COLUMN frequencia_semanal TO weeklyFrequency;
     END IF;
     -- zipCode
-    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='zipcode') THEN
-        ALTER TABLE endereco_candidatos RENAME COLUMN zipcode TO zipCode;
+    IF EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='endereco_candidatos' AND column_name='cep') THEN
+        ALTER TABLE endereco_candidatos RENAME COLUMN cep TO zipCode;
     END IF;
 END $$;
 -- status e user_id já estão corretos
-
