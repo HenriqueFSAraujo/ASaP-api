@@ -23,7 +23,7 @@ public class FormEnderecoCandidato {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "activityDescription")
+    @Column(name = "activitydescription")
     private String activityDescription;
 
     @Column(name = "address")
