@@ -15,4 +15,4 @@ ALTER TABLE endereco_candidatos RENAME COLUMN tipo_transporte_outros TO transpor
 ALTER TABLE endereco_candidatos RENAME COLUMN abastecimento_agua TO waterSupply;
 ALTER TABLE endereco_candidatos RENAME COLUMN frequencia_semanal TO weeklyFrequency;
 ALTER TABLE endereco_candidatos RENAME COLUMN cep TO zipCode;
--- status e user_id já estão corretos
+
