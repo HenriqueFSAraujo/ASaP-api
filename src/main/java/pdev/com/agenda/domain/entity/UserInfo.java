@@ -19,7 +19,6 @@ import javax.persistence.Table;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
 public class UserInfo {
 
@@ -57,4 +56,11 @@ public class UserInfo {
 
     @Column(name = "status")
     private String status;
+
+    public UserInfo(Long userId) {
+    }
+
+    public UserInfo() {
+
+    }
 }

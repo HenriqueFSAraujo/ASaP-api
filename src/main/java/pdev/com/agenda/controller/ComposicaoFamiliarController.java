@@ -8,9 +8,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pdev.com.agenda.domain.entity.ComposicaoFamiliar;
+import pdev.com.agenda.domain.entity.UserInfo;
+
+import pdev.com.agenda.domain.service.UserInfoService;
 import pdev.com.agenda.dto.ComposicaoFamiliarDTO;
 import pdev.com.agenda.mapper.ComposicaoFamiliarMapper;
+import pdev.com.agenda.repository.ComposicaoFamiliarRepository;
 import pdev.com.agenda.service.ComposicaoFamiliarService;
+
 
 import java.util.List;
 
@@ -23,21 +28,17 @@ import java.util.List;
 public class ComposicaoFamiliarController {
 
     private final ComposicaoFamiliarService service;
+    private final ComposicaoFamiliarService composicaoFamiliarRepository;
 
-    @ApiResponse(responseCode = "201", description = "Composições familiares criadas com sucesso")
-    @PostMapping
-    public ResponseEntity<List<ComposicaoFamiliarDTO>> saveAll(@RequestBody List<ComposicaoFamiliarDTO> composicoesDTO) {
+    @ApiResponse(responseCode = "201", description = "Composições familiares criadas com sucesso para o usuário")
+    @PostMapping("/{userId}")
+    public ResponseEntity<List<ComposicaoFamiliarDTO>> saveAllForUser(@PathVariable Long userId, @RequestBody List<ComposicaoFamiliarDTO> composicoesDTO) {
+        composicaoFamiliarRepository.findAllByUserComposicao(userId);
         List<ComposicaoFamiliar> composicoes = ComposicaoFamiliarMapper.INSTANCE.toEntityList(composicoesDTO);
+        composicoes.forEach(composicao -> composicao.setUserInfo(new UserInfo(userId)));
         List<ComposicaoFamiliar> savedComposicoes = service.saveAll(composicoes);
         List<ComposicaoFamiliarDTO> savedComposicoesDTO = ComposicaoFamiliarMapper.INSTANCE.toDTOList(savedComposicoes);
         return new ResponseEntity<>(savedComposicoesDTO, HttpStatus.CREATED);
     }
 
-    @ApiResponse(responseCode = "200", description = "Lista de composições familiares retornada com sucesso")
-    @GetMapping
-    public ResponseEntity<List<ComposicaoFamiliarDTO>> getAll() {
-        List<ComposicaoFamiliar> composicoes = service.findAll();
-        List<ComposicaoFamiliarDTO> composicoesDTO = ComposicaoFamiliarMapper.INSTANCE.toDTOList(composicoes);
-        return new ResponseEntity<>(composicoesDTO, HttpStatus.OK);
-    }
 }

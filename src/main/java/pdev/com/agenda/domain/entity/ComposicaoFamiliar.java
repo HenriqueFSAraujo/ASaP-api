@@ -6,9 +6,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -33,4 +36,8 @@ public class ComposicaoFamiliar {
     private String profissaoAtiva;
     private String estadoCivil;
     private BigDecimal salarioBruto;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_info_id", nullable = false)
+    private UserInfo userInfo;
 }
