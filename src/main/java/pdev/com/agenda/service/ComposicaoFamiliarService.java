@@ -18,4 +18,8 @@ public class ComposicaoFamiliarService {
     public List<ComposicaoFamiliar> saveAll(List<ComposicaoFamiliar> composicoes) {
         return repository.saveAll(composicoes);
     }
+
+    public List<ComposicaoFamiliar> findAll() {
+        return repository.findAll();
+    }
 }

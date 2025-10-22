@@ -32,4 +32,12 @@ public class ComposicaoFamiliarController {
         List<ComposicaoFamiliarDTO> savedComposicoesDTO = ComposicaoFamiliarMapper.INSTANCE.toDTOList(savedComposicoes);
         return new ResponseEntity<>(savedComposicoesDTO, HttpStatus.CREATED);
     }
+
+    @ApiResponse(responseCode = "200", description = "Lista de composições familiares retornada com sucesso")
+    @GetMapping
+    public ResponseEntity<List<ComposicaoFamiliarDTO>> getAll() {
+        List<ComposicaoFamiliar> composicoes = service.findAll();
+        List<ComposicaoFamiliarDTO> composicoesDTO = ComposicaoFamiliarMapper.INSTANCE.toDTOList(composicoes);
+        return new ResponseEntity<>(composicoesDTO, HttpStatus.OK);
+    }
 }
