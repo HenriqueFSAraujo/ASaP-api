@@ -17,7 +17,7 @@ public interface ComposicaoFamiliarMapper {
     @Mapping(source = "userInfo.id", target = "userId")
     ComposicaoFamiliarRequestDTO toDTO(ComposicaoFamiliar entity);
 
-    @Mapping(source = "userInfo", target = "userInfo.id")
+    @Mapping(source = "userInfo.id", target = "userInfo.id")
     ComposicaoFamiliar toEntity(ComposicaoFamiliarRequestDTO dto);
 
     List<ComposicaoFamiliarDTO> toDTOList(List<ComposicaoFamiliar> entities);
