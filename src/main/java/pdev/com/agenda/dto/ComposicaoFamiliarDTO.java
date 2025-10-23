@@ -21,6 +21,4 @@ public class ComposicaoFamiliarDTO {
     private String profissaoAtiva;
     private String estadoCivil;
     private BigDecimal salarioBruto;
-
-    private Long userId;
 }
