@@ -13,7 +13,7 @@ public interface ComposicaoFamiliarMapper {
 
     ComposicaoFamiliarMapper INSTANCE = Mappers.getMapper(ComposicaoFamiliarMapper.class);
 
-    @Mapping(source = "userId", target = "userInfo.id")
+    @Mapping(source = "userInfoId", target = "userInfo.id")
     ComposicaoFamiliar toEntity(ComposicaoFamiliarDTO dto);
 
     @Mapping(source = "userInfo.id", target = "userId")
