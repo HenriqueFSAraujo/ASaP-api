@@ -14,10 +14,10 @@ public interface ComposicaoFamiliarMapper {
 
     ComposicaoFamiliarMapper INSTANCE = Mappers.getMapper(ComposicaoFamiliarMapper.class);
 
-    @Mapping(source = "userInfo.id", target = "userId")
+    @Mapping(source = "userInfo.id", target = "userInfoId")
     ComposicaoFamiliarRequestDTO toDTO(ComposicaoFamiliar entity);
 
-    @Mapping(source = "userInfo.id", target = "userInfo.id")
+    @Mapping(source = "userInfoId", target = "userInfo.id")
     ComposicaoFamiliar toEntity(ComposicaoFamiliarRequestDTO dto);
 
     List<ComposicaoFamiliarDTO> toDTOList(List<ComposicaoFamiliar> entities);
