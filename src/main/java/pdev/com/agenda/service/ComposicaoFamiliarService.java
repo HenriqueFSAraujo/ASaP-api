@@ -4,8 +4,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pdev.com.agenda.domain.entity.ComposicaoFamiliar;
 import pdev.com.agenda.domain.entity.UserInfo;
+import pdev.com.agenda.domain.repository.UserInfoRepository;
 import pdev.com.agenda.repository.ComposicaoFamiliarRepository;
 
+
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,16 +17,20 @@ import java.util.Optional;
 public class ComposicaoFamiliarService {
 
     private final ComposicaoFamiliarRepository repository;
+    private final UserInfoRepository userInfoRepository;
 
     public List<ComposicaoFamiliar> saveAll(List<ComposicaoFamiliar> composicoes) {
         return repository.saveAll(composicoes);
     }
 
+    @Transactional
     public List<ComposicaoFamiliar> findAll() {
         return repository.findAll();
     }
 
-    public List<ComposicaoFamiliar> saveAllForUser(List<ComposicaoFamiliar> composicoes, UserInfo userInfo) {
+    public List<ComposicaoFamiliar> saveAllForUser(List<ComposicaoFamiliar> composicoes, Long userId) {
+        UserInfo userInfo = userInfoRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("UserInfo not found with id: " + userId));
         composicoes.forEach(composicao -> composicao.setUserInfo(userInfo));
         return repository.saveAll(composicoes);
     }
