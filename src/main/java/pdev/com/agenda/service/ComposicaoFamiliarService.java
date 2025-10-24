@@ -56,4 +56,11 @@ public class ComposicaoFamiliarService {
         List<ComposicaoFamiliar> savedComposicoes = repository.saveAll(composicoes);
         return ComposicaoFamiliarMapper.INSTANCE.toDTOList(savedComposicoes);
     }
+
+    public List<ComposicaoFamiliarDTO> getAllByUser(Long userId) {
+        UserInfo userInfo = userInfoRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("UserInfo not found with id: " + userId));
+        List<ComposicaoFamiliar> composicoes = repository.findAllByUserInfo(userInfo);
+        return ComposicaoFamiliarMapper.INSTANCE.toDTOList(composicoes);
+    }
 }
