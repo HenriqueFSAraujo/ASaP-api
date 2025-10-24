@@ -51,7 +51,11 @@ public class ComposicaoFamiliarService {
         Long userId = request.getUserInfoId();
         UserInfo userInfo = userInfoRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("UserInfo not found with id: " + userId));
+        List<ComposicaoFamiliar> savedComposicoes = getComposicaoFamiliars(request, userInfo);
+        return ComposicaoFamiliarMapper.INSTANCE.toDTOList(savedComposicoes);
+    }
 
+    private List<ComposicaoFamiliar> getComposicaoFamiliars(ComposicaoFamiliarRequestDTO request, UserInfo userInfo) {
         // Delete existing records associated with the user
         List<ComposicaoFamiliar> existingComposicoes = repository.findAllByUserInfo(userInfo);
         repository.deleteAll(existingComposicoes);
@@ -60,8 +64,7 @@ public class ComposicaoFamiliarService {
         List<ComposicaoFamiliar> composicoes = ComposicaoFamiliarMapper.INSTANCE.toEntityList(request.getComposicaoFamiliar());
         composicoes.forEach(composicao -> composicao.setUserInfo(userInfo));
         List<ComposicaoFamiliar> savedComposicoes = repository.saveAll(composicoes);
-
-        return ComposicaoFamiliarMapper.INSTANCE.toDTOList(savedComposicoes);
+        return savedComposicoes;
     }
 
     public List<ComposicaoFamiliarDTO> getAllByUser(Long userId) {
