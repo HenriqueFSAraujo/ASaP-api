@@ -38,7 +38,7 @@ public class ComposicaoFamiliarController {
     }
 
     @ApiResponse(responseCode = "200", description = "Lista de composições familiares retornada com sucesso para o usuário")
-    @GetMapping("/user/{userId}")
+    @GetMapping("{userId}")
     public ResponseEntity<List<ComposicaoFamiliarDTO>> getAllByUser(@PathVariable Long userId) {
         List<ComposicaoFamiliarDTO> composicoesDTO = service.getAllByUser(userId);
         return new ResponseEntity<>(composicoesDTO, HttpStatus.OK);
