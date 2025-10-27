@@ -78,4 +78,51 @@ public class DocumentosGeraisPdfController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @Operation(summary = "Download de todos os PDFs de um tipo para um usuário", description = "Retorna uma lista de arquivos PDF de um campo específico para o userId informado.")
+    @GetMapping("/download/list/{campo}")
+    public ResponseEntity<?> downloadPdfList(
+            @Parameter(description = "ID do usuário", required = true) @RequestParam("userId") Long userId,
+            @Parameter(description = "Nome do campo do documento", required = true, example = "singleRegistryRegistration") @PathVariable String campo) {
+        var pdfList = pdfService.buscarPorUserId(userId);
+        if (pdfList == null || pdfList.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        var arquivos = new java.util.ArrayList<java.util.Map<String, Object>>();
+        for (DocumentosGeraisPdf pdf : pdfList) {
+            byte[] conteudo = null;
+            String nomeArquivo = campo + "_" + pdf.getId() + ".pdf";
+            switch (campo) {
+                case "singleRegistryRegistration": conteudo = pdf.getSingleRegistryRegistration(); break;
+                case "maritalStatus": conteudo = pdf.getMaritalStatus(); break;
+                case "identityDocuments": conteudo = pdf.getIdentityDocuments(); break;
+                case "guardianshipDocuments": conteudo = pdf.getGuardianshipDocuments(); break;
+                case "vaccinationCard": conteudo = pdf.getVaccinationCard(); break;
+                case "proofOfResidence": conteudo = pdf.getProofOfResidence(); break;
+                case "workContract": conteudo = pdf.getWorkContract(); break;
+                case "bankingRelationsReport": conteudo = pdf.getBankingRelationsReport(); break;
+                case "proofOfIncome": conteudo = pdf.getProofOfIncome(); break;
+                case "supportingDocumentation": conteudo = pdf.getSupportingDocumentation(); break;
+                case "bankStatements": conteudo = pdf.getBankStatements(); break;
+                case "businessDocuments": conteudo = pdf.getBusinessDocuments(); break;
+                case "taxDocuments": conteudo = pdf.getTaxDocuments(); break;
+                case "meiDocuments": conteudo = pdf.getMeiDocuments(); break;
+                case "healthDisability": conteudo = pdf.getHealthDisability(); break;
+                case "familyComposition": conteudo = pdf.getFamilyComposition(); break;
+                case "governmentProgram": conteudo = pdf.getGovernmentProgram(); break;
+                default: return ResponseEntity.badRequest().body("Campo inválido: " + campo);
+            }
+            if (conteudo != null) {
+                var map = new java.util.HashMap<String, Object>();
+                map.put("id", pdf.getId());
+                map.put("nomeArquivo", nomeArquivo);
+                map.put("conteudoBase64", java.util.Base64.getEncoder().encodeToString(conteudo));
+                arquivos.add(map);
+            }
+        }
+        if (arquivos.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(arquivos);
+    }
 }

@@ -10,6 +10,7 @@ import pdev.com.agenda.domain.repository.UserInfoRepository;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -55,5 +56,9 @@ public class DocumentosGeraisPdfService {
 
     public Optional<DocumentosGeraisPdf> buscarPorId(Long id) {
         return pdfRepository.findById(id);
+    }
+
+    public List<DocumentosGeraisPdf> buscarPorUserId(Long userId) {
+        return pdfRepository.findAllByUserInfoId(userId);
     }
 }
