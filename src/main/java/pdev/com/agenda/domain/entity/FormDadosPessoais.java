@@ -31,6 +31,9 @@ public class FormDadosPessoais {
     @Column(name = "fullname")
     private String fullName;
 
+    @Column(name = "email")
+    private String email;
+
     @Column(name = "cpf")
     private String cpf;
 
