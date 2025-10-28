@@ -13,4 +13,5 @@ public class DeclaracaoDTO {
     private String cpfDeclarante;
     private String nomeAluno;
     private Boolean aceiteTermos;
+    private Long userId;
 }

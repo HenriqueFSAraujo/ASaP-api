@@ -42,4 +42,10 @@ public class DeclaracaoController {
         declaracaoService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<List<DeclaracaoDTO>> getDeclaracoesByUserId(@PathVariable Long userId) {
+        List<DeclaracaoDTO> declaracoes = declaracaoService.findByUserId(userId);
+        return ResponseEntity.ok(declaracoes);
+    }
 }

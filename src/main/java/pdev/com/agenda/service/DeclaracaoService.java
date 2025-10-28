@@ -37,6 +37,12 @@ public class DeclaracaoService {
         declaracaoRepository.deleteById(id);
     }
 
+    public List<DeclaracaoDTO> findByUserId(Long userId) {
+        return declaracaoRepository.findByUser_Id(userId).stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
     private DeclaracaoDTO convertToDTO(Declaracao declaracao) {
         DeclaracaoDTO dto = new DeclaracaoDTO();
         dto.setId(declaracao.getId());
@@ -45,6 +51,9 @@ public class DeclaracaoService {
         dto.setCpfDeclarante(declaracao.getCpfDeclarante());
         dto.setNomeAluno(declaracao.getNomeAluno());
         dto.setAceiteTermos(declaracao.getAceiteTermos());
+        if (declaracao.getUser() != null) {
+            dto.setUserId(declaracao.getUser().getId());
+        }
         return dto;
     }
 
@@ -56,6 +65,11 @@ public class DeclaracaoService {
         declaracao.setCpfDeclarante(dto.getCpfDeclarante());
         declaracao.setNomeAluno(dto.getNomeAluno());
         declaracao.setAceiteTermos(dto.getAceiteTermos());
+        if (dto.getUserId() != null) {
+            pdev.com.agenda.domain.entity.UserInfo user = new pdev.com.agenda.domain.entity.UserInfo();
+            user.setId(dto.getUserId());
+            declaracao.setUser(user);
+        }
         return declaracao;
     }
 }

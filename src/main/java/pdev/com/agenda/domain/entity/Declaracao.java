@@ -11,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.ManyToOne;
+import javax.persistence.JoinColumn;
 
 @Entity
 @Table(name = "declaracoes")
@@ -30,4 +32,8 @@ public class Declaracao {
     private String nomeAluno;
 
     private Boolean aceiteTermos;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserInfo user;
 }
