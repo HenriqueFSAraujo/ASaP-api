@@ -18,6 +18,7 @@ import pdev.com.agenda.domain.repository.BensPossesRepository;
 import pdev.com.agenda.domain.repository.UserInfoRepository;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -60,10 +61,10 @@ public class BensPossesService {
                 .peek(d -> d.setBensPosses(bens))
                 .toList();
 
-        bens.setVeiculos(veiculos);
-        bens.setFamiliaresEscola(familiares);
-        bens.setPessoasComDeficiencia(deficiencias);
-        bens.setDespesasMensais(despesas);
+        bens.setVeiculos(new HashSet<>(veiculos));
+        bens.setFamiliaresEscola(new HashSet<>(familiares));
+        bens.setPessoasComDeficiencia(new HashSet<>(deficiencias));
+        bens.setDespesasMensais(new HashSet<>(despesas));
         bens.setStatus("PENDENTE");
         return bensPossesRepository.save(bens);
     }
