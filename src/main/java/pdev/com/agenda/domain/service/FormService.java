@@ -26,19 +26,25 @@ public class FormService {
         if (existente.isPresent()) {
             entity = existente.get();
             entity.setFullName(dto.getFullName());
-            entity.setEmail(dto.getEmail());
             entity.setCpf(dto.getCpf());
-            entity.setCpfBolsista(dto.getCpfBolsista());
+            entity.setRg(dto.getRg());
+            entity.setNacionalidade(dto.getNacionalidade());
+            entity.setNaturalidade(dto.getNaturalidade());
+            entity.setCor(dto.getCor());
             entity.setPhone(dto.getPhone());
             entity.setGender(dto.getGender());
+            entity.setCpfBolsista(dto.getCpfBolsista());
             entity.setDataNascimento(dto.getDataNascimento());
             entity.setPcd(dto.getPcd());
-            entity.setStatus("PENDENTE");
+            entity.setStatus(dto.getStatus() != null ? dto.getStatus() : "PENDENTE");
             entity.setNumEducasenso(dto.getNumEducasenso());
 
         } else {
             entity = dadosPessoaisMapper.toEntity(dto);
             entity.setId(null);
+            if (entity.getStatus() == null) {
+                entity.setStatus("PENDENTE");
+            }
         }
 
         FormDadosPessoais saved = dadosPessoaisRepository.save(entity);

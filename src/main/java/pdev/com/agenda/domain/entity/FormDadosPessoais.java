@@ -28,23 +28,23 @@ public class FormDadosPessoais {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "username")
-    private String username;
-
-    @Column(name = "email")
-    private String email;
-
-    @Column(name = "login")
-    private String login;
-
-    @Column(name = "password")
-    private String password;
-
     @Column(name = "fullname")
     private String fullName;
 
     @Column(name = "cpf")
     private String cpf;
+
+    @Column(name = "rg")
+    private String rg;
+
+    @Column(name = "nacionalidade")
+    private String nacionalidade;
+
+    @Column(name = "naturalidade")
+    private String naturalidade;
+
+    @Column(name = "cor")
+    private String cor;
 
     @Column(name = "phone")
     private String phone;

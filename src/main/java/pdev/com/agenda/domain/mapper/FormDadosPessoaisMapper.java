@@ -12,19 +12,21 @@ public class FormDadosPessoaisMapper {
         if (dto == null) {
             return null;
         }
-
         FormDadosPessoais entity = new FormDadosPessoais();
         entity.setId(dto.getId());
         entity.setFullName(dto.getFullName());
-        entity.setEmail(dto.getEmail());
         entity.setCpf(dto.getCpf());
-        entity.setCpfBolsista(dto.getCpfBolsista());
+        entity.setRg(dto.getRg());
+        entity.setNacionalidade(dto.getNacionalidade());
+        entity.setNaturalidade(dto.getNaturalidade());
+        entity.setCor(dto.getCor());
         entity.setPhone(dto.getPhone());
         entity.setGender(dto.getGender());
+        entity.setCpfBolsista(dto.getCpfBolsista());
         entity.setDataNascimento(dto.getDataNascimento());
-        entity.setPcd(dto.getPcd());
         entity.setNumEducasenso(dto.getNumEducasenso());
-
+        entity.setPcd(dto.getPcd());
+        entity.setStatus(dto.getStatus());
         UserInfo user = new UserInfo();
         user.setId(dto.getUserId());
         entity.setUser(user);
@@ -35,23 +37,24 @@ public class FormDadosPessoaisMapper {
         if (entity == null) {
             return null;
         }
-
         FormDadosPessoaisDTO dto = new FormDadosPessoaisDTO();
         dto.setId(entity.getId());
         dto.setFullName(entity.getFullName());
-        dto.setEmail(entity.getEmail());
         dto.setCpf(entity.getCpf());
-        dto.setCpfBolsista(entity.getCpfBolsista());
+        dto.setRg(entity.getRg());
+        dto.setNacionalidade(entity.getNacionalidade());
+        dto.setNaturalidade(entity.getNaturalidade());
+        dto.setCor(entity.getCor());
         dto.setPhone(entity.getPhone());
         dto.setGender(entity.getGender());
+        dto.setCpfBolsista(entity.getCpfBolsista());
         dto.setDataNascimento(entity.getDataNascimento());
-        dto.setPcd(entity.getPcd());
         dto.setNumEducasenso(entity.getNumEducasenso());
-
+        dto.setPcd(entity.getPcd());
+        dto.setStatus(entity.getStatus());
         if (entity.getUser() != null) {
             dto.setUserId(entity.getUser().getId());
         }
-
         return dto;
     }
 }

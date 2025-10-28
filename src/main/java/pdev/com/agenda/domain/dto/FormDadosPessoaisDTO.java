@@ -25,15 +25,26 @@ public class FormDadosPessoaisDTO {
     @JsonProperty("cpf")
     private String cpf;
 
-    @JsonProperty("cpfScholarship")
+    @JsonProperty("rg")
+    private String rg;
 
-    private String cpfBolsista;
+    @JsonProperty("nacionalidade")
+    private String nacionalidade;
+
+    @JsonProperty("naturalidade")
+    private String naturalidade;
+
+    @JsonProperty("cor")
+    private String cor;
 
     @JsonProperty("phone")
     private String phone;
 
     @JsonProperty("gender")
     private String gender;
+
+    @JsonProperty("cpfScholarship")
+    private String cpfBolsista;
 
     @JsonProperty("dateBirth")
     private LocalDate dataNascimento;
@@ -43,6 +54,9 @@ public class FormDadosPessoaisDTO {
 
     @JsonProperty("educasenso")
     private String numEducasenso;
+
+    @JsonProperty("status")
+    private String status;
 
     private Long userId;
 
