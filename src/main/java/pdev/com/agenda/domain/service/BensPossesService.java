@@ -51,6 +51,7 @@ public class BensPossesService {
                 .peek(f -> f.setBensPosses(bens))
                 .toList();
 
+
         List<PessoaComDeficiencia> deficiencias = dto.getPessoasComDeficiencia().stream()
                 .map(deficienciaMapper::toEntity)
                 .peek(p -> p.setBensPosses(bens))
