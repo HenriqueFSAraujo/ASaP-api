@@ -15,7 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -36,16 +36,16 @@ public class BensPosses {
     private UserInfo userInfo;
 
     @OneToMany(mappedBy = "bensPosses", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Veiculo> veiculos;
+    private Set<Veiculo> veiculos;
 
     @OneToMany(mappedBy = "bensPosses", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<FamiliarEscolaParticular> familiaresEscola;
+    private Set<FamiliarEscolaParticular> familiaresEscola;
 
     @OneToMany(mappedBy = "bensPosses", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PessoaComDeficiencia> pessoasComDeficiencia;
+    private Set<PessoaComDeficiencia> pessoasComDeficiencia;
 
     @OneToMany(mappedBy = "bensPosses", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DespesaMensal> despesasMensais;
+    private Set<DespesaMensal> despesasMensais;
 
     @Column(name = "status")
     private String status;
