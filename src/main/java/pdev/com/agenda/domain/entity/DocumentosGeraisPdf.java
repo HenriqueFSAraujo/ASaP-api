@@ -23,55 +23,52 @@ public class DocumentosGeraisPdf {
     @JoinColumn(name = "user_id", nullable = false)
     private UserInfo userInfo;
 
-    @Lob
+
     private byte[] singleRegistryRegistration;
 
-    @Lob
+
     private byte[] maritalStatus;
 
-    @Lob
+
     private byte[] identityDocuments;
 
-    @Lob
+
     private byte[] guardianshipDocuments;
 
-    @Lob
+
     private byte[] vaccinationCard;
 
-    @Lob
     private byte[] proofOfResidence;
 
-    @Lob
+
     private byte[] workContract;
 
-    @Lob
     private byte[] bankingRelationsReport;
 
-    @Lob
+
     private byte[] proofOfIncome;
 
-    @Lob
     private byte[] supportingDocumentation;
 
-    @Lob
+
     private byte[] bankStatements;
 
-    @Lob
+
     private byte[] businessDocuments;
 
-    @Lob
+
     private byte[] taxDocuments;
 
-    @Lob
+
     private byte[] meiDocuments;
 
-    @Lob
+
     private byte[] healthDisability;
 
-    @Lob
+
     private byte[] familyComposition;
 
-    @Lob
+
     private byte[] governmentProgram;
 
     @Column(name = "data_upload", nullable = false)
