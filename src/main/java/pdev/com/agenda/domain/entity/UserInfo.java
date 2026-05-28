@@ -3,9 +3,12 @@ package pdev.com.agenda.domain.entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import pdev.com.agenda.domain.enuns.TipoAlunoEnum;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -55,6 +58,10 @@ public class UserInfo {
 
     @Column(name = "status")
     private String status;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo_aluno")
+    private TipoAlunoEnum tipoAluno;
 
     public UserInfo(Long userId) {
     }

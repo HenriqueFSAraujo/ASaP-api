@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pdev.com.agenda.domain.enuns.TipoAlunoEnum;
 
 @Data
 @Builder
@@ -24,6 +25,13 @@ public class UserInfoDTO {
     private String password;
     @JsonIgnore
     private boolean isActive;
+
+    /**
+     * Classificacao do aluno (ESCOLA_PARTICULAR ou ESCOLA_GRATUITA).
+     * Obrigatorio quando roleName = ROLE_USER; deve ser nulo quando roleName = ROLE_ADMIN.
+     * Validacao aplicada em UserInfoService.create().
+     */
+    private TipoAlunoEnum tipoAluno;
 
 
     public void setIsFirstLogin(boolean firstLogin) {

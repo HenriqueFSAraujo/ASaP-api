@@ -36,6 +36,7 @@ public class UserInfoMapper {
         }
         Role role = roleRepository.findByName(RoleEnum.valueOf(dto.getRoleName()));
         entity.setRole(role);
+        entity.setTipoAluno(dto.getTipoAluno());
 
         return entity;
     }
@@ -51,6 +52,7 @@ public class UserInfoMapper {
         dto.setIsFirstLogin(true);
         dto.setActive(true);
         dto.setRoleName(entity.getRole().getName().name());
+        dto.setTipoAluno(entity.getTipoAluno());
 
         return dto;
     }
@@ -65,6 +67,7 @@ public class UserInfoMapper {
         response.setPassword(entity.getPassword());
         response.setIsFirstLogin(true);
         response.setActive(true);
+        response.setTipoAluno(entity.getTipoAluno());
 
         if (entity.getRole() != null && entity.getRole().getName() != null) {
             response.setRoleName(entity.getRole().getName().name());

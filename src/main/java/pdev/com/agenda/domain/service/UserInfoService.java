@@ -17,6 +17,7 @@ import pdev.com.agenda.domain.entity.FormDadosPessoais;
 import pdev.com.agenda.domain.entity.FormEnderecoCandidato;
 import pdev.com.agenda.domain.entity.ProcessoDeBolsa;
 import pdev.com.agenda.domain.entity.UserInfo;
+import pdev.com.agenda.domain.enuns.RoleEnum;
 import pdev.com.agenda.domain.mapper.UserInfoMapper;
 import pdev.com.agenda.domain.repository.BensPossesRepository;
 import pdev.com.agenda.domain.repository.DespesaMensalRepository;
@@ -121,6 +122,8 @@ public class UserInfoService {
 
     public UserInfoDTO create(UserInfoDTO dto) {
         validateUserInfo(dto);
+        validateTipoAluno(dto);
+        normalizeTipoAlunoForAdmin(dto);
         UserInfo entity = mapper.toEntity(dto);
         entity.setStatus("PENDENTE");
         return mapper.toDTO(repository.save(entity));
@@ -131,10 +134,13 @@ public class UserInfoService {
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com ID: " + id));
 
         validateUserInfo(dto);
+        validateTipoAluno(dto);
+        normalizeTipoAlunoForAdmin(dto);
         entity.setName(dto.getName());
         entity.setUserName(dto.getUserName());
         entity.setEmail(dto.getEmail());
         entity.setCpf(dto.getCpf());
+        entity.setTipoAluno(dto.getTipoAluno());
         entity.setStatus("PENDENTE");
         return mapper.toDTO(repository.save(entity));
     }
@@ -153,6 +159,28 @@ public class UserInfoService {
         }
         if (repository.existsByUserName(dto.getUserName())) {
             throw new IllegalArgumentException("Nome de usuário já cadastrado.");
+        }
+    }
+
+    /**
+     * Regra de negocio: alunos (ROLE_USER) sao obrigados a informar o tipo (ESCOLA_PARTICULAR ou
+     * ESCOLA_GRATUITA) no momento do cadastro. Admins (ROLE_ADMIN) nao tem tipo de aluno.
+     */
+    private void validateTipoAluno(UserInfoDTO dto) {
+        if (RoleEnum.ROLE_USER.name().equals(dto.getRoleName()) && dto.getTipoAluno() == null) {
+            throw new IllegalArgumentException(
+                    "Tipo de aluno é obrigatório para usuários com perfil ALUNO. " +
+                            "Valores aceitos: ESCOLA_PARTICULAR, ESCOLA_GRATUITA."
+            );
+        }
+    }
+
+    /**
+     * Garante que admins nunca tenham tipo_aluno preenchido, mesmo se o front enviar por engano.
+     */
+    private void normalizeTipoAlunoForAdmin(UserInfoDTO dto) {
+        if (RoleEnum.ROLE_ADMIN.name().equals(dto.getRoleName())) {
+            dto.setTipoAluno(null);
         }
     }
 

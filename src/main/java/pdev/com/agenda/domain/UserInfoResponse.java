@@ -1,6 +1,7 @@
 package pdev.com.agenda.domain;
 
 import lombok.Data;
+import pdev.com.agenda.domain.enuns.TipoAlunoEnum;
 
 @Data
 public class UserInfoResponse{
@@ -14,6 +15,7 @@ public class UserInfoResponse{
     private boolean isFirstLogin;
     private String password;
     private boolean isActive;
+    private TipoAlunoEnum tipoAluno;
 
     public void setIsFirstLogin(boolean firstLogin) {
         this.isFirstLogin = firstLogin;
