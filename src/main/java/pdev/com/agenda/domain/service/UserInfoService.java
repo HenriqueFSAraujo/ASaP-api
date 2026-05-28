@@ -16,6 +16,7 @@ import pdev.com.agenda.domain.entity.FormDadosParentes;
 import pdev.com.agenda.domain.entity.FormDadosPessoais;
 import pdev.com.agenda.domain.entity.FormEnderecoCandidato;
 import pdev.com.agenda.domain.entity.ProcessoDeBolsa;
+import pdev.com.agenda.domain.entity.Role;
 import pdev.com.agenda.domain.entity.UserInfo;
 import pdev.com.agenda.domain.enuns.RoleEnum;
 import pdev.com.agenda.domain.mapper.UserInfoMapper;
@@ -28,6 +29,7 @@ import pdev.com.agenda.domain.repository.FormDadosParentesRepository;
 import pdev.com.agenda.domain.repository.FormDadosPessoaisRepository;
 import pdev.com.agenda.domain.repository.FormEnderecoCandidatoRepository;
 import pdev.com.agenda.domain.repository.ProcessoDeBolsaRepository;
+import pdev.com.agenda.domain.repository.RoleRepository;
 import pdev.com.agenda.domain.repository.UserInfoRepository;
 import pdev.com.agenda.util.ValidationUtil;
 
@@ -39,8 +41,11 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class UserInfoService {
 
+    private static final String DEFAULT_STATUS = "PENDENTE";
+
     private final UserInfoRepository repository;
     private final UserInfoMapper mapper;
+    private final RoleRepository roleRepository;
     private final BensPossesRepository bensPossesRepository;
     private final DespesaMensalRepository despesaMensalRepository;
     private final DocumentosGeraisPdfRepository documentosGeraisPdfRepository;
@@ -121,11 +126,14 @@ public class UserInfoService {
     }
 
     public UserInfoDTO create(UserInfoDTO dto) {
-        validateUserInfo(dto);
+        validateForCreate(dto);
         validateTipoAluno(dto);
         normalizeTipoAlunoForAdmin(dto);
+
         UserInfo entity = mapper.toEntity(dto);
-        entity.setStatus("PENDENTE");
+        entity.setRole(resolveRole(dto.getRoleName()));
+        entity.setStatus(DEFAULT_STATUS);
+
         return mapper.toDTO(repository.save(entity));
     }
 
@@ -133,32 +141,69 @@ public class UserInfoService {
         UserInfo entity = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com ID: " + id));
 
-        validateUserInfo(dto);
+        validateForUpdate(dto, id);
         validateTipoAluno(dto);
         normalizeTipoAlunoForAdmin(dto);
-        entity.setName(dto.getName());
-        entity.setUserName(dto.getUserName());
-        entity.setEmail(dto.getEmail());
-        entity.setCpf(dto.getCpf());
-        entity.setTipoAluno(dto.getTipoAluno());
-        entity.setStatus("PENDENTE");
+
+        // Partial update: MapStruct ignora campos null no DTO (ver UserInfoMapper.updateEntityFromDto).
+        mapper.updateEntityFromDto(dto, entity);
+
+        // IGNORE preservaria valor antigo de tipoAluno; força null explicitamente para admins.
+        if (RoleEnum.ROLE_ADMIN.name().equals(dto.getRoleName())) {
+            entity.setTipoAluno(null);
+        }
+        entity.setStatus(DEFAULT_STATUS);
+
         return mapper.toDTO(repository.save(entity));
     }
 
-    private void validateUserInfo(UserInfoDTO dto) {
-        if (!ValidationUtil.isValidEmail(dto.getEmail())) {
-            throw new IllegalArgumentException("E-mail inválido.");
+    /**
+     * Resolve a Role do banco a partir do nome enviado no DTO. Centraliza a busca no service
+     * porque mappers (MapStruct) devem ser puros — sem dependência de repositórios.
+     */
+    private Role resolveRole(String roleName) {
+        if (roleName == null) {
+            throw new IllegalArgumentException("O campo role é obrigatório.");
         }
-
-        if (!ValidationUtil.isValidCPF(dto.getCpf())) {
-            throw new IllegalArgumentException("CPF inválido.");
+        try {
+            return roleRepository.findByName(RoleEnum.valueOf(roleName));
+        } catch (IllegalArgumentException ex) {
+            throw new IllegalArgumentException(
+                    "Perfil inválido: " + roleName + ". Valores aceitos: ROLE_USER, ROLE_ADMIN."
+            );
         }
+    }
 
+    private void validateForCreate(UserInfoDTO dto) {
+        validateFormat(dto);
         if (repository.existsByEmail(dto.getEmail())) {
             throw new IllegalArgumentException("E-mail já cadastrado.");
         }
         if (repository.existsByUserName(dto.getUserName())) {
             throw new IllegalArgumentException("Nome de usuário já cadastrado.");
+        }
+    }
+
+    /**
+     * Validação para update: permite que o próprio usuário mantenha email/userName atuais,
+     * mas bloqueia colisões com OUTROS usuários.
+     */
+    private void validateForUpdate(UserInfoDTO dto, Long userId) {
+        validateFormat(dto);
+        if (dto.getEmail() != null && repository.existsByEmailAndIdNot(dto.getEmail(), userId)) {
+            throw new IllegalArgumentException("E-mail já cadastrado para outro usuário.");
+        }
+        if (dto.getUserName() != null && repository.existsByUserNameAndIdNot(dto.getUserName(), userId)) {
+            throw new IllegalArgumentException("Nome de usuário já cadastrado para outro usuário.");
+        }
+    }
+
+    private void validateFormat(UserInfoDTO dto) {
+        if (dto.getEmail() != null && !ValidationUtil.isValidEmail(dto.getEmail())) {
+            throw new IllegalArgumentException("E-mail inválido.");
+        }
+        if (dto.getCpf() != null && !ValidationUtil.isValidCPF(dto.getCpf())) {
+            throw new IllegalArgumentException("CPF inválido.");
         }
     }
 

@@ -1,85 +1,106 @@
 package pdev.com.agenda.domain.mapper;
 
-import org.springframework.stereotype.Component;
+import org.mapstruct.BeanMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.Named;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.ReportingPolicy;
 import pdev.com.agenda.domain.UserInfoResponse;
-import pdev.com.agenda.domain.dto.UserInfoDTO;
 import pdev.com.agenda.domain.dto.FormsStatusDTO;
+import pdev.com.agenda.domain.dto.UserInfoDTO;
+import pdev.com.agenda.domain.dto.UserInfoWithStatusDTO;
 import pdev.com.agenda.domain.entity.Role;
 import pdev.com.agenda.domain.entity.UserInfo;
-import pdev.com.agenda.domain.enuns.RoleEnum;
-import pdev.com.agenda.domain.repository.RoleRepository;
-import pdev.com.agenda.domain.dto.UserInfoWithStatusDTO;
 
+/**
+ * Mapper entre {@link UserInfo} (entidade JPA) e seus DTOs.
+ * <p>
+ * Padrão MapStruct (componentModel = "spring") — gera um bean Spring na compilação.
+ * Convenções aplicadas neste mapper (template para os próximos a serem migrados):
+ * <ul>
+ *   <li>{@code unmappedTargetPolicy = IGNORE} — não falha por campo não mapeado (campos sempre
+ *       explícitos via @Mapping evitam confusão).</li>
+ *   <li>{@code NullValuePropertyMappingStrategy.IGNORE} no update — campos null no DTO não
+ *       sobrescrevem o valor existente na entidade.</li>
+ *   <li>Resolução de relacionamentos (ex: {@link Role}) é responsabilidade do <b>service</b>, não
+ *       do mapper. O mapper apenas marca o campo como {@code ignore = true}.</li>
+ *   <li>Comportamentos legados preservados:
+ *       <ul>
+ *         <li>{@code userName} e {@code password} iniciais = {@code cpf} do usuário.</li>
+ *         <li>{@code active = true} e {@code firstLogin = true} no create.</li>
+ *       </ul>
+ *       Esses comportamentos fazem parte da dívida técnica (ver C2 no CLAUDE.md) e serão
+ *       endereçados em outra entrega — por ora, replicamos o que o mapper manual antigo fazia.</li>
+ * </ul>
+ */
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public interface UserInfoMapper {
 
+    // ===================== DTO -> Entity =====================
 
-@Component
-public class UserInfoMapper {
+    @Mapping(target = "id", source = "userId")
+    @Mapping(target = "userName", source = "cpf")
+    @Mapping(target = "password", source = "cpf")
+    @Mapping(target = "active", constant = "true")
+    @Mapping(target = "firstLogin", constant = "true")
+    @Mapping(target = "role", ignore = true)    // resolvido pelo service via RoleRepository
+    @Mapping(target = "token", ignore = true)
+    @Mapping(target = "status", ignore = true)  // setado pelo service como "PENDENTE"
+    UserInfo toEntity(UserInfoDTO dto);
 
-    private final RoleRepository roleRepository;
+    /**
+     * Atualização parcial: campos null no DTO NÃO sobrescrevem a entidade.
+     * Usado pelo {@code update()} do service.
+     */
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "userName", ignore = true)
+    @Mapping(target = "password", ignore = true)
+    @Mapping(target = "active", ignore = true)
+    @Mapping(target = "firstLogin", ignore = true)
+    @Mapping(target = "role", ignore = true)
+    @Mapping(target = "token", ignore = true)
+    @Mapping(target = "status", ignore = true)
+    void updateEntityFromDto(UserInfoDTO dto, @MappingTarget UserInfo entity);
 
-    public UserInfoMapper(RoleRepository roleRepository) {
-        this.roleRepository = roleRepository;
+    // ===================== Entity -> DTO =====================
+
+    @Mapping(target = "userId", source = "id")
+    @Mapping(target = "userName", source = "cpf")
+    @Mapping(target = "password", source = "cpf")
+    @Mapping(target = "isFirstLogin", constant = "true")
+    @Mapping(target = "isActive", constant = "true")
+    @Mapping(target = "roleName", source = "role", qualifiedByName = "roleToName")
+    UserInfoDTO toDTO(UserInfo entity);
+
+    @Mapping(target = "userId", source = "id")
+    @Mapping(target = "userName", source = "cpf")
+    @Mapping(target = "isFirstLogin", constant = "true")
+    @Mapping(target = "active", constant = "true")
+    @Mapping(target = "roleName", source = "role", qualifiedByName = "roleToNameOrSemPerfil")
+    UserInfoResponse toResponseDTO(UserInfo entity);
+
+    default UserInfoWithStatusDTO toWithStatusDTO(UserInfo entity, FormsStatusDTO formsStatus) {
+        return new UserInfoWithStatusDTO(toDTO(entity), formsStatus);
     }
 
-    public UserInfo toEntity(UserInfoDTO dto) {
-        UserInfo entity = new UserInfo();
-        entity.setName(dto.getName());
-        entity.setId(dto.getUserId());
-        entity.setUserName(dto.getCpf());
-        entity.setCpf(dto.getCpf());
-        entity.setPassword(dto.getCpf());
-        entity.setEmail(dto.getEmail());
-        entity.setActive(true);
-        entity.setFirstLogin(true);
-        if (dto.getRoleName() == null) {
-            throw new IllegalArgumentException("O campo role é obrigatório.");
+    // ===================== Helpers nomeados =====================
+
+    @Named("roleToName")
+    default String roleToName(Role role) {
+        if (role == null || role.getName() == null) {
+            return null;
         }
-        Role role = roleRepository.findByName(RoleEnum.valueOf(dto.getRoleName()));
-        entity.setRole(role);
-        entity.setTipoAluno(dto.getTipoAluno());
-
-        return entity;
+        return role.getName().name();
     }
 
-    public UserInfoDTO toDTO(UserInfo entity) {
-        UserInfoDTO dto = new UserInfoDTO();
-        dto.setUserId(entity.getId());
-        dto.setName(entity.getName());
-        dto.setUserName(entity.getCpf());
-        dto.setCpf(entity.getCpf());
-        dto.setPassword(entity.getCpf());
-        dto.setEmail(entity.getEmail());
-        dto.setIsFirstLogin(true);
-        dto.setActive(true);
-        dto.setRoleName(entity.getRole().getName().name());
-        dto.setTipoAluno(entity.getTipoAluno());
-
-        return dto;
-    }
-
-    public UserInfoResponse toResponseDTO(UserInfo entity) {
-        UserInfoResponse response = new UserInfoResponse();
-        response.setUserId(entity.getId());
-        response.setName(entity.getName());
-        response.setUserName(entity.getCpf());
-        response.setCpf(entity.getCpf());
-        response.setEmail(entity.getEmail());
-        response.setPassword(entity.getPassword());
-        response.setIsFirstLogin(true);
-        response.setActive(true);
-        response.setTipoAluno(entity.getTipoAluno());
-
-        if (entity.getRole() != null && entity.getRole().getName() != null) {
-            response.setRoleName(entity.getRole().getName().name());
-        } else {
-            response.setRoleName("SEM_PERFIL");
+    @Named("roleToNameOrSemPerfil")
+    default String roleToNameOrSemPerfil(Role role) {
+        if (role == null || role.getName() == null) {
+            return "SEM_PERFIL";
         }
-
-        return response;
-    }
-
-    public UserInfoWithStatusDTO toWithStatusDTO(UserInfo entity, FormsStatusDTO formsStatus) {
-        UserInfoDTO userInfoDTO = toDTO(entity);
-        return new UserInfoWithStatusDTO(userInfoDTO, formsStatus);
+        return role.getName().name();
     }
 }

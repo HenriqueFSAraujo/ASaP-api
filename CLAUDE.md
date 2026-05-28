@@ -289,6 +289,25 @@ docker run -p 8080:8080 \
 
 > Quando uma dívida da §6 for resolvida, mova o item pra cá com referência ao commit/migration.
 
+### 2026-05-28 — Modernização do back (padrões adotados)
+
+- **MapStruct ativado de verdade**: `UserInfoMapper` migrado de `@Component` manual para `@Mapper(componentModel = "spring")` interface — agora é o template para futuros mappers (ver §12.1)
+- **`pom.xml`**: adicionado `annotationProcessorPaths` explícito (Lombok 1.18.34 + MapStruct 1.5.5 + `lombok-mapstruct-binding 0.2.0`) para garantir geração correta com Lombok presente
+- **`GlobalExceptionHandler`** criado (`@RestControllerAdvice`): mapeia 7 tipos de exceção para HTTP status apropriados, com `ErrorResponse` padronizado (ver §12.3)
+- **`ErrorResponse`** DTO criado: estrutura `timestamp + status + error + message + path + fieldErrors[]`
+- **Bean Validation** ativada em `UserInfoDTO`: `@NotBlank`, `@Email`, `@Pattern`
+- **`UserInfoController`** limpo: `@Valid` no `@RequestBody`, sem try/catch (delega para handler), `@RequiredArgsConstructor`, POST retorna `201 Created`
+- **`UserInfoService`**:
+  - Resolução de `Role` movida do mapper para o service (separação de concerns — ver §12.4)
+  - `validateUserInfo` foi quebrado em `validateForCreate` (checa duplicidade) e `validateForUpdate` (ignora o próprio user via `existsByEmailAndIdNot`)
+  - Bug corrigido: update agora funciona (antes sempre falhava com "E-mail já cadastrado")
+  - Constante `DEFAULT_STATUS = "PENDENTE"` extraída
+- **`UserInfoRepository`**: novos métodos `existsByEmailAndIdNot` / `existsByUserNameAndIdNot` para validação no update
+- **Dívida resolvida** (parcial):
+  - A2 — MapStruct agora é o padrão; ModelMapper continua presente mas não usado em código novo
+  - A5 — GlobalExceptionHandler criado
+  - A8 — field injection removida do UserInfoController (migrou para `@RequiredArgsConstructor`)
+
 ### 2026-05-27 — Feature `tipoAluno` no UserInfo + alinhamento `familiar_escola_particular`
 
 - **Novo enum**: `TipoAlunoEnum` (`ESCOLA_PARTICULAR`, `ESCOLA_GRATUITA`) em `domain/enuns/`
@@ -341,7 +360,129 @@ Quando o admin chama `POST /api/users`:
 
 ---
 
-## 12. Para o próximo agente
+## 12. Convenções de código (padrão a partir de 2026-05-28)
+
+> Estes são os padrões adotados após a primeira rodada de modernização do back. **Todo código novo a partir dessa data deve seguir esses padrões**. Refatorações de código legado devem ser planejadas separadamente.
+
+### 12.1 Mappers — MapStruct (obrigatório para mappers novos)
+
+**Padrão de referência**: `pdev.com.agenda.domain.mapper.UserInfoMapper`
+
+```java
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public interface XxxMapper {
+
+    @Mapping(target = "id", source = "userId")
+    XxxEntity toEntity(XxxDTO dto);
+
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void updateEntityFromDto(XxxDTO dto, @MappingTarget XxxEntity entity);
+
+    XxxDTO toDTO(XxxEntity entity);
+
+    XxxResponse toResponseDTO(XxxEntity entity);
+}
+```
+
+**Regras**:
+- `componentModel = "spring"` — gera bean Spring (injetar via `@RequiredArgsConstructor`)
+- `unmappedTargetPolicy = IGNORE` — não falha por campo não mapeado (sempre seja explícito com `@Mapping`)
+- **Mapper é puro** — não chama repositório, não faz I/O. Resolução de relacionamentos (FK) é responsabilidade do **service**
+- Para update parcial, use `updateEntityFromDto(@MappingTarget)` com `nullValuePropertyMappingStrategy = IGNORE`
+- Para boolean fields com prefixo `is` (ex: `isActive`, `isFirstLogin`) **e** classe DTO com `@Builder`: use `target = "isActive"` (não `"active"`), porque o método do builder mantém o prefixo
+- **Não migrar mappers antigos** "de graça" — só refatorar quando estiver mexendo no arquivo
+
+### 12.2 Validação — Bean Validation no DTO + `@Valid` no controller
+
+**No DTO**:
+```java
+@NotBlank(message = "O nome é obrigatório.")
+private String name;
+
+@Email(message = "E-mail inválido.")
+@NotBlank(message = "O e-mail é obrigatório.")
+private String email;
+
+@Pattern(regexp = "ROLE_USER|ROLE_ADMIN", message = "Perfil inválido.")
+private String roleName;
+```
+
+**No controller**:
+```java
+@PostMapping
+public ResponseEntity<XxxDTO> create(@Valid @RequestBody XxxDTO dto) {
+    return ResponseEntity.status(HttpStatus.CREATED).body(service.create(dto));
+}
+```
+
+**Não use** try/catch no controller — o `GlobalExceptionHandler` cuida disso.
+
+### 12.3 Tratamento de erros — `GlobalExceptionHandler`
+
+Centralizado em `pdev.com.agenda.exception.GlobalExceptionHandler` (`@RestControllerAdvice`).
+Mapeamento padrão:
+
+| Exception lançada pelo service | HTTP Status | Quando usar |
+|---|---|---|
+| `IllegalArgumentException` | 400 | Validação simples (formato inválido, valor não permitido) |
+| `MethodArgumentNotValidException` | 400 | Automático — Bean Validation falhou (vem com `fieldErrors`) |
+| `EntityNotFoundException` | 404 | Recurso não encontrado |
+| `UsernameNotFoundException` | 404 | Login com user inexistente |
+| `BadCredentialsException` | 401 | Senha incorreta |
+| `BusinessException` | 422 | Regra de negócio violada (estado inválido para a operação) |
+| `Exception` (fallback) | 500 | Bug — logado em ERROR |
+
+**Resposta padronizada** (`ErrorResponse`):
+```json
+{
+  "timestamp": "2026-05-28T10:15:30-03:00",
+  "status": 400,
+  "error": "Bad Request",
+  "message": "Erro de validação nos campos enviados.",
+  "path": "/api/users",
+  "fieldErrors": [{ "field": "email", "message": "E-mail inválido." }]
+}
+```
+
+### 12.4 Service — separação de concerns
+
+**Padrão**:
+1. **Validação** primeiro (`validateForCreate`, `validateForUpdate`, regras de negócio)
+2. **Normalização** (ex: `normalizeTipoAlunoForAdmin`)
+3. **Mapping** (DTO → Entity via MapStruct)
+4. **Resolução de FK** (Role, etc.) — separar essa etapa do mapping
+5. **Persistir**
+6. **Mapping** de volta (Entity → DTO)
+
+```java
+public XxxDTO create(XxxDTO dto) {
+    validateForCreate(dto);
+    normalizeIfNeeded(dto);
+    XxxEntity entity = mapper.toEntity(dto);
+    entity.setFk(resolveFkFromService(dto));
+    return mapper.toDTO(repository.save(entity));
+}
+```
+
+Para update: use `mapper.updateEntityFromDto(dto, entity)` com partial update.
+
+### 12.5 Injeção de dependências
+
+- **Sempre** `@RequiredArgsConstructor` (Lombok) — não use `@AllArgsConstructor` no controller
+- Campos `private final` — imutáveis
+- **Nunca** `@Autowired` em campo (legacy)
+
+### 12.6 Controller
+
+- `@RestController` + `@RequestMapping("/api/...")`
+- Métodos retornam `ResponseEntity<Tipo>` (status correto: 201 Created para POST, 200 OK para GET/PUT, 204 No Content para DELETE)
+- `@Valid` em todo `@RequestBody`
+- **Sem** try/catch — delega para `GlobalExceptionHandler`
+- Sem lógica de negócio (delega para service)
+
+---
+
+## 13. Para o próximo agente
 
 - Sempre **leia `CLAUDE.md` antes de propor mudanças**
 - Use o `TaskCreate`/`TaskUpdate` para tracking de etapas longas
