@@ -63,6 +63,8 @@ public class ProcessoDeBolsaService {
         entity.setVaiParticipar(dto.isVaiParticipar());
         entity.setJaFoiContemplado(dto.isJaFoiContemplado());
         entity.setPercentual(dto.getPercentual());
+        entity.setSegmentoAno(dto.getSegmentoAno());
+        entity.setSerieAno(dto.getSerieAno());
         entity.setStatus("PENDENTE");
         return mapper.toResponse(repository.save(entity));
     }

@@ -17,8 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class FormCondicoesHabitacionaisService {
 
-
-    private FormCondicoesHabitacionaisRepository repository;
+    private final FormCondicoesHabitacionaisRepository repository;
 
 
     @Transactional
@@ -90,6 +89,8 @@ public class FormCondicoesHabitacionaisService {
             entity.setEsgotoSanitario(dto.getEsgotoSanitario());
             entity.setFornecimentoEnergia(dto.getFornecimentoEnergia());
             entity.setAbastecimentoAgua(dto.getAbastecimentoAgua());
+            entity.setDoencasCronicas(dto.getDoencasCronicas());
+            entity.setCondicoesDeSaudeCasosNaFamilia(dto.getCondicoesDeSaudeCasosNaFamilia());
             entity.setStatus("PENDENTE");
             return repository.save(entity);
         }

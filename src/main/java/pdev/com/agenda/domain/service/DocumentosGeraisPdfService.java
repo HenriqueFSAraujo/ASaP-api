@@ -26,7 +26,10 @@ public class DocumentosGeraisPdfService {
         if (usuarioOpt.isEmpty()) {
             throw new IllegalArgumentException("Usuário não encontrado");
         }
-        DocumentosGeraisPdf pdf = pdfRepository.findById(userId).orElse(new DocumentosGeraisPdf());
+        // Upsert por user_id (cada usuário tem no máximo 1 registro de documentos_gerais_pdf).
+        // Antes: findById(userId) usava o userId como PK da tabela documentos_gerais_pdf, o que
+        // criava registros novos a cada upload e podia sobrescrever documentos de outro usuário.
+        DocumentosGeraisPdf pdf = pdfRepository.findByUserInfoId(userId).orElse(new DocumentosGeraisPdf());
         pdf.setUserInfo(usuarioOpt.get());
         pdf.setDataUpload(LocalDateTime.now());
         byte[] conteudo = file.getBytes();

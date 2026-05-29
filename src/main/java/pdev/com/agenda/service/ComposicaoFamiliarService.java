@@ -47,6 +47,11 @@ public class ComposicaoFamiliarService {
         return repository.findById(id);
     }
 
+    /**
+     * Substitui a composição familiar do usuário (delete-all + insert-all).
+     * {@code @Transactional} garante atomicidade: se o insert falhar, o delete sofre rollback.
+     */
+    @Transactional
     public List<ComposicaoFamiliarDTO> saveAllForUser(ComposicaoFamiliarRequestDTO request) {
         Long userId = request.getUserInfoId();
         UserInfo userInfo = userInfoRepository.findById(userId)
