@@ -66,11 +66,9 @@ public class FormService {
 
     @Transactional(readOnly = true)
     public FormDadosPessoaisDTO getByUserId(Long userId) {
-        Optional<FormDadosPessoais> existente = dadosPessoaisRepository.findByUserId(userId);
-        if (existente.isEmpty()) {
-            throw new EntityNotFoundException("Formulário de dados pessoais não encontrado para o usuário: " + userId);
-        }
-        return dadosPessoaisMapper.toDto(existente.get());
+        return dadosPessoaisRepository.findByUserId(userId)
+                .map(dadosPessoaisMapper::toDto)
+                .orElse(null);
     }
 
 }

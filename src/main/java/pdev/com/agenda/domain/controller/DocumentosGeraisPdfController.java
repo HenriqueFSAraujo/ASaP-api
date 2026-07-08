@@ -90,10 +90,10 @@ public class DocumentosGeraisPdfController {
             @Parameter(description = "ID do usuário", required = true) @RequestParam("userId") Long userId,
             @Parameter(description = "Nome do campo do documento", required = true, example = "singleRegistryRegistration") @PathVariable String campo) {
         var pdfList = pdfService.buscarPorUserId(userId);
-        if (pdfList == null || pdfList.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
         var arquivos = new java.util.ArrayList<java.util.Map<String, Object>>();
+        if (pdfList == null || pdfList.isEmpty()) {
+            return ResponseEntity.ok(arquivos);
+        }
         for (DocumentosGeraisPdf pdf : pdfList) {
             byte[] conteudo = null;
             String nomeArquivo = campo + "_" + pdf.getId() + ".pdf";
@@ -124,9 +124,6 @@ public class DocumentosGeraisPdfController {
                 map.put("conteudoBase64", java.util.Base64.getEncoder().encodeToString(conteudo));
                 arquivos.add(map);
             }
-        }
-        if (arquivos.isEmpty()) {
-            return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(arquivos);
     }

@@ -60,12 +60,10 @@ public class FormEnderecoCandidatoService {
 
     @Transactional
     public FormEnderecoCandidatoDTO buscarPorUserId(Long userId) {
-        FormEnderecoCandidato endereco = enderecoRepository
+        return enderecoRepository
                 .findByUser_Id(userId)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "Endereço do candidato não encontrado para o usuário: " + userId));
-
-        return enderecoMapper.toDto(endereco);
+                .map(enderecoMapper::toDto)
+                .orElse(null);
     }
 
     public FormEnderecoCandidatoDTO atualizarEndereco(Long id, FormEnderecoCandidatoDTO enderecoDTO) {
