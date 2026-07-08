@@ -81,8 +81,8 @@ public class UserInfoService {
                 .stream().findFirst().map(DespesaMensal::getStatus).orElse(null);
         dto.setDespesaMensalStatus(despesaMensalStatus != null ? despesaMensalStatus : "PENDENTE");
 
-        String documentosGeraisPdfStatus = documentosGeraisPdfRepository.findByUserInfoId(userId)
-                .map(DocumentosGeraisPdf::getStatus).orElse(null);
+        String documentosGeraisPdfStatus = documentosGeraisPdfRepository.findAllByUserInfoId(userId)
+                .stream().findFirst().map(DocumentosGeraisPdf::getStatus).orElse(null);
         dto.setDocumentosGeraisPdfStatus(documentosGeraisPdfStatus != null ? documentosGeraisPdfStatus : "PENDENTE");
 
         String enderecoStatus = enderecoRepository.findByUserInfoId(userId)
