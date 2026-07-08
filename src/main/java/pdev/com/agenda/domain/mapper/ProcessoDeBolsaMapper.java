@@ -7,14 +7,10 @@ import pdev.com.agenda.domain.dto.ProcessoDeBolsaDTO;
 import pdev.com.agenda.domain.dto.ProcessoDeBolsaResponse;
 import pdev.com.agenda.domain.entity.ProcessoDeBolsa;
 import pdev.com.agenda.domain.entity.UserInfo;
-import pdev.com.agenda.domain.service.UserInfoService;
 
 @Component
 @AllArgsConstructor
 public class ProcessoDeBolsaMapper {
-
-    private final UserInfoService userService;
-
 
     public ProcessoDeBolsa toEntity(ProcessoDeBolsaDTO dto) {
         ProcessoDeBolsa entity = new ProcessoDeBolsa();

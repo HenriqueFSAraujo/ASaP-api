@@ -1,6 +1,5 @@
 package pdev.com.agenda.domain.dto;
 
-import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pdev.com.agenda.domain.service.UserInfoService;
 import pdev.com.agenda.dto.ComposicaoFamiliarDTO;
 import pdev.com.agenda.dto.ComposicaoFamiliarRequestDTO;
 import pdev.com.agenda.service.ComposicaoFamiliarService;
@@ -28,7 +27,6 @@ import java.util.List;
 public class ComposicaoFamiliarController {
 
     private final ComposicaoFamiliarService service;
-    private final UserInfoService userInfoService;
 
     @ApiResponse(responseCode = "201", description = "Composições familiares criadas com sucesso para o usuário")
     @PostMapping

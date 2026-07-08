@@ -14,9 +14,6 @@ import java.util.Optional;
 public class UserLoginService {
 
     @Autowired
-    private UserInfoRepository userInfoRepository;
-
-    @Autowired
     private UserLoginRepository userLoginRepository;
 
     @Autowired
