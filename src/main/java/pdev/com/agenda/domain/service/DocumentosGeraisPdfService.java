@@ -69,4 +69,8 @@ public class DocumentosGeraisPdfService {
     public List<DocumentoPdf> buscarPorUserIdETipo(Long userId, String campo) {
         return documentoPdfRepository.findAllByUserInfoIdAndTipoDocumento(userId, campo);
     }
+
+    public void deletarPorId(Long id) {
+        documentoPdfRepository.deleteById(id);
+    }
 }

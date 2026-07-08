@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -76,6 +77,16 @@ public class DocumentosGeraisPdfController {
                 })
                 .collect(Collectors.toList());
         return ResponseEntity.ok(arquivos);
+    }
+
+    @Operation(summary = "Remove um documento PDF", description = "Apaga um arquivo individual pelo seu ID.")
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletarPdf(@Parameter(description = "ID do documento", required = true) @PathVariable Long id) {
+        if (pdfService.buscarPorId(id).isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        pdfService.deletarPorId(id);
+        return ResponseEntity.noContent().build();
     }
 
     private String nomeArquivoOuPadrao(DocumentoPdf documento) {
