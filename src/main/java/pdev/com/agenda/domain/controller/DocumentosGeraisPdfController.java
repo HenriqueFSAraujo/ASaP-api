@@ -18,6 +18,7 @@ import pdev.com.agenda.domain.entity.DocumentosGeraisPdf;
 import pdev.com.agenda.domain.service.DocumentosGeraisPdfService;
 
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
 @RequestMapping("/api/documentos-gerais-pdf")
@@ -25,6 +26,14 @@ import java.util.Optional;
 @Tag(name = "Documentos Gerais PDF", description = "Endpoints para upload e download de PDFs dos documentos gerais")
 public class DocumentosGeraisPdfController {
     private final DocumentosGeraisPdfService pdfService;
+
+    // O front envia varios uploads do mesmo usuario em paralelo (Promise.all, um por
+    // arquivo/campo). Sem essa trava, duas requisicoes concorrentes para um usuario que
+    // ainda nao tem nenhuma linha em documentos_gerais_pdf viam "nao existe" ao mesmo
+    // tempo e cada uma inseria a sua propria linha nova -> duplicata ->
+    // NonUniqueResultException na proxima leitura. O lock e por instancia da JVM (nao
+    // distribuido); suficiente enquanto a aplicacao rodar em uma unica instancia.
+    private final ConcurrentHashMap<Long, Object> locksPorUsuario = new ConcurrentHashMap<>();
 
     //http://localhost:8080/api/documentos-gerais-pdf/download/1/singleRegistryRegistration -- exemplo de download
     //localhost:8080/api/documentos-gerais-pdf/upload/singleRegistry   Registration -- exemplo de upload
@@ -35,7 +44,10 @@ public class DocumentosGeraisPdfController {
             @Parameter(description = "Nome do campo do documento", required = true, example = "singleRegistryRegistration") @PathVariable String campo,
             @Parameter(description = "Arquivo PDF a ser enviado", required = true) @RequestParam("file") MultipartFile file) {
         try {
-            pdfService.salvarPdf(userId, campo, file);
+            Object lock = locksPorUsuario.computeIfAbsent(userId, id -> new Object());
+            synchronized (lock) {
+                pdfService.salvarPdf(userId, campo, file);
+            }
             return ResponseEntity.ok("PDF salvo para o campo: " + campo);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Erro ao salvar PDF: " + e.getMessage());
