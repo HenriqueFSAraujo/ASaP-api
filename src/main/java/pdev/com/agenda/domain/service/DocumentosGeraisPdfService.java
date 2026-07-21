@@ -1,67 +1,133 @@
 package pdev.com.agenda.domain.service;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import pdev.com.agenda.domain.entity.DocumentosGeraisPdf;
+import pdev.com.agenda.domain.dto.DocumentoPdfResponse;
+import pdev.com.agenda.domain.entity.DocumentosGeraisPdfArquivo;
 import pdev.com.agenda.domain.entity.UserInfo;
-import pdev.com.agenda.domain.repository.DocumentosGeraisPdfRepository;
+import pdev.com.agenda.domain.repository.DocumentosGeraisPdfArquivoRepository;
 import pdev.com.agenda.domain.repository.UserInfoRepository;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class DocumentosGeraisPdfService {
 
-    private final DocumentosGeraisPdfRepository pdfRepository;
+    private static final long MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024;
+
+    private static final Set<String> CAMPOS_VALIDOS = Set.of(
+            "singleRegistryRegistration",
+            "maritalStatus",
+            "identityDocuments",
+            "guardianshipDocuments",
+            "vaccinationCard",
+            "proofOfResidence",
+            "workContract",
+            "bankingRelationsReport",
+            "proofOfIncome",
+            "supportingDocumentation",
+            "bankStatements",
+            "businessDocuments",
+            "taxDocuments",
+            "meiDocuments",
+            "healthDisability",
+            "familyComposition",
+            "governmentProgram"
+    );
+
+    private final DocumentosGeraisPdfArquivoRepository arquivoRepository;
     private final UserInfoRepository usuarioRepository;
 
     @Transactional
-    public DocumentosGeraisPdf salvarPdf(Long userId, String campo, MultipartFile file) throws Exception {
-        Optional<UserInfo> usuarioOpt = usuarioRepository.findById(userId);
-        if (usuarioOpt.isEmpty()) {
-            throw new IllegalArgumentException("Usuário não encontrado");
-        }
-        // Upsert por user_id (cada usuário tem no máximo 1 registro de documentos_gerais_pdf).
-        // Antes: findById(userId) usava o userId como PK da tabela documentos_gerais_pdf, o que
-        // criava registros novos a cada upload e podia sobrescrever documentos de outro usuário.
-        DocumentosGeraisPdf pdf = pdfRepository.findByUserInfoId(userId).orElse(new DocumentosGeraisPdf());
-        pdf.setUserInfo(usuarioOpt.get());
-        pdf.setDataUpload(LocalDateTime.now());
-        byte[] conteudo = file.getBytes();
-        switch (campo) {
-            case "singleRegistryRegistration": pdf.setSingleRegistryRegistration(conteudo); break;
-            case "maritalStatus": pdf.setMaritalStatus(conteudo); break;
-            case "identityDocuments": pdf.setIdentityDocuments(conteudo); break;
-            case "guardianshipDocuments": pdf.setGuardianshipDocuments(conteudo); break;
-            case "vaccinationCard": pdf.setVaccinationCard(conteudo); break;
-            case "proofOfResidence": pdf.setProofOfResidence(conteudo); break;
-            case "workContract": pdf.setWorkContract(conteudo); break;
-            case "bankingRelationsReport": pdf.setBankingRelationsReport(conteudo); break;
-            case "proofOfIncome": pdf.setProofOfIncome(conteudo); break;
-            case "supportingDocumentation": pdf.setSupportingDocumentation(conteudo); break;
-            case "bankStatements": pdf.setBankStatements(conteudo); break;
-            case "businessDocuments": pdf.setBusinessDocuments(conteudo); break;
-            case "taxDocuments": pdf.setTaxDocuments(conteudo); break;
-            case "meiDocuments": pdf.setMeiDocuments(conteudo); break;
-            case "healthDisability": pdf.setHealthDisability(conteudo); break;
-            case "familyComposition": pdf.setFamilyComposition(conteudo); break;
-            case "governmentProgram": pdf.setGovernmentProgram(conteudo); break;
-            default: throw new IllegalArgumentException("Campo inválido");
-        }
-        pdf.setStatus("ATIVO");
-        return pdfRepository.save(pdf);
+    public DocumentosGeraisPdfArquivo salvarPdf(Long userId, String campo, MultipartFile file) throws Exception {
+        validarCampo(campo);
+        validarArquivo(file);
+
+        UserInfo usuario = usuarioRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("Usuario nao encontrado com ID: " + userId));
+
+        DocumentosGeraisPdfArquivo arquivo = new DocumentosGeraisPdfArquivo();
+        arquivo.setUserInfo(usuario);
+        arquivo.setTipoDocumento(campo);
+        arquivo.setNomeArquivo(resolveNomeArquivo(campo, file));
+        arquivo.setMimeType(resolveMimeType(file));
+        arquivo.setConteudo(file.getBytes());
+        arquivo.setDataUpload(LocalDateTime.now());
+        arquivo.setStatus("ATIVO");
+
+        return arquivoRepository.save(arquivo);
     }
 
-    public Optional<DocumentosGeraisPdf> buscarPorId(Long id) {
-        return pdfRepository.findById(id);
+    public Optional<DocumentosGeraisPdfArquivo> buscarArquivoPorId(Long id) {
+        return arquivoRepository.findById(id);
     }
 
-    public List<DocumentosGeraisPdf> buscarPorUserId(Long userId) {
-        return pdfRepository.findAllByUserInfoId(userId);
+    public List<DocumentoPdfResponse> listarArquivos(Long userId, String campo) {
+        validarCampo(campo);
+        return arquivoRepository.findByUserInfoIdAndTipoDocumentoOrderByDataUploadDesc(userId, campo)
+                .stream()
+                .map(this::toResponse)
+                .collect(Collectors.toList());
+    }
+
+    public boolean usuarioPossuiDocumentos(Long userId) {
+        return arquivoRepository.existsByUserInfoId(userId);
+    }
+
+    private DocumentoPdfResponse toResponse(DocumentosGeraisPdfArquivo arquivo) {
+        return new DocumentoPdfResponse(
+                arquivo.getId(),
+                arquivo.getNomeArquivo(),
+                Base64.getEncoder().encodeToString(arquivo.getConteudo()),
+                arquivo.getUserInfo().getId(),
+                arquivo.getTipoDocumento(),
+                arquivo.getMimeType()
+        );
+    }
+
+    private void validarCampo(String campo) {
+        if (!CAMPOS_VALIDOS.contains(campo)) {
+            throw new IllegalArgumentException("Campo invalido: " + campo);
+        }
+    }
+
+    private void validarArquivo(MultipartFile file) {
+        if (file == null || file.isEmpty()) {
+            throw new IllegalArgumentException("Arquivo PDF e obrigatorio.");
+        }
+        if (file.getSize() > MAX_FILE_SIZE_BYTES) {
+            throw new IllegalArgumentException("O arquivo deve ter no maximo 5MB.");
+        }
+
+        String contentType = file.getContentType();
+        boolean hasPdfContentType = "application/pdf".equalsIgnoreCase(contentType);
+        boolean hasPdfExtension = file.getOriginalFilename() != null
+                && file.getOriginalFilename().toLowerCase().endsWith(".pdf");
+
+        if (!hasPdfContentType && !hasPdfExtension) {
+            throw new IllegalArgumentException("Apenas arquivos PDF sao permitidos.");
+        }
+    }
+
+    private String resolveNomeArquivo(String campo, MultipartFile file) {
+        String originalFilename = file.getOriginalFilename();
+        if (originalFilename == null || originalFilename.isBlank()) {
+            return campo + ".pdf";
+        }
+        return originalFilename;
+    }
+
+    private String resolveMimeType(MultipartFile file) {
+        String contentType = file.getContentType();
+        return contentType == null || contentType.isBlank() ? "application/pdf" : contentType;
     }
 }
