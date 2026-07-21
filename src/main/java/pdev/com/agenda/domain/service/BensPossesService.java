@@ -18,9 +18,11 @@ import pdev.com.agenda.domain.repository.BensPossesRepository;
 import pdev.com.agenda.domain.repository.UserInfoRepository;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -36,28 +38,12 @@ public class BensPossesService {
     private final PessoaComDeficienciaMapper deficienciaMapper;
     private final DespesaMensalMapper despesaMapper;
 
-
-    /**
-     * Salva (upsert) os bens/posses do usuário junto com veículos, familiares em escola particular,
-     * pessoas com deficiência e despesas mensais.
-     * <p>
-     * Comportamento de upsert: se já existir um {@code BensPosses} para o usuário, suas coleções
-     * são substituídas (graças a {@code orphanRemoval=true} nas anotações @OneToMany da entidade,
-     * limpar a coleção remove os registros antigos do banco). Caso não exista, cria um novo.
-     * <p>
-     * Antes desta correção, cada chamada criava um novo {@code BensPosses} — múltiplos saves do
-     * mesmo usuário resultavam em registros duplicados.
-     */
     @Transactional
     public BensPosses salvarCompleto(BensPossesCompletoDTO dto) {
         UserInfo user = userInfoRepository.findById(dto.getUserInfoId())
                 .orElseThrow(() -> new EntityNotFoundException(
-                        "Usuário não encontrado com ID: " + dto.getUserInfoId()));
+                        "Usuario nao encontrado com ID: " + dto.getUserInfoId()));
 
-        // Lista ordenada por id DESC para auto-curar duplicados criados pelo bug antigo:
-        // - mantém o registro mais recente como canônico (já com children carregados via EntityGraph)
-        // - apaga os duplicados mais antigos
-        // - se não houver nenhum, inicializa um novo
         List<BensPosses> existentes = bensPossesRepository
                 .findAllWithItensByUserInfoIdOrderByIdDesc(user.getId());
 
@@ -81,18 +67,15 @@ public class BensPossesService {
     }
 
     @Transactional(readOnly = true)
-    public BensPosses buscarPorUserId(Long userId) {
+    public BensPossesCompletoDTO buscarPorUserId(Long userId) {
         if (userId == null) {
-            throw new IllegalArgumentException("userId não pode ser nulo");
+            throw new IllegalArgumentException("userId nao pode ser nulo");
         }
-        // Usa a versão "tolerante a duplicados" para o caso de existirem registros
-        // antigos criados pelo bug pré-Sprint 2. Retorna o mais recente (id DESC).
         return bensPossesRepository.findAllWithItensByUserInfoIdOrderByIdDesc(userId).stream()
                 .findFirst()
+                .map(this::toCompletoDTO)
                 .orElse(null);
     }
-
-    // ============================== helpers ==============================
 
     private BensPosses initialBensPosses(UserInfo user) {
         BensPosses novo = new BensPosses();
@@ -111,6 +94,7 @@ public class BensPossesService {
         if (dto.getVeiculos() == null) return;
         dto.getVeiculos().forEach(v -> {
             Veiculo entity = veiculoMapper.toEntity(v);
+            entity.setId(null);
             entity.setBensPosses(bens);
             target.add(entity);
         });
@@ -123,6 +107,7 @@ public class BensPossesService {
         if (dto.getFamiliaresEscola() == null) return;
         dto.getFamiliaresEscola().forEach(f -> {
             FamiliarEscolaParticular entity = familiarMapper.toEntity(f);
+            entity.setId(null);
             entity.setBensPosses(bens);
             target.add(entity);
         });
@@ -135,6 +120,7 @@ public class BensPossesService {
         if (dto.getPessoasComDeficiencia() == null) return;
         dto.getPessoasComDeficiencia().forEach(p -> {
             PessoaComDeficiencia entity = deficienciaMapper.toEntity(p);
+            entity.setId(null);
             entity.setBensPosses(bens);
             target.add(entity);
         });
@@ -147,9 +133,32 @@ public class BensPossesService {
         if (dto.getDespesasMensais() == null) return;
         dto.getDespesasMensais().forEach(d -> {
             DespesaMensal entity = despesaMapper.toEntity(d);
+            entity.setId(null);
             entity.setBensPosses(bens);
             target.add(entity);
         });
+    }
+
+    private BensPossesCompletoDTO toCompletoDTO(BensPosses bens) {
+        return BensPossesCompletoDTO.builder()
+                .userInfoId(bens.getUserInfo() != null ? bens.getUserInfo().getId() : null)
+                .veiculos(bens.getVeiculos() == null ? List.of() : bens.getVeiculos().stream()
+                        .sorted(Comparator.comparing(Veiculo::getId, Comparator.nullsLast(Long::compareTo)))
+                        .map(veiculoMapper::toDTO)
+                        .collect(Collectors.toList()))
+                .familiaresEscola(bens.getFamiliaresEscola() == null ? List.of() : bens.getFamiliaresEscola().stream()
+                        .sorted(Comparator.comparing(FamiliarEscolaParticular::getId, Comparator.nullsLast(Long::compareTo)))
+                        .map(familiarMapper::toDTO)
+                        .collect(Collectors.toList()))
+                .pessoasComDeficiencia(bens.getPessoasComDeficiencia() == null ? List.of() : bens.getPessoasComDeficiencia().stream()
+                        .sorted(Comparator.comparing(PessoaComDeficiencia::getId, Comparator.nullsLast(Long::compareTo)))
+                        .map(deficienciaMapper::toDTO)
+                        .collect(Collectors.toList()))
+                .despesasMensais(bens.getDespesasMensais() == null ? List.of() : bens.getDespesasMensais().stream()
+                        .sorted(Comparator.comparing(DespesaMensal::getId, Comparator.nullsLast(Long::compareTo)))
+                        .map(despesaMapper::toDTO)
+                        .collect(Collectors.toList()))
+                .build();
     }
 
     private <T> Set<T> ensureSet(Set<T> current) {

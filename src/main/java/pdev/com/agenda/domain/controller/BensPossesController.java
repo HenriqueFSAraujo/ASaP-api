@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pdev.com.agenda.domain.dto.BensPossesCompletoDTO;
-import pdev.com.agenda.domain.entity.BensPosses;
 import pdev.com.agenda.domain.service.BensPossesService;
 
 @RestController
@@ -26,7 +25,7 @@ public class BensPossesController {
     }
 
     @GetMapping("/{userId}")
-    public BensPosses getByUser(@PathVariable Long userId) {
+    public BensPossesCompletoDTO getByUser(@PathVariable Long userId) {
         return bensPossesService.buscarPorUserId(userId);
     }
 }
