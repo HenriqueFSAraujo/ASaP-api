@@ -73,4 +73,8 @@ public class FormDadosPessoais {
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private UserInfo user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "escola_id")
+    private Escola escola;
 }

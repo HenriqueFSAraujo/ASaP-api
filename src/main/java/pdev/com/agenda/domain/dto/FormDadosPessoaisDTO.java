@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import pdev.com.agenda.domain.enuns.TipoEscolaEnum;
 
 import java.time.LocalDate;
 
@@ -59,5 +60,11 @@ public class FormDadosPessoaisDTO {
     private String status;
 
     private Long userId;
+
+    @JsonProperty("escolaId")
+    private Long escolaId;
+
+    @JsonProperty("tipoEscola")
+    private TipoEscolaEnum tipoEscola;
 
 }

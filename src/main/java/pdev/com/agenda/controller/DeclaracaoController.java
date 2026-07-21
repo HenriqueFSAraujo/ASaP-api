@@ -21,7 +21,7 @@ public class DeclaracaoController {
         return ResponseEntity.ok(declaracoes);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/item/{id}")
     public ResponseEntity<DeclaracaoDTO> getDeclaracaoById(@PathVariable Long id) {
         DeclaracaoDTO declaracao = declaracaoService.findById(id);
         if (declaracao != null) {

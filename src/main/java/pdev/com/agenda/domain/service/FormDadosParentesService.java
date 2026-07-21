@@ -38,8 +38,7 @@ public class FormDadosParentesService {
     public FormDadosParentesDTO findByUserId(Long userId) {
         return repository.findByUser_Id(userId)
                 .map(mapper::toDTO)
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "Dados dos pais não encontrados para o usuário com ID: " + userId));
+                .orElse(null);
     }
 
     @Transactional

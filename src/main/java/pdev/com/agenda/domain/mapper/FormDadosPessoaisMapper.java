@@ -2,6 +2,7 @@ package pdev.com.agenda.domain.mapper;
 
 import org.springframework.stereotype.Component;
 import pdev.com.agenda.domain.dto.FormDadosPessoaisDTO;
+import pdev.com.agenda.domain.entity.Escola;
 import pdev.com.agenda.domain.entity.FormDadosPessoais;
 import pdev.com.agenda.domain.entity.UserInfo;
 
@@ -30,6 +31,11 @@ public class FormDadosPessoaisMapper {
         UserInfo user = new UserInfo();
         user.setId(dto.getUserId());
         entity.setUser(user);
+        if (dto.getEscolaId() != null) {
+            Escola escola = new Escola();
+            escola.setId(dto.getEscolaId());
+            entity.setEscola(escola);
+        }
         return entity;
     }
 
@@ -54,6 +60,10 @@ public class FormDadosPessoaisMapper {
         dto.setStatus(entity.getStatus());
         if (entity.getUser() != null) {
             dto.setUserId(entity.getUser().getId());
+        }
+        if (entity.getEscola() != null) {
+            dto.setEscolaId(entity.getEscola().getId());
+            dto.setTipoEscola(entity.getEscola().getTipo());
         }
         return dto;
     }

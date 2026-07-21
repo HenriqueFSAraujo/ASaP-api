@@ -89,8 +89,7 @@ public class BensPossesService {
         // antigos criados pelo bug pré-Sprint 2. Retorna o mais recente (id DESC).
         return bensPossesRepository.findAllWithItensByUserInfoIdOrderByIdDesc(userId).stream()
                 .findFirst()
-                .orElseThrow(() -> new EntityNotFoundException(
-                        "Bens/Posse não encontrado para o usuário: " + userId));
+                .orElse(null);
     }
 
     // ============================== helpers ==============================

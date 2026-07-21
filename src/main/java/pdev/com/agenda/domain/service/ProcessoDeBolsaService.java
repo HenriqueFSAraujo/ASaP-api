@@ -30,9 +30,9 @@ public class ProcessoDeBolsaService {
     }
 
     public ProcessoDeBolsaResponse findByUserId(Long id) {
-        ProcessoDeBolsa entity = repository.findByUser_Id(id)
-                .orElseThrow(() -> new EntityNotFoundException("Processo não encontrado com ID: " + id));
-        return mapper.toResponse(entity);
+        return repository.findByUser_Id(id)
+                .map(mapper::toResponse)
+                .orElse(null);
     }
 
     public ProcessoDeBolsaResponse create(ProcessoDeBolsaDTO dto) {

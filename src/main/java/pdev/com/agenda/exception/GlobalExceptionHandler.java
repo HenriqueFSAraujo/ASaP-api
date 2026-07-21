@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.OffsetDateTime;
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
  *   <li>{@link EntityNotFoundException} → 404 Not Found</li>
  *   <li>{@link UsernameNotFoundException} → 404 Not Found</li>
  *   <li>{@link BadCredentialsException} → 401 Unauthorized</li>
+ *   <li>{@link MaxUploadSizeExceededException} → 400 Bad Request (arquivo maior que o limite configurado)</li>
  *   <li>{@link BusinessException} → 422 Unprocessable Entity (regra de negócio)</li>
  *   <li>{@link Exception} → 500 Internal Server Error (fallback, logado em ERROR)</li>
  * </ul>
@@ -61,6 +63,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleBadCredentials(BadCredentialsException ex, WebRequest request) {
         log.info("Unauthorized: bad credentials");
         return buildResponse(HttpStatus.UNAUTHORIZED, ex.getMessage(), request, null);
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<ErrorResponse> handleMaxUploadSize(MaxUploadSizeExceededException ex, WebRequest request) {
+        log.warn("Upload rejeitado: arquivo excede o tamanho máximo permitido");
+        return buildResponse(HttpStatus.BAD_REQUEST, "Arquivo excede o tamanho máximo permitido.", request, null);
     }
 
     @ExceptionHandler(BusinessException.class)

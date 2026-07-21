@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import pdev.com.agenda.domain.dto.UserInfoWithStatusDTO;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;

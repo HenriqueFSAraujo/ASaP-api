@@ -107,7 +107,7 @@ src/main/java/pdev/com/agenda/
 | POST/GET | `/api/bens-posses` | `BensPossesController` | Bens (veículos, escolas, PCD, despesas) |
 | GET/POST/PUT/DELETE | `/api/processo-bolsas` | `ProcessoDeBolsaController` | Processo de bolsa |
 | POST/GET | `/api/composicao-familiar` | `ComposicaoFamiliarController` | Composição familiar |
-| GET/POST/DELETE | `/api/declaracoes` | `DeclaracaoController` | Declarações (⚠ tem **dois** `@GetMapping("/{id}")` conflitantes) |
+| GET/POST/DELETE | `/api/declaracoes` | `DeclaracaoController` | Declarações. `GET /{userId}` lista por usuário; `GET /item/{id}` busca uma declaração pelo próprio ID (rotas separadas em 2026-07-08, ver §10) |
 | POST/GET/PUT/DELETE | `/api/parecer-socioeconomico` | `ParecerSocioeconomicoController` | CRUD do parecer |
 | GET | `/api/parecer-socioeconomico/{id}/pdf-base64` | idem | Geração de PDF do parecer (HTML → PDF via OpenPDF) |
 | POST | `/api/documentos-gerais-pdf/upload/{campo}` | `DocumentosGeraisPdfController` | Upload de PDF por campo |
@@ -116,7 +116,6 @@ src/main/java/pdev/com/agenda/
 
 **Observações sobre endpoints**:
 - `DocumentosGeraisPdfController` usa um `switch (campo)` gigante (17 cases) que se repete em 2 endpoints — candidato a refactor (Map<String, Function<...>> ou estratégia).
-- `DeclaracaoController` tem dois métodos com `@GetMapping("/{id})` — o segundo (`getDeclaracoesByUserId`) está mascarado.
 - `SwaggerConfig` faz scan **apenas** de `pdev.com.agenda.domain.controller` → os controllers em `pdev.com.agenda.controller` (Composição, Declaração) **não aparecem no Swagger**.
 
 ---
@@ -192,7 +191,6 @@ Esta seção é o **inventário de problemas** identificados na varredura. Use c
 | A11 | Pacote `pdev.com.agenda` invertido (convenção Java: `com.<empresa>.<projeto>`) |
 | A12 | `DocumentosGeraisPdf` armazena **17 colunas BYTEA** numa única tabela — deveria ser tabela genérica `(user_id, tipo_documento, conteudo)` |
 | A13 | `switch (campo)` duplicado em `DocumentosGeraisPdfController` (17 cases × 2 endpoints) |
-| A14 | `DeclaracaoController` tem dois `@GetMapping("/{id}")` (path conflitante) |
 | A15 | `UserInfo` tem coluna `token` (persistir JWT é anti-pattern) |
 | A16 | Spring Cloud OpenFeign **3.0.7** sem BOM — risco de incompatibilidade com Boot 2.5.9 |
 | A17 | `system.properties` aponta Java 11 mas pom usa Java 17 |
@@ -288,6 +286,18 @@ docker run -p 8080:8080 \
 ## 10. Histórico de mudanças aplicadas
 
 > Quando uma dívida da §6 for resolvida, mova o item pra cá com referência ao commit/migration.
+
+### 2026-07-08 — Fix: 500 em `/api/declaracoes/{userId}` + 404 espúrio em formulários vazios
+
+**Motivação**: front reportou console cheio de erros ao abrir a ficha de um usuário sem cadastro completo (userId=266): `GET /api/declaracoes/266` retornava **500**, e `parentes`, `enderecos`, `forms`, `processo-bolsas`, `bens-posses` e `documentos-gerais-pdf/download/list/{campo}` retornavam **404** só porque o usuário ainda não tinha preenchido aquele formulário/feito aquele upload.
+
+- **Bug real corrigido (A14)**: `DeclaracaoController` tinha dois métodos `@GetMapping("/{id})` e `@GetMapping("/{userId}")` mapeados para o **mesmo padrão de rota**. O Spring não detecta o conflito no startup (literais de string diferentes), mas em tempo de requisição não consegue decidir qual handler chamar e lança `IllegalStateException: Ambiguous handler methods`, capturada pelo fallback genérico do `GlobalExceptionHandler` como 500. Isso deixava a rota **permanentemente quebrada**, não intermitente.
+  - Fix: `getDeclaracaoById` (busca por PK da própria declaração, uso não confirmado no front) movido para `GET /api/declaracoes/item/{id}`. `GET /api/declaracoes/{userId}` (lista por usuário, é o que o front efetivamente chama) manteve o path original — sem quebra de contrato.
+- **Semântica 404→200 para "usuário ainda sem dados"**: nos endpoints abaixo, a ausência de registro para um `userId` válido deixou de lançar `EntityNotFoundException` (404) e passou a retornar `200` com corpo vazio (lista `[]` ou objeto `null`), já que "usuário não preencheu esse formulário ainda" não é um erro:
+  - `DocumentosGeraisPdfController.downloadPdfList` (`/download/list/{campo}`) — retorna `200 []`
+  - `ProcessoDeBolsaService.findByUserId`, `FormDadosParentesService.findByUserId`, `FormEnderecoCandidatoService.buscarPorUserId`, `FormService.getByUserId`, `BensPossesService.buscarPorUserId` — retornam `200` com corpo `null`
+  - **Não alterado**: buscas por PK própria (`update`, `delete`, `findById`) continuam lançando `EntityNotFoundException` (404) — ali a ausência é de fato um erro (ID inválido/inexistente).
+- **Pendente para o front**: telas que hoje tratam 404 como "estado vazio" (catch de erro) devem passar a tratar corpo vazio/`null` em 200 como o mesmo estado — combinar com o time do front antes de considerar essa dívida totalmente paga.
 
 ### 2026-05-28 — Modernização do back (padrões adotados)
 

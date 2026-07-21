@@ -3,28 +3,27 @@ package pdev.com.agenda.domain.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import pdev.com.agenda.domain.dto.DocumentoPdfResponse;
-import pdev.com.agenda.domain.entity.DocumentosGeraisPdfArquivo;
+import pdev.com.agenda.domain.entity.DocumentoPdf;
 import pdev.com.agenda.domain.entity.UserInfo;
-import pdev.com.agenda.domain.repository.DocumentosGeraisPdfArquivoRepository;
+import pdev.com.agenda.domain.repository.DocumentoPdfRepository;
 import pdev.com.agenda.domain.repository.UserInfoRepository;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class DocumentosGeraisPdfService {
 
+    private static final int MAX_ARQUIVOS_POR_TIPO = 5;
     private static final long MAX_FILE_SIZE_BYTES = 5 * 1024 * 1024;
 
-    private static final Set<String> CAMPOS_VALIDOS = Set.of(
+    private static final Set<String> TIPOS_VALIDOS = Set.of(
             "singleRegistryRegistration",
             "maritalStatus",
             "identityDocuments",
@@ -44,58 +43,53 @@ public class DocumentosGeraisPdfService {
             "governmentProgram"
     );
 
-    private final DocumentosGeraisPdfArquivoRepository arquivoRepository;
+    private final DocumentoPdfRepository documentoPdfRepository;
     private final UserInfoRepository usuarioRepository;
 
     @Transactional
-    public DocumentosGeraisPdfArquivo salvarPdf(Long userId, String campo, MultipartFile file) throws Exception {
+    public DocumentoPdf salvarPdf(Long userId, String campo, MultipartFile file) throws IOException {
         validarCampo(campo);
         validarArquivo(file);
 
         UserInfo usuario = usuarioRepository.findById(userId)
                 .orElseThrow(() -> new EntityNotFoundException("Usuario nao encontrado com ID: " + userId));
 
-        DocumentosGeraisPdfArquivo arquivo = new DocumentosGeraisPdfArquivo();
-        arquivo.setUserInfo(usuario);
-        arquivo.setTipoDocumento(campo);
-        arquivo.setNomeArquivo(resolveNomeArquivo(campo, file));
-        arquivo.setMimeType(resolveMimeType(file));
-        arquivo.setConteudo(file.getBytes());
-        arquivo.setDataUpload(LocalDateTime.now());
-        arquivo.setStatus("ATIVO");
+        long existentes = documentoPdfRepository.countByUserInfoIdAndTipoDocumento(userId, campo);
+        if (existentes >= MAX_ARQUIVOS_POR_TIPO) {
+            throw new IllegalArgumentException(
+                    "Limite de " + MAX_ARQUIVOS_POR_TIPO + " documentos para o campo '" + campo + "' ja foi atingido");
+        }
 
-        return arquivoRepository.save(arquivo);
+        DocumentoPdf documento = new DocumentoPdf();
+        documento.setUserInfo(usuario);
+        documento.setTipoDocumento(campo);
+        documento.setNomeArquivo(resolveNomeArquivo(campo, file));
+        documento.setConteudo(file.getBytes());
+        documento.setDataUpload(LocalDateTime.now());
+        documento.setStatus("ATIVO");
+
+        return documentoPdfRepository.save(documento);
     }
 
-    public Optional<DocumentosGeraisPdfArquivo> buscarArquivoPorId(Long id) {
-        return arquivoRepository.findById(id);
+    public Optional<DocumentoPdf> buscarPorId(Long id) {
+        return documentoPdfRepository.findById(id);
     }
 
-    public List<DocumentoPdfResponse> listarArquivos(Long userId, String campo) {
+    public List<DocumentoPdf> buscarPorUserId(Long userId) {
+        return documentoPdfRepository.findAllByUserInfoId(userId);
+    }
+
+    public List<DocumentoPdf> buscarPorUserIdETipo(Long userId, String campo) {
         validarCampo(campo);
-        return arquivoRepository.findByUserInfoIdAndTipoDocumentoOrderByDataUploadDesc(userId, campo)
-                .stream()
-                .map(this::toResponse)
-                .collect(Collectors.toList());
+        return documentoPdfRepository.findAllByUserInfoIdAndTipoDocumento(userId, campo);
     }
 
-    public boolean usuarioPossuiDocumentos(Long userId) {
-        return arquivoRepository.existsByUserInfoId(userId);
-    }
-
-    private DocumentoPdfResponse toResponse(DocumentosGeraisPdfArquivo arquivo) {
-        return new DocumentoPdfResponse(
-                arquivo.getId(),
-                arquivo.getNomeArquivo(),
-                Base64.getEncoder().encodeToString(arquivo.getConteudo()),
-                arquivo.getUserInfo().getId(),
-                arquivo.getTipoDocumento(),
-                arquivo.getMimeType()
-        );
+    public void deletarPorId(Long id) {
+        documentoPdfRepository.deleteById(id);
     }
 
     private void validarCampo(String campo) {
-        if (!CAMPOS_VALIDOS.contains(campo)) {
+        if (!TIPOS_VALIDOS.contains(campo)) {
             throw new IllegalArgumentException("Campo invalido: " + campo);
         }
     }
@@ -124,10 +118,5 @@ public class DocumentosGeraisPdfService {
             return campo + ".pdf";
         }
         return originalFilename;
-    }
-
-    private String resolveMimeType(MultipartFile file) {
-        String contentType = file.getContentType();
-        return contentType == null || contentType.isBlank() ? "application/pdf" : contentType;
     }
 }

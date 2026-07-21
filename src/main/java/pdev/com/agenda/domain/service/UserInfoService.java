@@ -9,6 +9,7 @@ import pdev.com.agenda.domain.dto.UserInfoDTO;
 import pdev.com.agenda.domain.dto.UserInfoWithStatusDTO;
 import pdev.com.agenda.domain.entity.BensPosses;
 import pdev.com.agenda.domain.entity.DespesaMensal;
+import pdev.com.agenda.domain.entity.DocumentoPdf;
 import pdev.com.agenda.domain.entity.Endereco;
 import pdev.com.agenda.domain.entity.FormCondicoesHabitacionais;
 import pdev.com.agenda.domain.entity.FormDadosParentes;
@@ -21,6 +22,7 @@ import pdev.com.agenda.domain.enuns.RoleEnum;
 import pdev.com.agenda.domain.mapper.UserInfoMapper;
 import pdev.com.agenda.domain.repository.BensPossesRepository;
 import pdev.com.agenda.domain.repository.DespesaMensalRepository;
+import pdev.com.agenda.domain.repository.DocumentoPdfRepository;
 import pdev.com.agenda.domain.repository.EnderecoRepository;
 import pdev.com.agenda.domain.repository.FormCondicoesHabitacionaisRepository;
 import pdev.com.agenda.domain.repository.FormDadosParentesRepository;
@@ -46,7 +48,7 @@ public class UserInfoService {
     private final RoleRepository roleRepository;
     private final BensPossesRepository bensPossesRepository;
     private final DespesaMensalRepository despesaMensalRepository;
-    private final DocumentosGeraisPdfService documentosGeraisPdfService;
+    private final DocumentoPdfRepository documentoPdfRepository;
     private final EnderecoRepository enderecoRepository;
     private final FormCondicoesHabitacionaisRepository formCondicoesHabitacionaisRepository;
     private final FormDadosParentesRepository formDadosParentesRepository;
@@ -79,7 +81,9 @@ public class UserInfoService {
                 .stream().findFirst().map(DespesaMensal::getStatus).orElse(null);
         dto.setDespesaMensalStatus(despesaMensalStatus != null ? despesaMensalStatus : "PENDENTE");
 
-        dto.setDocumentosGeraisPdfStatus(documentosGeraisPdfService.usuarioPossuiDocumentos(userId) ? "ATIVO" : "PENDENTE");
+        String documentosGeraisPdfStatus = documentoPdfRepository.findAllByUserInfoId(userId)
+                .stream().findFirst().map(DocumentoPdf::getStatus).orElse(null);
+        dto.setDocumentosGeraisPdfStatus(documentosGeraisPdfStatus != null ? documentosGeraisPdfStatus : "PENDENTE");
 
         String enderecoStatus = enderecoRepository.findByUserInfoId(userId)
                 .map(Endereco::getStatus).orElse(null);
