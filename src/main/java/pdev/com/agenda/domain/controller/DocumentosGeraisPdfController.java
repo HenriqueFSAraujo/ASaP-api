@@ -3,7 +3,7 @@ package pdev.com.agenda.domain.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,28 +26,23 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/documentos-gerais-pdf")
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Tag(name = "Documentos Gerais PDF", description = "Endpoints para upload e download de PDFs dos documentos gerais")
 public class DocumentosGeraisPdfController {
+
     private final DocumentosGeraisPdfService pdfService;
 
-    //http://localhost:8080/api/documentos-gerais-pdf/download/1/singleRegistryRegistration -- exemplo de download
-    //localhost:8080/api/documentos-gerais-pdf/upload/singleRegistryRegistration -- exemplo de upload
-    @Operation(summary = "Upload de PDF para um campo específico", description = "Faz o upload de um arquivo PDF para o campo informado de um usuário. Cada usuário pode ter até 5 arquivos por campo.")
+    @Operation(summary = "Upload de PDF para um campo especifico", description = "Faz o upload de um arquivo PDF para o campo informado de um usuario. Cada usuario pode ter ate 5 arquivos por campo.")
     @PostMapping("/upload/{campo}")
     public ResponseEntity<String> uploadPdf(
-            @Parameter(description = "ID do usuário", required = true) @RequestParam("userId") Long userId,
+            @Parameter(description = "ID do usuario", required = true) @RequestParam("userId") Long userId,
             @Parameter(description = "Nome do campo do documento", required = true, example = "singleRegistryRegistration") @PathVariable String campo,
-            @Parameter(description = "Arquivo PDF a ser enviado", required = true) @RequestParam("file") MultipartFile file) {
-        try {
-            pdfService.salvarPdf(userId, campo, file);
-            return ResponseEntity.ok("PDF salvo para o campo: " + campo);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Erro ao salvar PDF: " + e.getMessage());
-        }
+            @Parameter(description = "Arquivo PDF a ser enviado", required = true) @RequestParam("file") MultipartFile file) throws Exception {
+        pdfService.salvarPdf(userId, campo, file);
+        return ResponseEntity.ok("PDF salvo para o campo: " + campo);
     }
 
-    @Operation(summary = "Download de PDF de um campo específico", description = "Faz o download de um arquivo PDF individual pelo seu ID.")
+    @Operation(summary = "Download de PDF de um campo especifico", description = "Faz o download de um arquivo PDF individual pelo seu ID.")
     @GetMapping("/download/{id}/{campo}")
     public ResponseEntity<byte[]> downloadPdf(
             @Parameter(description = "ID do documento", required = true) @PathVariable Long id,
@@ -61,10 +56,10 @@ public class DocumentosGeraisPdfController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @Operation(summary = "Download de todos os PDFs de um tipo para um usuário", description = "Retorna uma lista com todos os arquivos PDF de um campo específico enviados pelo userId informado.")
+    @Operation(summary = "Download de todos os PDFs de um tipo para um usuario", description = "Retorna uma lista com todos os arquivos PDF de um campo especifico enviados pelo userId informado.")
     @GetMapping("/download/list/{campo}")
     public ResponseEntity<List<Map<String, Object>>> downloadPdfList(
-            @Parameter(description = "ID do usuário", required = true) @RequestParam("userId") Long userId,
+            @Parameter(description = "ID do usuario", required = true) @RequestParam("userId") Long userId,
             @Parameter(description = "Nome do campo do documento", required = true, example = "singleRegistryRegistration") @PathVariable String campo) {
         List<DocumentoPdf> documentos = pdfService.buscarPorUserIdETipo(userId, campo);
         List<Map<String, Object>> arquivos = documentos.stream()
@@ -73,6 +68,9 @@ public class DocumentosGeraisPdfController {
                     map.put("id", documento.getId());
                     map.put("nomeArquivo", nomeArquivoOuPadrao(documento));
                     map.put("conteudoBase64", Base64.getEncoder().encodeToString(documento.getConteudo()));
+                    map.put("userId", documento.getUserInfo().getId());
+                    map.put("documentType", documento.getTipoDocumento());
+                    map.put("mimeType", MediaType.APPLICATION_PDF_VALUE);
                     return map;
                 })
                 .collect(Collectors.toList());
