@@ -46,6 +46,7 @@ public class FormDadosPessoaisMapper {
         FormDadosPessoaisDTO dto = new FormDadosPessoaisDTO();
         dto.setId(entity.getId());
         dto.setFullName(entity.getFullName());
+        dto.setEmail(entity.getEmail());
         dto.setCpf(entity.getCpf());
         dto.setRg(entity.getRg());
         dto.setNacionalidade(entity.getNacionalidade());

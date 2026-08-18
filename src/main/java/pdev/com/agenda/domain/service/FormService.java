@@ -29,6 +29,7 @@ public class FormService {
         if (existente.isPresent()) {
             entity = existente.get();
             entity.setFullName(dto.getFullName());
+            entity.setEmail(dto.getEmail());
             entity.setCpf(dto.getCpf());
             entity.setRg(dto.getRg());
             entity.setNacionalidade(dto.getNacionalidade());

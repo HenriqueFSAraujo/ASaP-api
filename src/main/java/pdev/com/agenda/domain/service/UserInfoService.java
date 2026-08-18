@@ -126,6 +126,7 @@ public class UserInfoService {
     }
 
     public UserInfoDTO create(UserInfoDTO dto) {
+        normalizeOptionalEmail(dto);
         validateForCreate(dto);
         validateTipoAluno(dto);
         normalizeTipoAlunoForAdmin(dto);
@@ -141,6 +142,7 @@ public class UserInfoService {
         UserInfo entity = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com ID: " + id));
 
+        normalizeOptionalEmail(dto);
         validateForUpdate(dto, id);
         validateTipoAluno(dto);
         normalizeTipoAlunoForAdmin(dto);
@@ -176,7 +178,7 @@ public class UserInfoService {
 
     private void validateForCreate(UserInfoDTO dto) {
         validateFormat(dto);
-        if (repository.existsByEmail(dto.getEmail())) {
+        if (dto.getEmail() != null && repository.existsByEmail(dto.getEmail())) {
             throw new IllegalArgumentException("E-mail já cadastrado.");
         }
         if (repository.existsByUserName(dto.getUserName())) {
@@ -204,6 +206,12 @@ public class UserInfoService {
         }
         if (dto.getCpf() != null && !ValidationUtil.isValidCPF(dto.getCpf())) {
             throw new IllegalArgumentException("CPF inválido.");
+        }
+    }
+
+    private void normalizeOptionalEmail(UserInfoDTO dto) {
+        if (dto.getEmail() != null && dto.getEmail().trim().isEmpty()) {
+            dto.setEmail(null);
         }
     }
 

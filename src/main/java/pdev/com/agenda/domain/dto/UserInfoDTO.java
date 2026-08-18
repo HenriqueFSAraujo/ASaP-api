@@ -32,7 +32,6 @@ public class UserInfoDTO {
     @NotBlank(message = "O CPF é obrigatório.")
     private String cpf;
 
-    @NotBlank(message = "O e-mail é obrigatório.")
     @Email(message = "E-mail inválido.")
     private String email;
 

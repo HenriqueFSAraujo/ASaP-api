@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pdev.com.agenda.domain.dto.UserLoginResponse;
 import pdev.com.agenda.domain.mapper.UserLoginMapper;
-import pdev.com.agenda.domain.repository.UserInfoRepository;
 import pdev.com.agenda.domain.repository.UserLoginRepository;
 
 import java.util.List;
