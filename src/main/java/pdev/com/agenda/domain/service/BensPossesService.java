@@ -17,7 +17,7 @@ import pdev.com.agenda.domain.mapper.VeiculoMapper;
 import pdev.com.agenda.domain.repository.BensPossesRepository;
 import pdev.com.agenda.domain.repository.UserInfoRepository;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;

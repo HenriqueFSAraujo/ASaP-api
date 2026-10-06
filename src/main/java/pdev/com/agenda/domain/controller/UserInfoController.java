@@ -18,7 +18,7 @@ import pdev.com.agenda.domain.dto.UserInfoDTO;
 import pdev.com.agenda.domain.dto.UserInfoWithStatusDTO;
 import pdev.com.agenda.domain.service.UserInfoService;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 
 /**

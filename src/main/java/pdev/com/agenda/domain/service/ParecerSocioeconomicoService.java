@@ -8,7 +8,7 @@ import pdev.com.agenda.domain.entity.ParecerSocioeconomico;
 import pdev.com.agenda.domain.mapper.ParecerSocioeconomicoMapper;
 import pdev.com.agenda.domain.repository.ParecerSocioeconomicoRepository;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

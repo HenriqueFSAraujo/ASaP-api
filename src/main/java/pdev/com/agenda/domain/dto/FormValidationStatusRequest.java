@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import pdev.com.agenda.domain.enuns.ValidationStatusEnum;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * Payload para atualização de status de uma seção. O {@code reviewerId} pode vir do JWT

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pdev.com.agenda.domain.dto.FormEnderecoCandidatoDTO;
 import pdev.com.agenda.domain.service.FormEnderecoCandidatoService;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController

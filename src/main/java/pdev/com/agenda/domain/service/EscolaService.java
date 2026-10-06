@@ -9,7 +9,7 @@ import pdev.com.agenda.domain.enuns.TipoEscolaEnum;
 import pdev.com.agenda.domain.mapper.EscolaMapper;
 import pdev.com.agenda.domain.repository.EscolaRepository;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service

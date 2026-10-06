@@ -8,8 +8,8 @@ import pdev.com.agenda.domain.entity.UserInfo;
 import pdev.com.agenda.domain.mapper.FormDadosParentesMapper;
 import pdev.com.agenda.domain.repository.FormDadosParentesRepository;
 
-import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

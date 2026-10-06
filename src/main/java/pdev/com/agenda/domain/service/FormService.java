@@ -10,7 +10,7 @@ import pdev.com.agenda.domain.mapper.FormDadosPessoaisMapper;
 import pdev.com.agenda.domain.repository.EscolaRepository;
 import pdev.com.agenda.domain.repository.FormRepository;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.Optional;
 
 @Service

@@ -15,7 +15,7 @@ import pdev.com.agenda.domain.mapper.FormValidationStatusMapper;
 import pdev.com.agenda.domain.repository.FormValidationStatusRepository;
 import pdev.com.agenda.domain.repository.UserInfoRepository;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;

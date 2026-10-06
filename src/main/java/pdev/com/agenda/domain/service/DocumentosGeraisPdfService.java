@@ -8,8 +8,8 @@ import pdev.com.agenda.domain.entity.UserInfo;
 import pdev.com.agenda.domain.repository.DocumentoPdfRepository;
 import pdev.com.agenda.domain.repository.UserInfoRepository;
 
-import javax.persistence.EntityNotFoundException;
-import javax.transaction.Transactional;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;

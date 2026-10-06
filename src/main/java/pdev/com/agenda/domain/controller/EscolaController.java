@@ -15,7 +15,7 @@ import pdev.com.agenda.domain.dto.EscolaDTO;
 import pdev.com.agenda.domain.enuns.TipoEscolaEnum;
 import pdev.com.agenda.domain.service.EscolaService;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.List;
 
 @RestController

@@ -14,7 +14,7 @@ import pdev.com.agenda.domain.dto.FormValidationSummaryResponse;
 import pdev.com.agenda.domain.enuns.FormSectionEnum;
 import pdev.com.agenda.domain.service.FormValidationStatusService;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 /**
  * Endpoints para gerenciar o status de validação do admin por seção do formulário.

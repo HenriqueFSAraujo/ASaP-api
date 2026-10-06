@@ -10,7 +10,7 @@ import pdev.com.agenda.dto.ComposicaoFamiliarRequestDTO;
 import pdev.com.agenda.mapper.ComposicaoFamiliarMapper;
 import pdev.com.agenda.repository.ComposicaoFamiliarRepository;
 
-import javax.transaction.Transactional;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 

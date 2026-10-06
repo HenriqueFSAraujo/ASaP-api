@@ -3,7 +3,7 @@ package pdev.com.agenda.util;
 import org.flywaydb.core.Flyway;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 
 @Component
 public class FlywayRepairRunner {

@@ -1,9 +1,9 @@
 package pdev.com.agenda.domain.controller;
 
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,14 +24,14 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/login")
-    @ApiOperation(value = "Efetua login", notes = "Autentica o usuário e retorna um token JWT")
+    @Operation(summary = "Efetua login", description = "Autentica o usuário e retorna um token JWT")
     @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Login realizado com sucesso"),
-            @ApiResponse(code = 400, message = "Requisição inválida"),
-            @ApiResponse(code = 401, message = "Credenciais inválidas")
+            @ApiResponse(responseCode = "200", description = "Login realizado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "Requisição inválida"),
+            @ApiResponse(responseCode = "401", description = "Credenciais inválidas")
     })
     public ResponseEntity<UserLoginResponse> login(
-            @ApiParam(value = "Credenciais do usuário", required = true)
+            @Parameter(description = "Credenciais do usuário", required = true)
             @RequestBody UserLoginRequest loginRequest) {
 
         UserLoginResponse response = authService.login(loginRequest);

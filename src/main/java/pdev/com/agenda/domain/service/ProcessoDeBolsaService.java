@@ -9,7 +9,7 @@ import pdev.com.agenda.domain.entity.UserInfo;
 import pdev.com.agenda.domain.mapper.ProcessoDeBolsaMapper;
 import pdev.com.agenda.domain.repository.ProcessoDeBolsaRepository;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

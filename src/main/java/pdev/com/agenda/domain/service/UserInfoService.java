@@ -33,7 +33,7 @@ import pdev.com.agenda.domain.repository.RoleRepository;
 import pdev.com.agenda.domain.repository.UserInfoRepository;
 import pdev.com.agenda.util.ValidationUtil;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
