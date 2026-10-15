@@ -1,57 +1,32 @@
 package pdev.com.agenda.domain.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import pdev.com.agenda.domain.enuns.TipoAlunoEnum;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import lombok.Builder;
+import pdev.com.agenda.domain.enuns.TipoAlunoEnum;
 
-@Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class UserInfoDTO {
-    @JsonIgnore
-    private Long userId;
+public record UserInfoDTO(
+        @JsonProperty(access = JsonProperty.Access.READ_ONLY) Long userId,
+        @NotBlank(message = "O nome é obrigatório.") String name,
+        @JsonProperty(access = JsonProperty.Access.READ_ONLY) String userName,
+        @NotBlank(message = "O perfil (roleName) é obrigatório.")
+        @Pattern(regexp = "ROLE_USER|ROLE_ADMIN", message = "Perfil inválido. Valores aceitos: ROLE_USER, ROLE_ADMIN.")
+        String roleName,
+        @NotBlank(message = "O CPF é obrigatório.") String cpf,
+        @Email(message = "E-mail inválido.") String email,
+        @JsonProperty("isFirstLogin") boolean isFirstLogin,
+        @JsonProperty(access = JsonProperty.Access.READ_ONLY) String password,
+        @JsonProperty(value = "isActive", access = JsonProperty.Access.READ_ONLY) boolean isActive,
+        TipoAlunoEnum tipoAluno
+) {
+    public UserInfoDTO withEmail(String newEmail) {
+        return new UserInfoDTO(userId, name, userName, roleName, cpf, newEmail, isFirstLogin, password, isActive, tipoAluno);
+    }
 
-    @NotBlank(message = "O nome é obrigatório.")
-    private String name;
-
-    @JsonIgnore
-    private String userName;
-
-    @NotBlank(message = "O perfil (roleName) é obrigatório.")
-    @Pattern(regexp = "ROLE_USER|ROLE_ADMIN", message = "Perfil inválido. Valores aceitos: ROLE_USER, ROLE_ADMIN.")
-    private String roleName;
-
-    @NotBlank(message = "O CPF é obrigatório.")
-    private String cpf;
-
-    @Email(message = "E-mail inválido.")
-    private String email;
-
-    private boolean isFirstLogin;
-
-    @JsonIgnore
-    private String password;
-
-    @JsonIgnore
-    private boolean isActive;
-
-    /**
-     * Classificacao do aluno (ESCOLA_PARTICULAR ou ESCOLA_GRATUITA).
-     * Obrigatorio quando roleName = ROLE_USER; deve ser nulo quando roleName = ROLE_ADMIN.
-     * Validacao aplicada em UserInfoService.validateTipoAluno (regra cross-field).
-     */
-    private TipoAlunoEnum tipoAluno;
-
-
-    public void setIsFirstLogin(boolean firstLogin) {
-
+    public UserInfoDTO withTipoAluno(TipoAlunoEnum newTipoAluno) {
+        return new UserInfoDTO(userId, name, userName, roleName, cpf, email, isFirstLogin, password, isActive, newTipoAluno);
     }
 }

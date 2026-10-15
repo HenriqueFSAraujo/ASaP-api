@@ -1,5 +1,6 @@
 package pdev.com.agenda.domain.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,8 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pdev.com.agenda.domain.dto.ParecerSocioeconomicoRequest;
-import pdev.com.agenda.domain.dto.ParecerSocioeconomicoResponse;
+import pdev.com.agenda.domain.dto.ParecerSocioeconomicoDTO;
 import pdev.com.agenda.domain.service.ParecerPdfService;
 import pdev.com.agenda.domain.service.ParecerSocioeconomicoService;
 
@@ -28,26 +28,26 @@ public class ParecerSocioeconomicoController {
 
 
     @PostMapping
-    public ResponseEntity<ParecerSocioeconomicoResponse> criar(@RequestBody ParecerSocioeconomicoRequest request) {
+    public ResponseEntity<ParecerSocioeconomicoDTO> criar(@Valid @RequestBody ParecerSocioeconomicoDTO request) {
         return ResponseEntity.ok(service.salvar(request));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ParecerSocioeconomicoResponse> buscarPorId(@PathVariable Long id) {
+    public ResponseEntity<ParecerSocioeconomicoDTO> buscarPorId(@PathVariable Long id) {
         return service.buscarPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/usuario/{userId}")
-    public ResponseEntity<List<ParecerSocioeconomicoResponse>> buscarPorUsuario(@PathVariable Long userId) {
-        List<ParecerSocioeconomicoResponse> lista = service.buscarPorUsuarioId(userId);
+    public ResponseEntity<List<ParecerSocioeconomicoDTO>> buscarPorUsuario(@PathVariable Long userId) {
+        List<ParecerSocioeconomicoDTO> lista = service.buscarPorUsuarioId(userId);
         return ResponseEntity.ok(lista);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ParecerSocioeconomicoResponse> atualizar(@PathVariable Long id,
-                                                                   @RequestBody ParecerSocioeconomicoRequest request) {
+    public ResponseEntity<ParecerSocioeconomicoDTO> atualizar(@PathVariable Long id,
+                                                              @Valid @RequestBody ParecerSocioeconomicoDTO request) {
         return service.atualizar(id, request)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());

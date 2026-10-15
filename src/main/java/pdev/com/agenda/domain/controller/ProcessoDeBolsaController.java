@@ -1,8 +1,9 @@
 package pdev.com.agenda.domain.controller;
+
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pdev.com.agenda.domain.dto.ProcessoDeBolsaDTO;
-import pdev.com.agenda.domain.dto.ProcessoDeBolsaResponse;
 import pdev.com.agenda.domain.service.ProcessoDeBolsaService;
 @RestController
 @RequestMapping("/api/processo-bolsas")
@@ -15,17 +16,17 @@ public class ProcessoDeBolsaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProcessoDeBolsaResponse> findByUserId(@PathVariable Long id) {
+    public ResponseEntity<ProcessoDeBolsaDTO> findByUserId(@PathVariable Long id) {
         return ResponseEntity.ok(service.findByUserId(id));
     }
 
     @PostMapping
-    public ResponseEntity<ProcessoDeBolsaResponse> create(@RequestBody ProcessoDeBolsaDTO dto) {
+    public ResponseEntity<ProcessoDeBolsaDTO> create(@Valid @RequestBody ProcessoDeBolsaDTO dto) {
         return ResponseEntity.ok(service.create(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProcessoDeBolsaResponse> update(@PathVariable Long id, @RequestBody ProcessoDeBolsaDTO dto) {
+    public ResponseEntity<ProcessoDeBolsaDTO> update(@PathVariable Long id, @Valid @RequestBody ProcessoDeBolsaDTO dto) {
         return ResponseEntity.ok(service.update(id, dto));
     }
 
@@ -35,4 +36,3 @@ public class ProcessoDeBolsaController {
         return ResponseEntity.noContent().build();
     }
 }
-

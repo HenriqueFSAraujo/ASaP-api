@@ -1,5 +1,6 @@
 package pdev.com.agenda.controller;
 
+import jakarta.validation.Valid;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,7 @@ public class ComposicaoFamiliarController {
 
     @ApiResponse(responseCode = "201", description = "Composições familiares criadas com sucesso para o usuário")
     @PostMapping
-    public ResponseEntity<List<ComposicaoFamiliarDTO>> saveAllForUser(@RequestBody ComposicaoFamiliarRequestDTO request) {
+    public ResponseEntity<List<ComposicaoFamiliarDTO>> saveAllForUser(@Valid @RequestBody ComposicaoFamiliarRequestDTO request) {
         List<ComposicaoFamiliarDTO> savedComposicoesDTO = service.saveAllForUser(request);
         return new ResponseEntity<>(savedComposicoesDTO, HttpStatus.CREATED);
     }

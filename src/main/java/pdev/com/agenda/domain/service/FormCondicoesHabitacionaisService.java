@@ -23,31 +23,31 @@ public class FormCondicoesHabitacionaisService {
     @Transactional
     public CondicoesHabitacionaisDTO salvarOuAtualizar(CondicoesHabitacionaisDTO dto) {
         UserInfo user = new UserInfo();
-        user.setId(dto.getUserId());
+        user.setId(dto.userId());
 
         Optional<FormCondicoesHabitacionais> existente = repository.findByUser(user);
 
         FormCondicoesHabitacionais entidade;
         if (existente.isPresent()) {
             entidade = existente.get();
-            entidade.setSituacaoImovel(dto.getSituacaoImovel());
-            entidade.setTipoImovel(dto.getTipoImovel());
-            entidade.setEstruturaFisica(dto.getEstruturaFisica());
-            entidade.setEsgotoSanitario(dto.getEsgotoSanitario());
-            entidade.setFornecimentoEnergia(dto.getFornecimentoEnergia());
-            entidade.setAbastecimentoAgua(dto.getAbastecimentoAgua());
-            entidade.setDoencasCronicas(dto.getDoencasCronicas());
-            entidade.setCondicoesDeSaudeCasosNaFamilia(dto.getCondicoesDeSaudeCasosNaFamilia());
+            entidade.setSituacaoImovel(dto.situacaoImovel());
+            entidade.setTipoImovel(dto.tipoImovel());
+            entidade.setEstruturaFisica(dto.estruturaFisica());
+            entidade.setEsgotoSanitario(dto.esgotoSanitario());
+            entidade.setFornecimentoEnergia(dto.fornecimentoEnergia());
+            entidade.setAbastecimentoAgua(dto.abastecimentoAgua());
+            entidade.setDoencasCronicas(dto.doencasCronicas());
+            entidade.setCondicoesDeSaudeCasosNaFamilia(dto.CondicoesDeSaudeCasosNaFamilia());
         } else {
             entidade = new FormCondicoesHabitacionais();
-            entidade.setSituacaoImovel(dto.getSituacaoImovel());
-            entidade.setTipoImovel(dto.getTipoImovel());
-            entidade.setEstruturaFisica(dto.getEstruturaFisica());
-            entidade.setEsgotoSanitario(dto.getEsgotoSanitario());
-            entidade.setFornecimentoEnergia(dto.getFornecimentoEnergia());
-            entidade.setAbastecimentoAgua(dto.getAbastecimentoAgua());
-            entidade.setDoencasCronicas(dto.getDoencasCronicas());
-            entidade.setCondicoesDeSaudeCasosNaFamilia(dto.getCondicoesDeSaudeCasosNaFamilia());
+            entidade.setSituacaoImovel(dto.situacaoImovel());
+            entidade.setTipoImovel(dto.tipoImovel());
+            entidade.setEstruturaFisica(dto.estruturaFisica());
+            entidade.setEsgotoSanitario(dto.esgotoSanitario());
+            entidade.setFornecimentoEnergia(dto.fornecimentoEnergia());
+            entidade.setAbastecimentoAgua(dto.abastecimentoAgua());
+            entidade.setDoencasCronicas(dto.doencasCronicas());
+            entidade.setCondicoesDeSaudeCasosNaFamilia(dto.CondicoesDeSaudeCasosNaFamilia());
             entidade.setUser(user);
             entidade.setStatus("ATIVO");
         }
@@ -83,14 +83,14 @@ public class FormCondicoesHabitacionaisService {
         Optional<FormCondicoesHabitacionais> optionalEntity = repository.findById(id);
         if (optionalEntity.isPresent()) {
             FormCondicoesHabitacionais entity = optionalEntity.get();
-            entity.setSituacaoImovel(dto.getSituacaoImovel());
-            entity.setTipoImovel(dto.getTipoImovel());
-            entity.setEstruturaFisica(dto.getEstruturaFisica());
-            entity.setEsgotoSanitario(dto.getEsgotoSanitario());
-            entity.setFornecimentoEnergia(dto.getFornecimentoEnergia());
-            entity.setAbastecimentoAgua(dto.getAbastecimentoAgua());
-            entity.setDoencasCronicas(dto.getDoencasCronicas());
-            entity.setCondicoesDeSaudeCasosNaFamilia(dto.getCondicoesDeSaudeCasosNaFamilia());
+            entity.setSituacaoImovel(dto.situacaoImovel());
+            entity.setTipoImovel(dto.tipoImovel());
+            entity.setEstruturaFisica(dto.estruturaFisica());
+            entity.setEsgotoSanitario(dto.esgotoSanitario());
+            entity.setFornecimentoEnergia(dto.fornecimentoEnergia());
+            entity.setAbastecimentoAgua(dto.abastecimentoAgua());
+            entity.setDoencasCronicas(dto.doencasCronicas());
+            entity.setCondicoesDeSaudeCasosNaFamilia(dto.CondicoesDeSaudeCasosNaFamilia());
             entity.setStatus("PENDENTE");
             return repository.save(entity);
         }

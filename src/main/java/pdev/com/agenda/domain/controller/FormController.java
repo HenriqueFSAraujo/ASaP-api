@@ -1,5 +1,6 @@
 package pdev.com.agenda.domain.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,7 +28,7 @@ public class FormController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<FormDadosPessoaisDTO> createForm(@RequestBody FormDadosPessoaisDTO formDTO) {
+    public ResponseEntity<FormDadosPessoaisDTO> createForm(@Valid @RequestBody FormDadosPessoaisDTO formDTO) {
         FormDadosPessoaisDTO savedForm = formService.createDadosPessoais(formDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedForm);
     }

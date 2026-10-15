@@ -3,7 +3,6 @@ package pdev.com.agenda.domain.service;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import pdev.com.agenda.domain.dto.ProcessoDeBolsaDTO;
-import pdev.com.agenda.domain.dto.ProcessoDeBolsaResponse;
 import pdev.com.agenda.domain.entity.ProcessoDeBolsa;
 import pdev.com.agenda.domain.entity.UserInfo;
 import pdev.com.agenda.domain.mapper.ProcessoDeBolsaMapper;
@@ -22,21 +21,21 @@ public class ProcessoDeBolsaService {
     private final ProcessoDeBolsaMapper mapper;
 
 
-    public List<ProcessoDeBolsaResponse> findAll() {
+    public List<ProcessoDeBolsaDTO> findAll() {
         return repository.findAll()
                 .stream()
                 .map(mapper::toResponse)
                 .collect(Collectors.toList());
     }
 
-    public ProcessoDeBolsaResponse findByUserId(Long id) {
+    public ProcessoDeBolsaDTO findByUserId(Long id) {
         return repository.findByUser_Id(id)
                 .map(mapper::toResponse)
                 .orElse(null);
     }
 
-    public ProcessoDeBolsaResponse create(ProcessoDeBolsaDTO dto) {
-        Long userId = dto.getUserId();
+    public ProcessoDeBolsaDTO create(ProcessoDeBolsaDTO dto) {
+        Long userId = dto.userId();
         UserInfo user = new UserInfo();
         user.setId(userId);
         Optional<ProcessoDeBolsa> existente = repository.findByUser_Id(user.getId());
@@ -44,11 +43,11 @@ public class ProcessoDeBolsaService {
         ProcessoDeBolsa entity;
         if (existente.isPresent()) {
             entity = existente.get();
-            entity.setVaiParticipar(dto.isVaiParticipar());
-            entity.setJaFoiContemplado(dto.isJaFoiContemplado());
-            entity.setPercentual(dto.getPercentual());
-            entity.setSegmentoAno(dto.getSegmentoAno());
-            entity.setSerieAno(dto.getSerieAno());
+            entity.setVaiParticipar(dto.vaiParticipar());
+            entity.setJaFoiContemplado(dto.jaFoiContemplado());
+            entity.setPercentual(dto.percentual());
+            entity.setSegmentoAno(dto.segmentoAno());
+            entity.setSerieAno(dto.serieAno());
         } else {
             entity = mapper.toEntity(dto);
         }
@@ -56,15 +55,15 @@ public class ProcessoDeBolsaService {
         repository.save(entity);
         return mapper.toResponse(entity);
     }
-    public ProcessoDeBolsaResponse update(Long id, ProcessoDeBolsaDTO dto) {
+    public ProcessoDeBolsaDTO update(Long id, ProcessoDeBolsaDTO dto) {
         ProcessoDeBolsa entity = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Processo não encontrado com ID: " + id));
 
-        entity.setVaiParticipar(dto.isVaiParticipar());
-        entity.setJaFoiContemplado(dto.isJaFoiContemplado());
-        entity.setPercentual(dto.getPercentual());
-        entity.setSegmentoAno(dto.getSegmentoAno());
-        entity.setSerieAno(dto.getSerieAno());
+        entity.setVaiParticipar(dto.vaiParticipar());
+        entity.setJaFoiContemplado(dto.jaFoiContemplado());
+        entity.setPercentual(dto.percentual());
+        entity.setSegmentoAno(dto.segmentoAno());
+        entity.setSerieAno(dto.serieAno());
         entity.setStatus("PENDENTE");
         return mapper.toResponse(repository.save(entity));
     }

@@ -1,15 +1,12 @@
 package pdev.com.agenda.dto;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
-@Data
-@NoArgsConstructor
-public class ComposicaoFamiliarRequestDTO {
-
-    private Long userInfoId;
-    private List<ComposicaoFamiliarDTO> composicaoFamiliar;
+public record ComposicaoFamiliarRequestDTO(
+        @NotNull(message = "O usuário é obrigatório.") Long userInfoId,
+        List<@Valid ComposicaoFamiliarDTO> composicaoFamiliar
+) {
 }

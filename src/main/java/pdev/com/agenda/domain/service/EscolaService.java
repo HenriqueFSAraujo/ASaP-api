@@ -63,13 +63,13 @@ public class EscolaService {
     }
 
     private void validateForCreate(EscolaDTO dto) {
-        if (escolaRepository.existsByCnpj(dto.getCnpj())) {
+        if (escolaRepository.existsByCnpj(dto.cnpj())) {
             throw new IllegalArgumentException("CNPJ já cadastrado.");
         }
     }
 
     private void validateForUpdate(Long id, EscolaDTO dto) {
-        if (escolaRepository.existsByCnpjAndIdNot(dto.getCnpj(), id)) {
+        if (escolaRepository.existsByCnpjAndIdNot(dto.cnpj(), id)) {
             throw new IllegalArgumentException("CNPJ já cadastrado para outra escola.");
         }
     }

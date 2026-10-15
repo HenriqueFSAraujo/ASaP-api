@@ -1,19 +1,13 @@
 package pdev.com.agenda.domain.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class DespesaMensalDTO {
-
-    private Long id;
-    private String descricao;
-    private BigDecimal valor;
+public record DespesaMensalDTO(
+        Long id,
+        @NotBlank(message = "A descrição da despesa é obrigatória.") String descricao,
+        @NotNull(message = "O valor da despesa é obrigatório.") BigDecimal valor
+) {
 }

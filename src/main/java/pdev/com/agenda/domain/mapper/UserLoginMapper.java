@@ -15,8 +15,8 @@ public class UserLoginMapper {
         }
 
         UserInfo userLogin = new UserInfo();
-        userLogin.setUserName(dto.getUserName());
-        userLogin.setPassword(dto.getPassword());
+        userLogin.setUserName(dto.userName());
+        userLogin.setPassword(dto.password());
         return userLogin;
     }
 

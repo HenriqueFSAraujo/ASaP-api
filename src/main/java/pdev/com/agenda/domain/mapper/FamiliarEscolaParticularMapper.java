@@ -10,20 +10,20 @@ public class FamiliarEscolaParticularMapper {
     public FamiliarEscolaParticular toEntity(FamiliarEscolaParticularDTO dto) {
         if (dto == null) return null;
         FamiliarEscolaParticular entity = new FamiliarEscolaParticular();
-        entity.setId(dto.getId());
-        entity.setNome(dto.getNome());
-        entity.setEscola(dto.getEscola());
-        entity.setValorMensal(dto.getValorMensal());
+        entity.setId(dto.id());
+        entity.setNome(dto.nome());
+        entity.setEscola(dto.escola());
+        entity.setValorMensal(dto.valorMensal());
         return entity;
     }
 
     public FamiliarEscolaParticularDTO toDTO(FamiliarEscolaParticular entity) {
         if (entity == null) return null;
-        FamiliarEscolaParticularDTO dto = new FamiliarEscolaParticularDTO();
-        dto.setId(entity.getId());
-        dto.setNome(entity.getNome());
-        dto.setEscola(entity.getEscola());
-        dto.setValorMensal(entity.getValorMensal());
-        return dto;
+        return new FamiliarEscolaParticularDTO(
+                entity.getId(),
+                entity.getNome(),
+                entity.getEscola(),
+                entity.getValorMensal()
+        );
     }
 }

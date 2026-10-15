@@ -13,23 +13,19 @@ public class FormDadosParentesMapper {
             return null;
         }
 
-        FormDadosParentesDTO dto = new FormDadosParentesDTO();
-        dto.setId(entity.getId());
-        dto.setParent1Cpf(entity.getParent1Cpf());
-        dto.setParent1FullName(entity.getParent1FullName());
-        dto.setParent1Phone(entity.getParent1Phone());
-        dto.setParent1MaritalStatus(entity.getParent1MaritalStatus());
-        dto.setParent2Cpf(entity.getParent2Cpf());
-        dto.setParent2FullName(entity.getParent2FullName());
-        dto.setParent2Phone(entity.getParent2Phone());
-        dto.setParent2MaritalStatus(entity.getParent2MaritalStatus());
-        dto.setResidesWithBothParents(entity.getResidesWithBothParents());
-
-        UserInfo user = new UserInfo();
-        user.setId(entity.getUser().getId());
-        dto.setUserId(user.getId());
-
-        return dto;
+        return new FormDadosParentesDTO(
+                entity.getId(),
+                entity.getParent1Cpf(),
+                entity.getParent1FullName(),
+                entity.getParent1Phone(),
+                entity.getParent1MaritalStatus(),
+                entity.getParent2Cpf(),
+                entity.getParent2FullName(),
+                entity.getParent2Phone(),
+                entity.getParent2MaritalStatus(),
+                entity.getResidesWithBothParents(),
+                entity.getUser().getId()
+        );
     }
 
     public FormDadosParentes toEntity(FormDadosParentesDTO dto) {
@@ -38,19 +34,19 @@ public class FormDadosParentesMapper {
         }
 
         FormDadosParentes entity = new FormDadosParentes();
-        entity.setId(dto.getId());
-        entity.setParent1Cpf(dto.getParent1Cpf());
-        entity.setParent1FullName(dto.getParent1FullName());
-        entity.setParent1Phone(dto.getParent1Phone());
-        entity.setParent1MaritalStatus(dto.getParent1MaritalStatus());
-        entity.setParent2Cpf(dto.getParent2Cpf());
-        entity.setParent2FullName(dto.getParent2FullName());
-        entity.setParent2Phone(dto.getParent2Phone());
-        entity.setParent2MaritalStatus(dto.getParent2MaritalStatus());
-        entity.setResidesWithBothParents(dto.getResidesWithBothParents());
+        entity.setId(dto.id());
+        entity.setParent1Cpf(dto.parent1Cpf());
+        entity.setParent1FullName(dto.parent1FullName());
+        entity.setParent1Phone(dto.parent1Phone());
+        entity.setParent1MaritalStatus(dto.parent1MaritalStatus());
+        entity.setParent2Cpf(dto.parent2Cpf());
+        entity.setParent2FullName(dto.parent2FullName());
+        entity.setParent2Phone(dto.parent2Phone());
+        entity.setParent2MaritalStatus(dto.parent2MaritalStatus());
+        entity.setResidesWithBothParents(dto.residesWithBothParents());
 
         UserInfo user = new UserInfo();
-        user.setId(dto.getUserId());
+        user.setId(dto.userId());
         entity.setUser(user);
 
         return entity;
@@ -61,11 +57,11 @@ public class FormDadosParentesMapper {
             return;
         }
 
-        if (dto.getParent1Cpf() != null) {
-            entity.setParent1Cpf(dto.getParent1Cpf());
+        if (dto.parent1Cpf() != null) {
+            entity.setParent1Cpf(dto.parent1Cpf());
         }
-        if (dto.getParent1FullName() != null) {
-            entity.setParent1FullName(dto.getParent1FullName());
+        if (dto.parent1FullName() != null) {
+            entity.setParent1FullName(dto.parent1FullName());
         }
     }
 }

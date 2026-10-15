@@ -13,25 +13,25 @@ public class FormEnderecoCandidatoMapper {
             return null;
         }
         FormEnderecoCandidato entity = new FormEnderecoCandidato();
-        entity.setActivityDescription(dto.getActivityDescription());
-        entity.setAddress(dto.getAddress());
-        entity.setAfterSchoolActivities(dto.getAfterSchoolActivities());
-        entity.setCity(dto.getCity());
-        entity.setCommutingTime(dto.getCommutingTime());
-        entity.setElectricitySource(dto.getElectricitySource());
-        entity.setHasSewage(dto.getHasSewage());
-        entity.setNeighborhood(dto.getNeighborhood());
-        entity.setReferencePoint(dto.getReferencePoint());
-        entity.setResidenceType(dto.getResidenceType());
-        entity.setStructureType(dto.getStructureType());
-        entity.setStructureTypeOthers(dto.getStructureTypeOthers());
-        entity.setTransportType(dto.getTransportType());
-        entity.setTransportTypeOthers(dto.getTransportTypeOthers());
-        entity.setWaterSupply(dto.getWaterSupply());
-        entity.setWeeklyFrequency(dto.getWeeklyFrequency());
-        entity.setZipCode(dto.getZipCode());
+        entity.setActivityDescription(dto.activityDescription());
+        entity.setAddress(dto.address());
+        entity.setAfterSchoolActivities(dto.afterSchoolActivities());
+        entity.setCity(dto.city());
+        entity.setCommutingTime(dto.commutingTime());
+        entity.setElectricitySource(dto.electricitySource());
+        entity.setHasSewage(dto.hasSewage());
+        entity.setNeighborhood(dto.neighborhood());
+        entity.setReferencePoint(dto.referencePoint());
+        entity.setResidenceType(dto.residenceType());
+        entity.setStructureType(dto.structureType());
+        entity.setStructureTypeOthers(dto.structureTypeOthers());
+        entity.setTransportType(dto.transportType());
+        entity.setTransportTypeOthers(dto.transportTypeOthers());
+        entity.setWaterSupply(dto.waterSupply());
+        entity.setWeeklyFrequency(dto.weeklyFrequency());
+        entity.setZipCode(dto.zipCode());
         UserInfo user = new UserInfo();
-        user.setId(dto.getUserId());
+        user.setId(dto.userId());
         entity.setUser(user);
         return entity;
     }
@@ -40,27 +40,25 @@ public class FormEnderecoCandidatoMapper {
         if (entity == null) {
             return null;
         }
-        FormEnderecoCandidatoDTO dto = new FormEnderecoCandidatoDTO();
-        dto.setActivityDescription(entity.getActivityDescription());
-        dto.setAddress(entity.getAddress());
-        dto.setAfterSchoolActivities(entity.getAfterSchoolActivities());
-        dto.setCity(entity.getCity());
-        dto.setCommutingTime(entity.getCommutingTime());
-        dto.setElectricitySource(entity.getElectricitySource());
-        dto.setHasSewage(entity.getHasSewage());
-        dto.setNeighborhood(entity.getNeighborhood());
-        dto.setReferencePoint(entity.getReferencePoint());
-        dto.setResidenceType(entity.getResidenceType());
-        dto.setStructureType(entity.getStructureType());
-        dto.setStructureTypeOthers(entity.getStructureTypeOthers());
-        dto.setTransportType(entity.getTransportType());
-        dto.setTransportTypeOthers(entity.getTransportTypeOthers());
-        dto.setWaterSupply(entity.getWaterSupply());
-        dto.setWeeklyFrequency(entity.getWeeklyFrequency());
-        dto.setZipCode(entity.getZipCode());
-        if (entity.getUser() != null) {
-            dto.setUserId(entity.getUser().getId());
-        }
-        return dto;
+        return new FormEnderecoCandidatoDTO(
+                entity.getActivityDescription(),
+                entity.getAddress(),
+                entity.getAfterSchoolActivities(),
+                entity.getCity(),
+                entity.getCommutingTime(),
+                entity.getElectricitySource(),
+                entity.getHasSewage(),
+                entity.getNeighborhood(),
+                entity.getReferencePoint(),
+                entity.getResidenceType(),
+                entity.getStructureType(),
+                entity.getStructureTypeOthers(),
+                entity.getTransportType(),
+                entity.getTransportTypeOthers(),
+                entity.getWaterSupply(),
+                entity.getWeeklyFrequency(),
+                entity.getZipCode(),
+                entity.getUser() != null ? entity.getUser().getId() : null
+        );
     }
 }

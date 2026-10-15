@@ -53,7 +53,7 @@ public class ComposicaoFamiliarService {
      */
     @Transactional
     public List<ComposicaoFamiliarDTO> saveAllForUser(ComposicaoFamiliarRequestDTO request) {
-        Long userId = request.getUserInfoId();
+        Long userId = request.userInfoId();
         UserInfo userInfo = userInfoRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("UserInfo not found with id: " + userId));
         List<ComposicaoFamiliar> savedComposicoes = getComposicaoFamiliars(request, userInfo);
@@ -66,7 +66,7 @@ public class ComposicaoFamiliarService {
         repository.deleteAll(existingComposicoes);
 
         // Create new records
-        List<ComposicaoFamiliar> composicoes = ComposicaoFamiliarMapper.INSTANCE.toEntityList(request.getComposicaoFamiliar());
+        List<ComposicaoFamiliar> composicoes = ComposicaoFamiliarMapper.INSTANCE.toEntityList(request.composicaoFamiliar());
         composicoes.forEach(composicao -> composicao.setUserInfo(userInfo));
         List<ComposicaoFamiliar> savedComposicoes = repository.saveAll(composicoes);
         return savedComposicoes;

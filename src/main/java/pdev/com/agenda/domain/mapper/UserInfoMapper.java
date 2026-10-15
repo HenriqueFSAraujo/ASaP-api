@@ -7,7 +7,6 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.Named;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.ReportingPolicy;
-import pdev.com.agenda.domain.UserInfoResponse;
 import pdev.com.agenda.domain.dto.FormsStatusDTO;
 import pdev.com.agenda.domain.dto.UserInfoDTO;
 import pdev.com.agenda.domain.dto.UserInfoWithStatusDTO;
@@ -69,7 +68,7 @@ public interface UserInfoMapper {
 
     @Mapping(target = "userId", source = "id")
     @Mapping(target = "userName", source = "cpf")
-    @Mapping(target = "password", source = "cpf")
+    @Mapping(target = "password", ignore = true)
     @Mapping(target = "isFirstLogin", constant = "true")
     @Mapping(target = "isActive", constant = "true")
     @Mapping(target = "roleName", source = "role", qualifiedByName = "roleToName")
@@ -77,10 +76,11 @@ public interface UserInfoMapper {
 
     @Mapping(target = "userId", source = "id")
     @Mapping(target = "userName", source = "cpf")
+    @Mapping(target = "password", ignore = true)
     @Mapping(target = "isFirstLogin", constant = "true")
-    @Mapping(target = "active", constant = "true")
+    @Mapping(target = "isActive", constant = "true")
     @Mapping(target = "roleName", source = "role", qualifiedByName = "roleToNameOrSemPerfil")
-    UserInfoResponse toResponseDTO(UserInfo entity);
+    UserInfoDTO toResponseDTO(UserInfo entity);
 
     default UserInfoWithStatusDTO toWithStatusDTO(UserInfo entity, FormsStatusDTO formsStatus) {
         return new UserInfoWithStatusDTO(toDTO(entity), formsStatus);

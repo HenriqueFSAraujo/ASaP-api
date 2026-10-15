@@ -3,8 +3,7 @@ package pdev.com.agenda.domain.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pdev.com.agenda.domain.dto.FormValidationStatusRequest;
-import pdev.com.agenda.domain.dto.FormValidationStatusResponse;
+import pdev.com.agenda.domain.dto.FormValidationStatusDTO;
 import pdev.com.agenda.domain.dto.FormValidationSummaryResponse;
 import pdev.com.agenda.domain.entity.FormValidationStatus;
 import pdev.com.agenda.domain.entity.UserInfo;
@@ -55,7 +54,7 @@ public class FormValidationStatusService {
             existingBySection.put(fvs.getSection(), fvs);
         }
 
-        List<FormValidationStatusResponse> sections = new ArrayList<>(FormSectionEnum.values().length);
+        List<FormValidationStatusDTO> sections = new ArrayList<>(FormSectionEnum.values().length);
         boolean allApproved = true;
         for (FormSectionEnum section : FormSectionEnum.values()) {
             FormValidationStatus fvs = existingBySection.get(section);
@@ -78,14 +77,14 @@ public class FormValidationStatusService {
     }
 
     @Transactional
-    public FormValidationStatusResponse updateStatus(Long userInfoId,
-                                                     FormSectionEnum section,
-                                                     FormValidationStatusRequest request) {
+    public FormValidationStatusDTO updateStatus(Long userInfoId,
+                                                FormSectionEnum section,
+                                                FormValidationStatusDTO request) {
         UserInfo user = userInfoRepository.findById(userInfoId)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Usuário não encontrado com ID: " + userInfoId));
 
-        UserInfo reviewer = resolveReviewer(request.getReviewerId());
+        UserInfo reviewer = resolveReviewer(request.reviewerId());
 
         FormValidationStatus entity = repository.findByUserInfo_IdAndSection(userInfoId, section)
                 .orElseGet(() -> {
@@ -95,10 +94,10 @@ public class FormValidationStatusService {
                     return novo;
                 });
 
-        entity.setStatus(request.getStatus());
+        entity.setStatus(request.status());
         entity.setReviewer(reviewer);
         entity.setReviewedAt(LocalDateTime.now());
-        entity.setComment(request.getComment());
+        entity.setComment(request.comment());
 
         return mapper.toResponse(repository.save(entity));
     }
@@ -124,8 +123,8 @@ public class FormValidationStatusService {
         return reviewer;
     }
 
-    private FormValidationStatusResponse buildPendingResponse(Long userInfoId, FormSectionEnum section) {
-        return FormValidationStatusResponse.builder()
+    private FormValidationStatusDTO buildPendingResponse(Long userInfoId, FormSectionEnum section) {
+        return FormValidationStatusDTO.builder()
                 .userInfoId(userInfoId)
                 .section(section)
                 .status(ValidationStatusEnum.PENDING)

@@ -3,7 +3,7 @@ package pdev.com.agenda.domain.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
-import pdev.com.agenda.domain.dto.FormValidationStatusResponse;
+import pdev.com.agenda.domain.dto.FormValidationStatusDTO;
 import pdev.com.agenda.domain.entity.FormValidationStatus;
 
 /**
@@ -15,5 +15,5 @@ public interface FormValidationStatusMapper {
 
     @Mapping(target = "userInfoId", source = "userInfo.id")
     @Mapping(target = "reviewerId", source = "reviewer.id")
-    FormValidationStatusResponse toResponse(FormValidationStatus entity);
+    FormValidationStatusDTO toResponse(FormValidationStatus entity);
 }

@@ -1,21 +1,20 @@
 package pdev.com.agenda.domain.dto;
 
-import lombok.AllArgsConstructor;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-@Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class BensPossesCompletoDTO {
-
-    private Long userInfoId;
-    private List<VeiculoDTO> veiculos;
-    private List<FamiliarEscolaParticularDTO> familiaresEscola;
-    private List<PessoaComDeficienciaDTO> pessoasComDeficiencia;
-    private List<DespesaMensalDTO> despesasMensais;
+public record BensPossesCompletoDTO(
+        @NotNull(message = "O usuário é obrigatório.")
+        Long userInfoId,
+        List<VeiculoDTO> veiculos,
+        List<FamiliarEscolaParticularDTO> familiaresEscola,
+        List<PessoaComDeficienciaDTO> pessoasComDeficiencia,
+        @NotEmpty(message = "Informe ao menos uma despesa mensal.")
+        List<@Valid DespesaMensalDTO> despesasMensais
+) {
 }

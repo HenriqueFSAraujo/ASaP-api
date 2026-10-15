@@ -5,7 +5,6 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import pdev.com.agenda.domain.entity.ComposicaoFamiliar;
 import pdev.com.agenda.dto.ComposicaoFamiliarDTO;
-import pdev.com.agenda.dto.ComposicaoFamiliarRequestDTO;
 
 import java.util.List;
 
@@ -14,11 +13,13 @@ public interface ComposicaoFamiliarMapper {
 
     ComposicaoFamiliarMapper INSTANCE = Mappers.getMapper(ComposicaoFamiliarMapper.class);
 
-    @Mapping(source = "userInfo.id", target = "userInfoId")
-    ComposicaoFamiliarRequestDTO toDTO(ComposicaoFamiliar entity);
+    @Mapping(target = "nome", ignore = true)
+    @Mapping(target = "idade", ignore = true)
+    @Mapping(target = "parentesco", ignore = true)
+    ComposicaoFamiliarDTO toDTO(ComposicaoFamiliar entity);
 
-    @Mapping(source = "userInfoId", target = "userInfo.id")
-    ComposicaoFamiliar toEntity(ComposicaoFamiliarRequestDTO dto);
+    @Mapping(target = "userInfo", ignore = true)
+    ComposicaoFamiliar toEntity(ComposicaoFamiliarDTO dto);
 
     List<ComposicaoFamiliarDTO> toDTOList(List<ComposicaoFamiliar> entities);
 

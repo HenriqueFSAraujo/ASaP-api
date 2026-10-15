@@ -2,7 +2,6 @@ package pdev.com.agenda.domain.service;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import pdev.com.agenda.domain.UserInfoResponse;
 import pdev.com.agenda.domain.dto.FormsStatusDTO;
 import pdev.com.agenda.domain.dto.ResetPasswordRequest;
 import pdev.com.agenda.domain.dto.UserInfoDTO;
@@ -57,7 +56,7 @@ public class UserInfoService {
     private final ProcessoDeBolsaRepository processoDeBolsaRepository;
 
 
-    public List<UserInfoResponse> findAll() {
+    public List<UserInfoDTO> findAll() {
         return repository.findAll().stream()
                 .map(mapper::toResponseDTO)
                 .collect(Collectors.toList());
@@ -71,53 +70,54 @@ public class UserInfoService {
     }
 
     public FormsStatusDTO getFormsAllStatus(Long userId) {
-        FormsStatusDTO dto = new FormsStatusDTO();
-
         String bensPossesStatus = bensPossesRepository.findByUserInfoId(userId)
                 .stream().findFirst().map(BensPosses::getStatus).orElse(null);
-        dto.setBensPossesStatus(bensPossesStatus != null ? bensPossesStatus : "PENDENTE");
 
         String despesaMensalStatus = despesaMensalRepository.findByBensPosses_UserInfoId(userId)
                 .stream().findFirst().map(DespesaMensal::getStatus).orElse(null);
-        dto.setDespesaMensalStatus(despesaMensalStatus != null ? despesaMensalStatus : "PENDENTE");
 
         String documentosGeraisPdfStatus = documentoPdfRepository.findAllByUserInfoId(userId)
                 .stream().findFirst().map(DocumentoPdf::getStatus).orElse(null);
-        dto.setDocumentosGeraisPdfStatus(documentosGeraisPdfStatus != null ? documentosGeraisPdfStatus : "PENDENTE");
 
         String enderecoStatus = enderecoRepository.findByUserInfoId(userId)
                 .map(Endereco::getStatus).orElse(null);
-        dto.setEnderecoStatus(enderecoStatus != null ? enderecoStatus : "PENDENTE");
 
         String condicoesStatus = formCondicoesHabitacionaisRepository.findByUserId(userId)
                 .stream().findFirst().map(FormCondicoesHabitacionais::getStatus).orElse(null);
-        dto.setFormCondicoesHabitacionaisStatus(condicoesStatus != null ? condicoesStatus : "PENDENTE");
 
         String parentesStatus = formDadosParentesRepository.findByUserId(userId)
                 .stream().findFirst().map(FormDadosParentes::getStatus).orElse(null);
-        dto.setFormDadosParentesStatus(parentesStatus != null ? parentesStatus : "PENDENTE");
 
         String pessoaisStatus = formDadosPessoaisRepository.findByUserId(userId)
                 .stream().findFirst().map(FormDadosPessoais::getStatus).orElse(null);
-        dto.setFormDadosPessoaisStatus(pessoaisStatus != null ? pessoaisStatus : "PENDENTE");
 
         String enderecoCandidatoStatus = formEnderecoCandidatoRepository.findByUserId(userId)
                 .stream().findFirst().map(FormEnderecoCandidato::getStatus).orElse(null);
-        dto.setFormEnderecoCandidatoStatus(enderecoCandidatoStatus != null ? enderecoCandidatoStatus : "PENDENTE");
 
         String processoDeBolsaStatus = processoDeBolsaRepository.findByUser_Id(userId)
                 .map(ProcessoDeBolsa::getStatus).orElse(null);
-        dto.setProcessoDeBolsaStatus(processoDeBolsaStatus != null ? processoDeBolsaStatus : "PENDENTE");
 
-        boolean allPending = "PENDENTE".equals(dto.getBensPossesStatus()) &&
-                "PENDENTE".equals(dto.getDespesaMensalStatus()) &&
-                "PENDENTE".equals(dto.getDocumentosGeraisPdfStatus()) &&
-                "PENDENTE".equals(dto.getEnderecoStatus()) &&
-                "PENDENTE".equals(dto.getFormCondicoesHabitacionaisStatus()) &&
-                "PENDENTE".equals(dto.getFormDadosParentesStatus()) &&
-                "PENDENTE".equals(dto.getFormDadosPessoaisStatus()) &&
-                "PENDENTE".equals(dto.getFormEnderecoCandidatoStatus()) &&
-                "PENDENTE".equals(dto.getProcessoDeBolsaStatus());
+        FormsStatusDTO dto = new FormsStatusDTO(
+                statusOrPending(bensPossesStatus),
+                statusOrPending(despesaMensalStatus),
+                statusOrPending(documentosGeraisPdfStatus),
+                statusOrPending(enderecoStatus),
+                statusOrPending(condicoesStatus),
+                statusOrPending(parentesStatus),
+                statusOrPending(pessoaisStatus),
+                statusOrPending(enderecoCandidatoStatus),
+                statusOrPending(processoDeBolsaStatus)
+        );
+
+        boolean allPending = "PENDENTE".equals(dto.bensPossesStatus()) &&
+                "PENDENTE".equals(dto.despesaMensalStatus()) &&
+                "PENDENTE".equals(dto.documentosGeraisPdfStatus()) &&
+                "PENDENTE".equals(dto.enderecoStatus()) &&
+                "PENDENTE".equals(dto.formCondicoesHabitacionaisStatus()) &&
+                "PENDENTE".equals(dto.formDadosParentesStatus()) &&
+                "PENDENTE".equals(dto.formDadosPessoaisStatus()) &&
+                "PENDENTE".equals(dto.formEnderecoCandidatoStatus()) &&
+                "PENDENTE".equals(dto.processoDeBolsaStatus());
 
         if (allPending) {
             throw new EntityNotFoundException("Nenhuma entidade encontrada para o usuário: " + userId);
@@ -126,13 +126,13 @@ public class UserInfoService {
     }
 
     public UserInfoDTO create(UserInfoDTO dto) {
-        normalizeOptionalEmail(dto);
+        dto = normalizeOptionalEmail(dto);
         validateForCreate(dto);
         validateTipoAluno(dto);
-        normalizeTipoAlunoForAdmin(dto);
+        dto = normalizeTipoAlunoForAdmin(dto);
 
         UserInfo entity = mapper.toEntity(dto);
-        entity.setRole(resolveRole(dto.getRoleName()));
+        entity.setRole(resolveRole(dto.roleName()));
         entity.setStatus(DEFAULT_STATUS);
 
         return mapper.toDTO(repository.save(entity));
@@ -142,16 +142,16 @@ public class UserInfoService {
         UserInfo entity = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com ID: " + id));
 
-        normalizeOptionalEmail(dto);
+        dto = normalizeOptionalEmail(dto);
         validateForUpdate(dto, id);
         validateTipoAluno(dto);
-        normalizeTipoAlunoForAdmin(dto);
+        dto = normalizeTipoAlunoForAdmin(dto);
 
         // Partial update: MapStruct ignora campos null no DTO (ver UserInfoMapper.updateEntityFromDto).
         mapper.updateEntityFromDto(dto, entity);
 
         // IGNORE preservaria valor antigo de tipoAluno; força null explicitamente para admins.
-        if (RoleEnum.ROLE_ADMIN.name().equals(dto.getRoleName())) {
+        if (RoleEnum.ROLE_ADMIN.name().equals(dto.roleName())) {
             entity.setTipoAluno(null);
         }
         entity.setStatus(DEFAULT_STATUS);
@@ -178,10 +178,10 @@ public class UserInfoService {
 
     private void validateForCreate(UserInfoDTO dto) {
         validateFormat(dto);
-        if (dto.getEmail() != null && repository.existsByEmail(dto.getEmail())) {
+        if (dto.email() != null && repository.existsByEmail(dto.email())) {
             throw new IllegalArgumentException("E-mail já cadastrado.");
         }
-        if (repository.existsByUserName(dto.getUserName())) {
+        if (repository.existsByUserName(dto.userName())) {
             throw new IllegalArgumentException("Nome de usuário já cadastrado.");
         }
     }
@@ -192,27 +192,28 @@ public class UserInfoService {
      */
     private void validateForUpdate(UserInfoDTO dto, Long userId) {
         validateFormat(dto);
-        if (dto.getEmail() != null && repository.existsByEmailAndIdNot(dto.getEmail(), userId)) {
+        if (dto.email() != null && repository.existsByEmailAndIdNot(dto.email(), userId)) {
             throw new IllegalArgumentException("E-mail já cadastrado para outro usuário.");
         }
-        if (dto.getUserName() != null && repository.existsByUserNameAndIdNot(dto.getUserName(), userId)) {
+        if (dto.userName() != null && repository.existsByUserNameAndIdNot(dto.userName(), userId)) {
             throw new IllegalArgumentException("Nome de usuário já cadastrado para outro usuário.");
         }
     }
 
     private void validateFormat(UserInfoDTO dto) {
-        if (dto.getEmail() != null && !ValidationUtil.isValidEmail(dto.getEmail())) {
+        if (dto.email() != null && !ValidationUtil.isValidEmail(dto.email())) {
             throw new IllegalArgumentException("E-mail inválido.");
         }
-        if (dto.getCpf() != null && !ValidationUtil.isValidCPF(dto.getCpf())) {
+        if (dto.cpf() != null && !ValidationUtil.isValidCPF(dto.cpf())) {
             throw new IllegalArgumentException("CPF inválido.");
         }
     }
 
-    private void normalizeOptionalEmail(UserInfoDTO dto) {
-        if (dto.getEmail() != null && dto.getEmail().trim().isEmpty()) {
-            dto.setEmail(null);
+    private UserInfoDTO normalizeOptionalEmail(UserInfoDTO dto) {
+        if (dto.email() != null && dto.email().trim().isEmpty()) {
+            return dto.withEmail(null);
         }
+        return dto;
     }
 
     /**
@@ -220,7 +221,7 @@ public class UserInfoService {
      * ESCOLA_GRATUITA) no momento do cadastro. Admins (ROLE_ADMIN) nao tem tipo de aluno.
      */
     private void validateTipoAluno(UserInfoDTO dto) {
-        if (RoleEnum.ROLE_USER.name().equals(dto.getRoleName()) && dto.getTipoAluno() == null) {
+        if (RoleEnum.ROLE_USER.name().equals(dto.roleName()) && dto.tipoAluno() == null) {
             throw new IllegalArgumentException(
                     "Tipo de aluno é obrigatório para usuários com perfil ALUNO. " +
                             "Valores aceitos: ESCOLA_PARTICULAR, ESCOLA_GRATUITA."
@@ -231,10 +232,15 @@ public class UserInfoService {
     /**
      * Garante que admins nunca tenham tipo_aluno preenchido, mesmo se o front enviar por engano.
      */
-    private void normalizeTipoAlunoForAdmin(UserInfoDTO dto) {
-        if (RoleEnum.ROLE_ADMIN.name().equals(dto.getRoleName())) {
-            dto.setTipoAluno(null);
+    private UserInfoDTO normalizeTipoAlunoForAdmin(UserInfoDTO dto) {
+        if (RoleEnum.ROLE_ADMIN.name().equals(dto.roleName())) {
+            return dto.withTipoAluno(null);
         }
+        return dto;
+    }
+
+    private String statusOrPending(String status) {
+        return status != null ? status : "PENDENTE";
     }
 
     public void delete(Long id) {
@@ -248,11 +254,11 @@ public class UserInfoService {
         UserInfo user = repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado com ID: " + id));
 
-        if (!user.getPassword().equals(request.getCurrentPassWord())) {
+        if (!user.getPassword().equals(request.currentPassWord())) {
             throw new IllegalArgumentException("Senha atual incorreta.");
         }
         user.setFirstLogin(false);
-        user.setPassword(request.getNewPassword());
+        user.setPassword(request.newPassword());
         repository.save(user);
     }
 

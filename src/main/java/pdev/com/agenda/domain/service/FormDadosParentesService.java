@@ -44,22 +44,22 @@ public class FormDadosParentesService {
     @Transactional
     public FormDadosParentesDTO create(FormDadosParentesDTO dto) {
         UserInfo user = new UserInfo();
-        user.setId(dto.getUserId());
+        user.setId(dto.userId());
 
         Optional<FormDadosParentes> existente = repository.findByUser(user);
 
         FormDadosParentes entity;
         if (existente.isPresent()) {
             entity = existente.get();
-            entity.setParent1Cpf(dto.getParent1Cpf());
-            entity.setParent1FullName(dto.getParent1FullName());
-            entity.setParent1Phone(dto.getParent1Phone());
-            entity.setParent1MaritalStatus(dto.getParent1MaritalStatus());
-            entity.setParent2Cpf(dto.getParent2Cpf());
-            entity.setParent2FullName(dto.getParent2FullName());
-            entity.setParent2Phone(dto.getParent2Phone());
-            entity.setParent2MaritalStatus(dto.getParent2MaritalStatus());
-            entity.setResidesWithBothParents(dto.getResidesWithBothParents());
+            entity.setParent1Cpf(dto.parent1Cpf());
+            entity.setParent1FullName(dto.parent1FullName());
+            entity.setParent1Phone(dto.parent1Phone());
+            entity.setParent1MaritalStatus(dto.parent1MaritalStatus());
+            entity.setParent2Cpf(dto.parent2Cpf());
+            entity.setParent2FullName(dto.parent2FullName());
+            entity.setParent2Phone(dto.parent2Phone());
+            entity.setParent2MaritalStatus(dto.parent2MaritalStatus());
+            entity.setResidesWithBothParents(dto.residesWithBothParents());
         } else {
             entity = mapper.toEntity(dto);
             entity.setId(null);

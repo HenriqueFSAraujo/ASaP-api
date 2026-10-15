@@ -14,26 +14,26 @@ public class FormDadosPessoaisMapper {
             return null;
         }
         FormDadosPessoais entity = new FormDadosPessoais();
-        entity.setId(dto.getId());
-        entity.setFullName(dto.getFullName());
-        entity.setCpf(dto.getCpf());
-        entity.setRg(dto.getRg());
-        entity.setNacionalidade(dto.getNacionalidade());
-        entity.setNaturalidade(dto.getNaturalidade());
-        entity.setCor(dto.getCor());
-        entity.setPhone(dto.getPhone());
-        entity.setGender(dto.getGender());
-        entity.setCpfBolsista(dto.getCpfBolsista());
-        entity.setDataNascimento(dto.getDataNascimento());
-        entity.setNumEducasenso(dto.getNumEducasenso());
-        entity.setPcd(dto.getPcd());
-        entity.setStatus(dto.getStatus());
+        entity.setId(dto.id());
+        entity.setFullName(dto.fullName());
+        entity.setCpf(dto.cpf());
+        entity.setRg(dto.rg());
+        entity.setNacionalidade(dto.nacionalidade());
+        entity.setNaturalidade(dto.naturalidade());
+        entity.setCor(dto.cor());
+        entity.setPhone(dto.phone());
+        entity.setGender(dto.gender());
+        entity.setCpfBolsista(dto.cpfBolsista());
+        entity.setDataNascimento(dto.dataNascimento());
+        entity.setNumEducasenso(dto.numEducasenso());
+        entity.setPcd(dto.pcd());
+        entity.setStatus(dto.status());
         UserInfo user = new UserInfo();
-        user.setId(dto.getUserId());
+        user.setId(dto.userId());
         entity.setUser(user);
-        if (dto.getEscolaId() != null) {
+        if (dto.escolaId() != null) {
             Escola escola = new Escola();
-            escola.setId(dto.getEscolaId());
+            escola.setId(dto.escolaId());
             entity.setEscola(escola);
         }
         return entity;
@@ -43,29 +43,25 @@ public class FormDadosPessoaisMapper {
         if (entity == null) {
             return null;
         }
-        FormDadosPessoaisDTO dto = new FormDadosPessoaisDTO();
-        dto.setId(entity.getId());
-        dto.setFullName(entity.getFullName());
-        dto.setEmail(entity.getEmail());
-        dto.setCpf(entity.getCpf());
-        dto.setRg(entity.getRg());
-        dto.setNacionalidade(entity.getNacionalidade());
-        dto.setNaturalidade(entity.getNaturalidade());
-        dto.setCor(entity.getCor());
-        dto.setPhone(entity.getPhone());
-        dto.setGender(entity.getGender());
-        dto.setCpfBolsista(entity.getCpfBolsista());
-        dto.setDataNascimento(entity.getDataNascimento());
-        dto.setNumEducasenso(entity.getNumEducasenso());
-        dto.setPcd(entity.getPcd());
-        dto.setStatus(entity.getStatus());
-        if (entity.getUser() != null) {
-            dto.setUserId(entity.getUser().getId());
-        }
-        if (entity.getEscola() != null) {
-            dto.setEscolaId(entity.getEscola().getId());
-            dto.setTipoEscola(entity.getEscola().getTipo());
-        }
-        return dto;
+        return new FormDadosPessoaisDTO(
+                entity.getId(),
+                entity.getFullName(),
+                entity.getEmail(),
+                entity.getCpf(),
+                entity.getRg(),
+                entity.getNacionalidade(),
+                entity.getNaturalidade(),
+                entity.getCor(),
+                entity.getPhone(),
+                entity.getGender(),
+                entity.getCpfBolsista(),
+                entity.getDataNascimento(),
+                entity.getPcd(),
+                entity.getNumEducasenso(),
+                entity.getStatus(),
+                entity.getUser() != null ? entity.getUser().getId() : null,
+                entity.getEscola() != null ? entity.getEscola().getId() : null,
+                entity.getEscola() != null ? entity.getEscola().getTipo() : null
+        );
     }
 }

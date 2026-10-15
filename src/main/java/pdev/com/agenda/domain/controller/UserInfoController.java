@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pdev.com.agenda.domain.UserInfoResponse;
 import pdev.com.agenda.domain.dto.ResetPasswordRequest;
 import pdev.com.agenda.domain.dto.StatusDTO;
 import pdev.com.agenda.domain.dto.UserInfoDTO;
@@ -36,7 +35,7 @@ public class UserInfoController {
     private final UserInfoService userInfoService;
 
     @GetMapping
-    public ResponseEntity<List<UserInfoResponse>> getAllUsers() {
+    public ResponseEntity<List<UserInfoDTO>> getAllUsers() {
         return ResponseEntity.ok(userInfoService.findAll());
     }
 
@@ -71,9 +70,9 @@ public class UserInfoController {
 
     @PutMapping("/status/{id}")
     public ResponseEntity<String> changeUserStatus(@PathVariable Long id,
-                                                   @RequestBody StatusDTO statusDTO) {
-        userInfoService.changeUserStatus(id, statusDTO.isActive());
-        String status = statusDTO.isActive() ? "ativado" : "desativado";
+                                                   @Valid @RequestBody StatusDTO statusDTO) {
+        userInfoService.changeUserStatus(id, statusDTO.active());
+        String status = statusDTO.active() ? "ativado" : "desativado";
         return ResponseEntity.ok("Usuário " + status + " com sucesso.");
     }
 }

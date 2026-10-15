@@ -44,13 +44,13 @@ public class DeclaracaoService {
      */
     @Transactional
     public DeclaracaoDTO save(DeclaracaoDTO declaracaoDTO) {
-        if (declaracaoDTO.getUserId() == null) {
+        if (declaracaoDTO.userId() == null) {
             // Sem vínculo a usuário — comportamento antigo (sem upsert).
             Declaracao novo = convertToEntity(declaracaoDTO);
             return convertToDTO(declaracaoRepository.save(novo));
         }
 
-        List<Declaracao> existentes = declaracaoRepository.findByUser_Id(declaracaoDTO.getUserId())
+        List<Declaracao> existentes = declaracaoRepository.findByUser_Id(declaracaoDTO.userId())
                 .stream()
                 .sorted(Comparator.comparingLong(Declaracao::getId).reversed())
                 .collect(Collectors.toList());
@@ -81,38 +81,36 @@ public class DeclaracaoService {
 
     /** Aplica os campos do DTO sobre uma entidade já existente (usado no upsert). */
     private void applyDtoToEntity(DeclaracaoDTO dto, Declaracao entity) {
-        entity.setNomeDeclarante(dto.getNomeDeclarante());
-        entity.setRgDeclarante(dto.getRgDeclarante());
-        entity.setCpfDeclarante(dto.getCpfDeclarante());
-        entity.setNomeAluno(dto.getNomeAluno());
-        entity.setAceiteTermos(dto.getAceiteTermos());
+        entity.setNomeDeclarante(dto.nomeDeclarante());
+        entity.setRgDeclarante(dto.rgDeclarante());
+        entity.setCpfDeclarante(dto.cpfDeclarante());
+        entity.setNomeAluno(dto.nomeAluno());
+        entity.setAceiteTermos(dto.aceiteTermos());
     }
 
     private DeclaracaoDTO convertToDTO(Declaracao declaracao) {
-        DeclaracaoDTO dto = new DeclaracaoDTO();
-        dto.setId(declaracao.getId());
-        dto.setNomeDeclarante(declaracao.getNomeDeclarante());
-        dto.setRgDeclarante(declaracao.getRgDeclarante());
-        dto.setCpfDeclarante(declaracao.getCpfDeclarante());
-        dto.setNomeAluno(declaracao.getNomeAluno());
-        dto.setAceiteTermos(declaracao.getAceiteTermos());
-        if (declaracao.getUser() != null) {
-            dto.setUserId(declaracao.getUser().getId());
-        }
-        return dto;
+        return new DeclaracaoDTO(
+                declaracao.getId(),
+                declaracao.getNomeDeclarante(),
+                declaracao.getRgDeclarante(),
+                declaracao.getCpfDeclarante(),
+                declaracao.getNomeAluno(),
+                declaracao.getAceiteTermos(),
+                declaracao.getUser() != null ? declaracao.getUser().getId() : null
+        );
     }
 
     private Declaracao convertToEntity(DeclaracaoDTO dto) {
         Declaracao declaracao = new Declaracao();
-        declaracao.setId(dto.getId());
-        declaracao.setNomeDeclarante(dto.getNomeDeclarante());
-        declaracao.setRgDeclarante(dto.getRgDeclarante());
-        declaracao.setCpfDeclarante(dto.getCpfDeclarante());
-        declaracao.setNomeAluno(dto.getNomeAluno());
-        declaracao.setAceiteTermos(dto.getAceiteTermos());
-        if (dto.getUserId() != null) {
+        declaracao.setId(dto.id());
+        declaracao.setNomeDeclarante(dto.nomeDeclarante());
+        declaracao.setRgDeclarante(dto.rgDeclarante());
+        declaracao.setCpfDeclarante(dto.cpfDeclarante());
+        declaracao.setNomeAluno(dto.nomeAluno());
+        declaracao.setAceiteTermos(dto.aceiteTermos());
+        if (dto.userId() != null) {
             pdev.com.agenda.domain.entity.UserInfo user = new pdev.com.agenda.domain.entity.UserInfo();
-            user.setId(dto.getUserId());
+            user.setId(dto.userId());
             declaracao.setUser(user);
         }
         return declaracao;

@@ -1,24 +1,22 @@
 package pdev.com.agenda.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import pdev.com.agenda.util.FlexibleLocalDateDeserializer;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
-public class ComposicaoFamiliarDTO {
-
-    private Long id;
-    private String nome;
-    private Integer idade;
-    private String parentesco;
-    private String nomeCompleto;
-    private String escolaridade;
-    private String grauParentesco;
-    private LocalDate dataNascimento;
-    private String profissaoAtiva;
-    private String estadoCivil;
-    private BigDecimal salarioBruto;
+public record ComposicaoFamiliarDTO(
+        Long id,
+        String nome,
+        Integer idade,
+        String parentesco,
+        String nomeCompleto,
+        String escolaridade,
+        String grauParentesco,
+        @JsonDeserialize(using = FlexibleLocalDateDeserializer.class) LocalDate dataNascimento,
+        String profissaoAtiva,
+        String estadoCivil,
+        BigDecimal salarioBruto
+) {
 }

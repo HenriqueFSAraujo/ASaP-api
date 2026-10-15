@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
@@ -51,6 +52,13 @@ public class GlobalExceptionHandler {
                 .collect(Collectors.toList());
         log.warn("Validation failed: {} field error(s)", fieldErrors.size());
         return buildResponse(HttpStatus.BAD_REQUEST, "Erro de validação nos campos enviados.", request, fieldErrors);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> handleUnreadableMessage(HttpMessageNotReadableException ex,
+                                                                  WebRequest request) {
+        log.warn("Invalid request body at {}", extractPath(request));
+        return buildResponse(HttpStatus.BAD_REQUEST, "Corpo da requisição inválido.", request, null);
     }
 
     @ExceptionHandler({EntityNotFoundException.class, UsernameNotFoundException.class})

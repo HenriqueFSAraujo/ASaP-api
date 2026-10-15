@@ -1,45 +1,21 @@
 package pdev.com.agenda.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class FormDadosParentesDTO {
-
-     private Long id;
-
-    @JsonProperty("parent1Cpf")
-    private String parent1Cpf;
-
-    @JsonProperty ( "parent1FullName" )
-    private String parent1FullName;
-
-    @JsonProperty("parent1Phone" )
-    private String parent1Phone;
-
-    @JsonProperty ( "parent1MaritalStatus" )
-    private String parent1MaritalStatus;
-
-    @JsonProperty( "parent2Cpf")
-    private String parent2Cpf;
-
-    @JsonProperty ( "parent2FullName" )
-    private String parent2FullName;
-
-    @JsonProperty ( "parent2Phone" )
-    private String parent2Phone;
-
-    @JsonProperty ( "parent2MaritalStatus" )
-    private String parent2MaritalStatus;
-
-    @JsonProperty ("residesWithBothParents" )
-    private String residesWithBothParents;
-
-    private Long userId;
+public record FormDadosParentesDTO(
+        Long id,
+        @JsonProperty("parent1Cpf") String parent1Cpf,
+        @JsonProperty("parent1FullName") String parent1FullName,
+        @JsonProperty("parent1Phone") String parent1Phone,
+        @JsonProperty("parent1MaritalStatus") String parent1MaritalStatus,
+        @JsonProperty("parent2Cpf") String parent2Cpf,
+        @JsonProperty("parent2FullName") String parent2FullName,
+        @JsonProperty("parent2Phone") String parent2Phone,
+        @JsonProperty("parent2MaritalStatus") String parent2MaritalStatus,
+        @NotBlank(message = "É obrigatório informar se o candidato reside com os dois genitores.")
+        @JsonProperty("residesWithBothParents") String residesWithBothParents,
+        @NotNull(message = "O usuário é obrigatório.") Long userId
+) {
 }

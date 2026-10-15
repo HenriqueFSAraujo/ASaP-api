@@ -1,5 +1,6 @@
 package pdev.com.agenda.domain.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +20,7 @@ public class BensPossesController {
     private final BensPossesService bensPossesService;
 
     @PostMapping
-    public ResponseEntity<Void> salvar(@RequestBody BensPossesCompletoDTO dto) {
+    public ResponseEntity<Void> salvar(@Valid @RequestBody BensPossesCompletoDTO dto) {
         bensPossesService.salvarCompleto(dto);
         return ResponseEntity.ok().build();
     }

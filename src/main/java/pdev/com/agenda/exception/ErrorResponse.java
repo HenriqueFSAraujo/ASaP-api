@@ -2,7 +2,6 @@ package pdev.com.agenda.exception;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
-import lombok.Getter;
 
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -22,22 +21,18 @@ import java.util.List;
  * }
  * </pre>
  */
-@Getter
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ErrorResponse {
+public record ErrorResponse(
+        OffsetDateTime timestamp,
+        int status,
+        String error,
+        String message,
+        String path,
+        List<FieldError> fieldErrors
+) {
 
-    private final OffsetDateTime timestamp;
-    private final int status;
-    private final String error;
-    private final String message;
-    private final String path;
-    private final List<FieldError> fieldErrors;
-
-    @Getter
     @Builder
-    public static class FieldError {
-        private final String field;
-        private final String message;
+    public record FieldError(String field, String message) {
     }
 }

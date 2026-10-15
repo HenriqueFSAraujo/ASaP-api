@@ -25,28 +25,28 @@ public class FormEnderecoCandidatoService {
     @Transactional
     public FormEnderecoCandidatoDTO criarEndereco(FormEnderecoCandidatoDTO enderecoDTO) {
         UserInfo user = new UserInfo();
-        user.setId(enderecoDTO.getUserId());
+        user.setId(enderecoDTO.userId());
         Optional<FormEnderecoCandidato> existente = enderecoRepository.findByUser(user);
         FormEnderecoCandidato endereco;
         if (existente.isPresent()) {
             endereco = existente.get();
-            endereco.setActivityDescription(enderecoDTO.getActivityDescription());
-            endereco.setAddress(enderecoDTO.getAddress());
-            endereco.setAfterSchoolActivities(enderecoDTO.getAfterSchoolActivities());
-            endereco.setCity(enderecoDTO.getCity());
-            endereco.setCommutingTime(enderecoDTO.getCommutingTime());
-            endereco.setElectricitySource(enderecoDTO.getElectricitySource());
-            endereco.setHasSewage(enderecoDTO.getHasSewage());
-            endereco.setNeighborhood(enderecoDTO.getNeighborhood());
-            endereco.setReferencePoint(enderecoDTO.getReferencePoint());
-            endereco.setResidenceType(enderecoDTO.getResidenceType());
-            endereco.setStructureType(enderecoDTO.getStructureType());
-            endereco.setStructureTypeOthers(enderecoDTO.getStructureTypeOthers());
-            endereco.setTransportType(enderecoDTO.getTransportType());
-            endereco.setTransportTypeOthers(enderecoDTO.getTransportTypeOthers());
-            endereco.setWaterSupply(enderecoDTO.getWaterSupply());
-            endereco.setWeeklyFrequency(enderecoDTO.getWeeklyFrequency());
-            endereco.setZipCode(enderecoDTO.getZipCode());
+            endereco.setActivityDescription(enderecoDTO.activityDescription());
+            endereco.setAddress(enderecoDTO.address());
+            endereco.setAfterSchoolActivities(enderecoDTO.afterSchoolActivities());
+            endereco.setCity(enderecoDTO.city());
+            endereco.setCommutingTime(enderecoDTO.commutingTime());
+            endereco.setElectricitySource(enderecoDTO.electricitySource());
+            endereco.setHasSewage(enderecoDTO.hasSewage());
+            endereco.setNeighborhood(enderecoDTO.neighborhood());
+            endereco.setReferencePoint(enderecoDTO.referencePoint());
+            endereco.setResidenceType(enderecoDTO.residenceType());
+            endereco.setStructureType(enderecoDTO.structureType());
+            endereco.setStructureTypeOthers(enderecoDTO.structureTypeOthers());
+            endereco.setTransportType(enderecoDTO.transportType());
+            endereco.setTransportTypeOthers(enderecoDTO.transportTypeOthers());
+            endereco.setWaterSupply(enderecoDTO.waterSupply());
+            endereco.setWeeklyFrequency(enderecoDTO.weeklyFrequency());
+            endereco.setZipCode(enderecoDTO.zipCode());
             endereco.setStatus("PENDENTE");
         } else {
             endereco = enderecoMapper.toEntity(enderecoDTO);
@@ -71,23 +71,23 @@ public class FormEnderecoCandidatoService {
         FormEnderecoCandidato enderecoExistente = enderecoRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Endereço não encontrado com ID: " + id));
 
-        enderecoExistente.setActivityDescription(enderecoDTO.getActivityDescription());
-        enderecoExistente.setAddress(enderecoDTO.getAddress());
-        enderecoExistente.setAfterSchoolActivities(enderecoDTO.getAfterSchoolActivities());
-        enderecoExistente.setCity(enderecoDTO.getCity());
-        enderecoExistente.setCommutingTime(enderecoDTO.getCommutingTime());
-        enderecoExistente.setElectricitySource(enderecoDTO.getElectricitySource());
-        enderecoExistente.setHasSewage(enderecoDTO.getHasSewage());
-        enderecoExistente.setNeighborhood(enderecoDTO.getNeighborhood());
-        enderecoExistente.setReferencePoint(enderecoDTO.getReferencePoint());
-        enderecoExistente.setResidenceType(enderecoDTO.getResidenceType());
-        enderecoExistente.setStructureType(enderecoDTO.getStructureType());
-        enderecoExistente.setStructureTypeOthers(enderecoDTO.getStructureTypeOthers());
-        enderecoExistente.setTransportType(enderecoDTO.getTransportType());
-        enderecoExistente.setTransportTypeOthers(enderecoDTO.getTransportTypeOthers());
-        enderecoExistente.setWaterSupply(enderecoDTO.getWaterSupply());
-        enderecoExistente.setWeeklyFrequency(enderecoDTO.getWeeklyFrequency());
-        enderecoExistente.setZipCode(enderecoDTO.getZipCode());
+        enderecoExistente.setActivityDescription(enderecoDTO.activityDescription());
+        enderecoExistente.setAddress(enderecoDTO.address());
+        enderecoExistente.setAfterSchoolActivities(enderecoDTO.afterSchoolActivities());
+        enderecoExistente.setCity(enderecoDTO.city());
+        enderecoExistente.setCommutingTime(enderecoDTO.commutingTime());
+        enderecoExistente.setElectricitySource(enderecoDTO.electricitySource());
+        enderecoExistente.setHasSewage(enderecoDTO.hasSewage());
+        enderecoExistente.setNeighborhood(enderecoDTO.neighborhood());
+        enderecoExistente.setReferencePoint(enderecoDTO.referencePoint());
+        enderecoExistente.setResidenceType(enderecoDTO.residenceType());
+        enderecoExistente.setStructureType(enderecoDTO.structureType());
+        enderecoExistente.setStructureTypeOthers(enderecoDTO.structureTypeOthers());
+        enderecoExistente.setTransportType(enderecoDTO.transportType());
+        enderecoExistente.setTransportTypeOthers(enderecoDTO.transportTypeOthers());
+        enderecoExistente.setWaterSupply(enderecoDTO.waterSupply());
+        enderecoExistente.setWeeklyFrequency(enderecoDTO.weeklyFrequency());
+        enderecoExistente.setZipCode(enderecoDTO.zipCode());
         enderecoExistente.setStatus("PENDENTE");
 
         FormEnderecoCandidato enderecoAtualizado = enderecoRepository.save(enderecoExistente);

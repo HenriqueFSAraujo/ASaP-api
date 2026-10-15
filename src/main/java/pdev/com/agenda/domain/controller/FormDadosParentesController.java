@@ -1,5 +1,6 @@
 package pdev.com.agenda.domain.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,12 +27,12 @@ public class FormDadosParentesController {
     }
 
     @PostMapping
-    public ResponseEntity<FormDadosParentesDTO> create(@RequestBody FormDadosParentesDTO createDTO) {
+    public ResponseEntity<FormDadosParentesDTO> create(@Valid @RequestBody FormDadosParentesDTO createDTO) {
         return ResponseEntity.ok(service.create(createDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<FormDadosParentesDTO> update(@PathVariable Long id, @RequestBody FormDadosParentesDTO updateDTO) {
+    public ResponseEntity<FormDadosParentesDTO> update(@PathVariable Long id, @Valid @RequestBody FormDadosParentesDTO updateDTO) {
         return ResponseEntity.ok(service.update(id, updateDTO));
     }
 

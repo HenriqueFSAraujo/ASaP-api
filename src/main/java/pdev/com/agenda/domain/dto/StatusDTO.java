@@ -1,13 +1,6 @@
 package pdev.com.agenda.domain.dto;
 
-import lombok.Data;
+import jakarta.validation.constraints.NotNull;
 
-@Data
-public class StatusDTO {
-
-    private boolean active;
-
-    public boolean isActive() {
-        return active;
-    }
+public record StatusDTO(@NotNull(message = "O status ativo é obrigatório.") Boolean active) {
 }

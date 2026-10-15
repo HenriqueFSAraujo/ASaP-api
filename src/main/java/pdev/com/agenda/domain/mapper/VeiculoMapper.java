@@ -10,20 +10,20 @@ public class VeiculoMapper {
     public Veiculo toEntity(VeiculoDTO dto) {
         if (dto == null) return null;
         Veiculo veiculo = new Veiculo();
-        veiculo.setId(dto.getId());
-        veiculo.setMarcaModelo(dto.getMarcaModelo());
-        veiculo.setAnoFabricacao(dto.getAnoFabricacao());
-        veiculo.setUtilizacao(dto.getUtilizacao());
+        veiculo.setId(dto.id());
+        veiculo.setMarcaModelo(dto.marcaModelo());
+        veiculo.setAnoFabricacao(dto.anoFabricacao());
+        veiculo.setUtilizacao(dto.utilizacao());
         return veiculo;
     }
 
     public VeiculoDTO toDTO(Veiculo veiculo) {
         if (veiculo == null) return null;
-        VeiculoDTO dto = new VeiculoDTO();
-        dto.setId(veiculo.getId());
-        dto.setMarcaModelo(veiculo.getMarcaModelo());
-        dto.setAnoFabricacao(veiculo.getAnoFabricacao());
-        dto.setUtilizacao(veiculo.getUtilizacao());
-        return dto;
+        return new VeiculoDTO(
+                veiculo.getId(),
+                veiculo.getMarcaModelo(),
+                veiculo.getAnoFabricacao(),
+                veiculo.getUtilizacao()
+        );
     }
 }

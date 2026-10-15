@@ -1,5 +1,6 @@
 package pdev.com.agenda.domain.controller;
 
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,7 +25,7 @@ public class FormCondicoesHabitacionaisController {
     private FormCondicoesHabitacionaisService service;
 
     @PostMapping
-    public ResponseEntity<CondicoesHabitacionaisDTO> create(@RequestBody CondicoesHabitacionaisDTO dto) {
+    public ResponseEntity<CondicoesHabitacionaisDTO> create(@Valid @RequestBody CondicoesHabitacionaisDTO dto) {
         CondicoesHabitacionaisDTO created = service.salvarOuAtualizar(dto);
         return ResponseEntity.ok(created);
     }
@@ -44,7 +45,7 @@ public class FormCondicoesHabitacionaisController {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<FormCondicoesHabitacionais> update(@PathVariable Long id, @RequestBody CondicoesHabitacionaisDTO dto) {
+    public ResponseEntity<FormCondicoesHabitacionais> update(@PathVariable Long id, @Valid @RequestBody CondicoesHabitacionaisDTO dto) {
         FormCondicoesHabitacionais updated = service.update(id, dto);
         if (updated != null) {
             return ResponseEntity.ok(updated);

@@ -23,31 +23,31 @@ public class FormService {
     private final EscolaRepository escolaRepository;
 
     public FormDadosPessoaisDTO createDadosPessoais(FormDadosPessoaisDTO dto) {
-        Long userId = dto.getUserId();
+        Long userId = dto.userId();
         Optional<FormDadosPessoais> existente = dadosPessoaisRepository.findByUserId(userId);
         FormDadosPessoais entity;
         if (existente.isPresent()) {
             entity = existente.get();
-            entity.setFullName(dto.getFullName());
-            entity.setEmail(dto.getEmail());
-            entity.setCpf(dto.getCpf());
-            entity.setRg(dto.getRg());
-            entity.setNacionalidade(dto.getNacionalidade());
-            entity.setNaturalidade(dto.getNaturalidade());
-            entity.setCor(dto.getCor());
-            entity.setPhone(dto.getPhone());
-            entity.setGender(dto.getGender());
-            entity.setCpfBolsista(dto.getCpfBolsista());
-            entity.setDataNascimento(dto.getDataNascimento());
-            entity.setPcd(dto.getPcd());
-            entity.setStatus(dto.getStatus() != null ? dto.getStatus() : "PENDENTE");
-            entity.setNumEducasenso(dto.getNumEducasenso());
-            entity.setEscola(resolveEscola(dto.getEscolaId()));
+            entity.setFullName(dto.fullName());
+            entity.setEmail(dto.email());
+            entity.setCpf(dto.cpf());
+            entity.setRg(dto.rg());
+            entity.setNacionalidade(dto.nacionalidade());
+            entity.setNaturalidade(dto.naturalidade());
+            entity.setCor(dto.cor());
+            entity.setPhone(dto.phone());
+            entity.setGender(dto.gender());
+            entity.setCpfBolsista(dto.cpfBolsista());
+            entity.setDataNascimento(dto.dataNascimento());
+            entity.setPcd(dto.pcd());
+            entity.setStatus(dto.status() != null ? dto.status() : "PENDENTE");
+            entity.setNumEducasenso(dto.numEducasenso());
+            entity.setEscola(resolveEscola(dto.escolaId()));
 
         } else {
             entity = dadosPessoaisMapper.toEntity(dto);
             entity.setId(null);
-            entity.setEscola(resolveEscola(dto.getEscolaId()));
+            entity.setEscola(resolveEscola(dto.escolaId()));
             if (entity.getStatus() == null) {
                 entity.setStatus("PENDENTE");
             }

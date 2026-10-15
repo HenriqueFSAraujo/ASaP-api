@@ -1,5 +1,6 @@
 package pdev.com.agenda.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class DeclaracaoController {
     }
 
     @PostMapping
-    public ResponseEntity<DeclaracaoDTO> createDeclaracao(@RequestBody DeclaracaoDTO declaracaoDTO) {
+    public ResponseEntity<DeclaracaoDTO> createDeclaracao(@Valid @RequestBody DeclaracaoDTO declaracaoDTO) {
         DeclaracaoDTO createdDeclaracao = declaracaoService.save(declaracaoDTO);
         return ResponseEntity.ok(createdDeclaracao);
     }

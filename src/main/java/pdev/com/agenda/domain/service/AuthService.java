@@ -21,10 +21,10 @@ public class AuthService {
 
 
     public UserLoginResponse login(UserLoginRequest request) {
-        UserInfo user = userLoginRepository.findByUserName(request.getUserName())
+        UserInfo user = userLoginRepository.findByUserName(request.userName())
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado"));
 
-        if (!user.getPassword().equals(request.getPassword())) {
+        if (!user.getPassword().equals(request.password())) {
             throw new BadCredentialsException("Senha inválida");
         }
         String token = jwtUtil.generateToken(user);

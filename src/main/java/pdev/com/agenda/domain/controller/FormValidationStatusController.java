@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pdev.com.agenda.domain.dto.FormValidationStatusRequest;
-import pdev.com.agenda.domain.dto.FormValidationStatusResponse;
+import pdev.com.agenda.domain.dto.FormValidationStatusDTO;
 import pdev.com.agenda.domain.dto.FormValidationSummaryResponse;
 import pdev.com.agenda.domain.enuns.FormSectionEnum;
 import pdev.com.agenda.domain.service.FormValidationStatusService;
@@ -44,10 +43,10 @@ public class FormValidationStatusController {
      * (validação cross-field via {@code reviewerId}).
      */
     @PutMapping("/{userInfoId}/{section}")
-    public ResponseEntity<FormValidationStatusResponse> updateStatus(
+    public ResponseEntity<FormValidationStatusDTO> updateStatus(
             @PathVariable Long userInfoId,
             @PathVariable FormSectionEnum section,
-            @Valid @RequestBody FormValidationStatusRequest request) {
+            @Valid @RequestBody FormValidationStatusDTO request) {
         return ResponseEntity.ok(service.updateStatus(userInfoId, section, request));
     }
 }

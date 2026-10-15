@@ -1,10 +1,8 @@
 package pdev.com.agenda.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import pdev.com.agenda.domain.enuns.AbastecimentoAguaEnum;
 import pdev.com.agenda.domain.enuns.CondicoesDeSaudeCasosNaFamilia;
 import pdev.com.agenda.domain.enuns.DoencasCronicas;
@@ -14,36 +12,24 @@ import pdev.com.agenda.domain.enuns.FornecimentoEnergiaEnum;
 import pdev.com.agenda.domain.enuns.SituacaoImovelEnum;
 import pdev.com.agenda.domain.enuns.TipoImovelEnum;
 
-@Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class CondicoesHabitacionaisDTO {
-
-    @JsonProperty("situacaoImovel")
-    private SituacaoImovelEnum situacaoImovel;
-
-    @JsonProperty("tipoImovel")
-    private TipoImovelEnum tipoImovel;
-
-    @JsonProperty("estruturaFisica")
-    private EstruturaFisicaEnum estruturaFisica;
-
-    @JsonProperty("esgotoSanitario")
-    private EsgotoSanitarioEnum esgotoSanitario;
-
-    @JsonProperty("fornecimentoEnergia")
-    private FornecimentoEnergiaEnum fornecimentoEnergia;
-
-    @JsonProperty("abastecimentoAgua")
-    private AbastecimentoAguaEnum abastecimentoAgua;
-
-    @JsonProperty("CondicoesDeSaudeCasosNaFamilia")
-    private CondicoesDeSaudeCasosNaFamilia CondicoesDeSaudeCasosNaFamilia;
-
-    @JsonProperty("doencasCronicas")
-    private DoencasCronicas doencasCronicas;
-
-
-    private Long userId;
+public record CondicoesHabitacionaisDTO(
+        @NotNull(message = "A situação do imóvel é obrigatória.")
+        @JsonProperty("situacaoImovel") SituacaoImovelEnum situacaoImovel,
+        @NotNull(message = "O tipo do imóvel é obrigatório.")
+        @JsonProperty("tipoImovel") TipoImovelEnum tipoImovel,
+        @NotNull(message = "A estrutura física é obrigatória.")
+        @JsonProperty("estruturaFisica") EstruturaFisicaEnum estruturaFisica,
+        @NotNull(message = "A condição do esgoto sanitário é obrigatória.")
+        @JsonProperty("esgotoSanitario") EsgotoSanitarioEnum esgotoSanitario,
+        @NotNull(message = "O fornecimento de energia é obrigatório.")
+        @JsonProperty("fornecimentoEnergia") FornecimentoEnergiaEnum fornecimentoEnergia,
+        @NotNull(message = "O abastecimento de água é obrigatório.")
+        @JsonProperty("abastecimentoAgua") AbastecimentoAguaEnum abastecimentoAgua,
+        @NotNull(message = "A condição de saúde da família é obrigatória.")
+        @JsonProperty("CondicoesDeSaudeCasosNaFamilia") CondicoesDeSaudeCasosNaFamilia CondicoesDeSaudeCasosNaFamilia,
+        @NotNull(message = "A informação sobre doenças crônicas é obrigatória.")
+        @JsonProperty("doencasCronicas") DoencasCronicas doencasCronicas,
+        @NotNull(message = "O usuário é obrigatório.") Long userId
+) {
 }

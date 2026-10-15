@@ -40,9 +40,9 @@ public class BensPossesService {
 
     @Transactional
     public BensPosses salvarCompleto(BensPossesCompletoDTO dto) {
-        UserInfo user = userInfoRepository.findById(dto.getUserInfoId())
+        UserInfo user = userInfoRepository.findById(dto.userInfoId())
                 .orElseThrow(() -> new EntityNotFoundException(
-                        "Usuario nao encontrado com ID: " + dto.getUserInfoId()));
+                        "Usuario nao encontrado com ID: " + dto.userInfoId()));
 
         List<BensPosses> existentes = bensPossesRepository
                 .findAllWithItensByUserInfoIdOrderByIdDesc(user.getId());
@@ -91,8 +91,8 @@ public class BensPossesService {
         Set<Veiculo> target = ensureSet(bens.getVeiculos());
         bens.setVeiculos(target);
         target.clear();
-        if (dto.getVeiculos() == null) return;
-        dto.getVeiculos().forEach(v -> {
+        if (dto.veiculos() == null) return;
+        dto.veiculos().forEach(v -> {
             Veiculo entity = veiculoMapper.toEntity(v);
             entity.setId(null);
             entity.setBensPosses(bens);
@@ -104,8 +104,8 @@ public class BensPossesService {
         Set<FamiliarEscolaParticular> target = ensureSet(bens.getFamiliaresEscola());
         bens.setFamiliaresEscola(target);
         target.clear();
-        if (dto.getFamiliaresEscola() == null) return;
-        dto.getFamiliaresEscola().forEach(f -> {
+        if (dto.familiaresEscola() == null) return;
+        dto.familiaresEscola().forEach(f -> {
             FamiliarEscolaParticular entity = familiarMapper.toEntity(f);
             entity.setId(null);
             entity.setBensPosses(bens);
@@ -117,8 +117,8 @@ public class BensPossesService {
         Set<PessoaComDeficiencia> target = ensureSet(bens.getPessoasComDeficiencia());
         bens.setPessoasComDeficiencia(target);
         target.clear();
-        if (dto.getPessoasComDeficiencia() == null) return;
-        dto.getPessoasComDeficiencia().forEach(p -> {
+        if (dto.pessoasComDeficiencia() == null) return;
+        dto.pessoasComDeficiencia().forEach(p -> {
             PessoaComDeficiencia entity = deficienciaMapper.toEntity(p);
             entity.setId(null);
             entity.setBensPosses(bens);
@@ -130,8 +130,8 @@ public class BensPossesService {
         Set<DespesaMensal> target = ensureSet(bens.getDespesasMensais());
         bens.setDespesasMensais(target);
         target.clear();
-        if (dto.getDespesasMensais() == null) return;
-        dto.getDespesasMensais().forEach(d -> {
+        if (dto.despesasMensais() == null) return;
+        dto.despesasMensais().forEach(d -> {
             DespesaMensal entity = despesaMapper.toEntity(d);
             entity.setId(null);
             entity.setBensPosses(bens);
