@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import pdev.com.agenda.domain.dto.CondicoesHabitacionaisDTO;
 import pdev.com.agenda.domain.entity.FormCondicoesHabitacionais;
 import pdev.com.agenda.domain.entity.UserInfo;
+import pdev.com.agenda.domain.mapper.FormCondicoesHabitacionaisMapper;
 import pdev.com.agenda.domain.repository.FormCondicoesHabitacionaisRepository;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -18,6 +19,7 @@ import java.util.Optional;
 public class FormCondicoesHabitacionaisService {
 
     private final FormCondicoesHabitacionaisRepository repository;
+    private final FormCondicoesHabitacionaisMapper mapper;
 
 
     @Transactional
@@ -30,45 +32,21 @@ public class FormCondicoesHabitacionaisService {
         FormCondicoesHabitacionais entidade;
         if (existente.isPresent()) {
             entidade = existente.get();
-            entidade.setSituacaoImovel(dto.situacaoImovel());
-            entidade.setTipoImovel(dto.tipoImovel());
-            entidade.setEstruturaFisica(dto.estruturaFisica());
-            entidade.setEsgotoSanitario(dto.esgotoSanitario());
-            entidade.setFornecimentoEnergia(dto.fornecimentoEnergia());
-            entidade.setAbastecimentoAgua(dto.abastecimentoAgua());
-            entidade.setDoencasCronicas(dto.doencasCronicas());
-            entidade.setCondicoesDeSaudeCasosNaFamilia(dto.CondicoesDeSaudeCasosNaFamilia());
+            mapper.updateEntityFromDTO(dto, entidade);
         } else {
-            entidade = new FormCondicoesHabitacionais();
-            entidade.setSituacaoImovel(dto.situacaoImovel());
-            entidade.setTipoImovel(dto.tipoImovel());
-            entidade.setEstruturaFisica(dto.estruturaFisica());
-            entidade.setEsgotoSanitario(dto.esgotoSanitario());
-            entidade.setFornecimentoEnergia(dto.fornecimentoEnergia());
-            entidade.setAbastecimentoAgua(dto.abastecimentoAgua());
-            entidade.setDoencasCronicas(dto.doencasCronicas());
-            entidade.setCondicoesDeSaudeCasosNaFamilia(dto.CondicoesDeSaudeCasosNaFamilia());
+            entidade = mapper.toEntity(dto);
             entidade.setUser(user);
             entidade.setStatus("ATIVO");
         }
 
         FormCondicoesHabitacionais salvo = repository.save(entidade);
-        return CondicoesHabitacionaisDTO.builder()
-                .situacaoImovel(salvo.getSituacaoImovel())
-                .tipoImovel(salvo.getTipoImovel())
-                .estruturaFisica(salvo.getEstruturaFisica())
-                .esgotoSanitario(salvo.getEsgotoSanitario())
-                .fornecimentoEnergia(salvo.getFornecimentoEnergia())
-                .abastecimentoAgua(salvo.getAbastecimentoAgua())
-                .CondicoesDeSaudeCasosNaFamilia(salvo.getCondicoesDeSaudeCasosNaFamilia())
-                .doencasCronicas(salvo.getDoencasCronicas())
-                .userId(salvo.getUser().getId())
-                .build();
+        return mapper.toDTO(salvo);
     }
 
     @Transactional
-    public Optional<FormCondicoesHabitacionais> getByUserId(Long userId) {
+    public Optional<CondicoesHabitacionaisDTO> getByUserId(Long userId) {
         return repository.findByUser_Id(userId)
+                .map(mapper::toDTO)
                 .or(() -> {
                     throw new EntityNotFoundException(
                             "Condições habitacionais não encontradas para o usuário: " + userId
@@ -83,14 +61,7 @@ public class FormCondicoesHabitacionaisService {
         Optional<FormCondicoesHabitacionais> optionalEntity = repository.findById(id);
         if (optionalEntity.isPresent()) {
             FormCondicoesHabitacionais entity = optionalEntity.get();
-            entity.setSituacaoImovel(dto.situacaoImovel());
-            entity.setTipoImovel(dto.tipoImovel());
-            entity.setEstruturaFisica(dto.estruturaFisica());
-            entity.setEsgotoSanitario(dto.esgotoSanitario());
-            entity.setFornecimentoEnergia(dto.fornecimentoEnergia());
-            entity.setAbastecimentoAgua(dto.abastecimentoAgua());
-            entity.setDoencasCronicas(dto.doencasCronicas());
-            entity.setCondicoesDeSaudeCasosNaFamilia(dto.CondicoesDeSaudeCasosNaFamilia());
+            mapper.updateEntityFromDTO(dto, entity);
             entity.setStatus("PENDENTE");
             return repository.save(entity);
         }

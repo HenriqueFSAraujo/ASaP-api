@@ -1,24 +1,19 @@
 package pdev.com.agenda.domain.mapper;
 
-
-import org.springframework.stereotype.Component;
+import org.mapstruct.BeanMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 import pdev.com.agenda.domain.dto.DespesaMensalDTO;
 import pdev.com.agenda.domain.entity.DespesaMensal;
 
-@Component
-public class DespesaMensalMapper {
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
+public interface DespesaMensalMapper {
 
-    public DespesaMensal toEntity(DespesaMensalDTO dto) {
-        if (dto == null) return null;
-        DespesaMensal entity = new DespesaMensal();
-        entity.setId(dto.id());
-        entity.setDescricao(dto.descricao());
-        entity.setValor(dto.valor());
-        return entity;
-    }
+    @Mapping(target = "bensPosses", ignore = true)
+    @Mapping(target = "status", ignore = true)
+    DespesaMensal toEntity(DespesaMensalDTO dto);
 
-    public DespesaMensalDTO toDTO(DespesaMensal entity) {
-        if (entity == null) return null;
-        return new DespesaMensalDTO(entity.getId(), entity.getDescricao(), entity.getValor());
-    }
+    @BeanMapping(ignoreUnmappedSourceProperties = {"bensPosses", "status"})
+    DespesaMensalDTO toDTO(DespesaMensal entity);
 }

@@ -31,7 +31,7 @@ public class FormCondicoesHabitacionaisController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<FormCondicoesHabitacionais> getById(@PathVariable Long id) {
+    public ResponseEntity<CondicoesHabitacionaisDTO> getById(@PathVariable Long id) {
         return service.getByUserId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());

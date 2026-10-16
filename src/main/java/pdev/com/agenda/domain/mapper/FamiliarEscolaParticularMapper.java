@@ -1,29 +1,19 @@
 package pdev.com.agenda.domain.mapper;
 
-import org.springframework.stereotype.Component;
+import org.mapstruct.BeanMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 import pdev.com.agenda.domain.dto.FamiliarEscolaParticularDTO;
 import pdev.com.agenda.domain.entity.FamiliarEscolaParticular;
 
-@Component
-public class FamiliarEscolaParticularMapper {
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
+public interface FamiliarEscolaParticularMapper {
 
-    public FamiliarEscolaParticular toEntity(FamiliarEscolaParticularDTO dto) {
-        if (dto == null) return null;
-        FamiliarEscolaParticular entity = new FamiliarEscolaParticular();
-        entity.setId(dto.id());
-        entity.setNome(dto.nome());
-        entity.setEscola(dto.escola());
-        entity.setValorMensal(dto.valorMensal());
-        return entity;
-    }
+    @Mapping(target = "bensPosses", ignore = true)
+    @Mapping(target = "status", ignore = true)
+    FamiliarEscolaParticular toEntity(FamiliarEscolaParticularDTO dto);
 
-    public FamiliarEscolaParticularDTO toDTO(FamiliarEscolaParticular entity) {
-        if (entity == null) return null;
-        return new FamiliarEscolaParticularDTO(
-                entity.getId(),
-                entity.getNome(),
-                entity.getEscola(),
-                entity.getValorMensal()
-        );
-    }
+    @BeanMapping(ignoreUnmappedSourceProperties = {"bensPosses", "status"})
+    FamiliarEscolaParticularDTO toDTO(FamiliarEscolaParticular entity);
 }

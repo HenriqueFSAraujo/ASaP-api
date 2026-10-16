@@ -1,6 +1,7 @@
 package pdev.com.agenda.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -20,11 +21,14 @@ public record FormDadosPessoaisDTO(
         @JsonProperty("cpf") String cpf,
         @JsonProperty("rg") String rg,
         @NotBlank(message = "A nacionalidade é obrigatória.")
-        @JsonProperty("nacionalidade") String nacionalidade,
+        @JsonProperty("nationality")
+        @JsonAlias("nacionalidade") String nacionalidade,
         @NotBlank(message = "A naturalidade é obrigatória.")
-        @JsonProperty("naturalidade") String naturalidade,
+        @JsonProperty("birthplace")
+        @JsonAlias("naturalidade") String naturalidade,
         @NotBlank(message = "Raça/cor é obrigatória.")
-        @JsonProperty("cor") String cor,
+        @JsonProperty("race")
+        @JsonAlias("cor") String cor,
         @NotBlank(message = "O celular é obrigatório.")
         @JsonProperty("phone") String phone,
         @NotBlank(message = "O gênero é obrigatório.")
@@ -41,7 +45,6 @@ public record FormDadosPessoaisDTO(
         @NotNull(message = "A escola é obrigatória.")
         @JsonProperty("escolaId")
         Long escolaId,
-        @NotNull(message = "O tipo da escola é obrigatório.")
         @JsonProperty("tipoEscola") TipoEscolaEnum tipoEscola
 ) {
 }

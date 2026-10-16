@@ -1,29 +1,19 @@
 package pdev.com.agenda.domain.mapper;
 
-import org.springframework.stereotype.Component;
+import org.mapstruct.BeanMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 import pdev.com.agenda.domain.dto.PessoaComDeficienciaDTO;
 import pdev.com.agenda.domain.entity.PessoaComDeficiencia;
 
-@Component
-public class PessoaComDeficienciaMapper {
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
+public interface PessoaComDeficienciaMapper {
 
-    public PessoaComDeficiencia toEntity(PessoaComDeficienciaDTO dto) {
-        if (dto == null) return null;
-        PessoaComDeficiencia entity = new PessoaComDeficiencia();
-        entity.setId(dto.id());
-        entity.setNome(dto.nome());
-        entity.setTipoDeficiencia(dto.tipoDeficiencia());
-        entity.setDespesaMensal(dto.despesaMensal());
-        return entity;
-    }
+    @Mapping(target = "bensPosses", ignore = true)
+    @Mapping(target = "status", ignore = true)
+    PessoaComDeficiencia toEntity(PessoaComDeficienciaDTO dto);
 
-    public PessoaComDeficienciaDTO toDTO(PessoaComDeficiencia entity) {
-        if (entity == null) return null;
-        return new PessoaComDeficienciaDTO(
-                entity.getId(),
-                entity.getNome(),
-                entity.getTipoDeficiencia(),
-                entity.getDespesaMensal()
-        );
-    }
+    @BeanMapping(ignoreUnmappedSourceProperties = {"bensPosses", "status"})
+    PessoaComDeficienciaDTO toDTO(PessoaComDeficiencia entity);
 }

@@ -16,6 +16,7 @@ public class FormDadosPessoaisMapper {
         FormDadosPessoais entity = new FormDadosPessoais();
         entity.setId(dto.id());
         entity.setFullName(dto.fullName());
+        entity.setEmail(dto.email());
         entity.setCpf(dto.cpf());
         entity.setRg(dto.rg());
         entity.setNacionalidade(dto.nacionalidade());

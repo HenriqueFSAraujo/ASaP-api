@@ -1,9 +1,10 @@
 package pdev.com.agenda.domain.dto;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.api.Test;
 import org.flywaydb.core.Flyway;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,10 +14,27 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import pdev.com.agenda.domain.dto.CondicoesHabitacionaisDTO;
+import pdev.com.agenda.domain.dto.FormDadosPessoaisDTO;
+import pdev.com.agenda.domain.enuns.AbastecimentoAguaEnum;
+import pdev.com.agenda.domain.enuns.CondicoesDeSaudeCasosNaFamilia;
+import pdev.com.agenda.domain.enuns.DoencasCronicas;
+import pdev.com.agenda.domain.enuns.EsgotoSanitarioEnum;
+import pdev.com.agenda.domain.enuns.EstruturaFisicaEnum;
+import pdev.com.agenda.domain.enuns.SituacaoImovelEnum;
+import pdev.com.agenda.domain.enuns.TipoEscolaEnum;
+import pdev.com.agenda.domain.enuns.TipoImovelEnum;
+import pdev.com.agenda.domain.service.FormCondicoesHabitacionaisService;
+import pdev.com.agenda.domain.service.FormService;
 
+import java.time.LocalDate;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.request;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -32,6 +50,12 @@ class DtoValidationHttpTest {
 
     @MockitoBean
     private Flyway flyway;
+
+    @MockitoBean
+    private FormService formService;
+
+    @MockitoBean
+    private FormCondicoesHabitacionaisService housingService;
 
     static Stream<RequestCase> requestBodiesWithRequiredFields() {
         return Stream.of(
@@ -150,6 +174,117 @@ class DtoValidationHttpTest {
                 .andExpect(jsonPath("$.endereco").value("Rua Teste, 10"))
                 .andExpect(jsonPath("$.tipo").value("PARTICULAR"))
                 .andExpect(jsonPath("$.status").value("ATIVO"));
+    }
+
+    @Test
+    void frontendPersonalPayloadPostsAndGetsWithFrontendWireNamesWithoutRequestSchoolType() throws Exception {
+        FormDadosPessoaisDTO savedDto = new FormDadosPessoaisDTO(
+                3L, "Ana Silva", "", "12345678901", "RG123",
+                "Brasileira", "Recife", "Parda", "81999990000", "Feminino",
+                "", LocalDate.of(2000, 4, 15), "Não", "EDU123", "PENDENTE",
+                12L, 8L, TipoEscolaEnum.PARTICULAR
+        );
+        when(formService.createDadosPessoais(any(FormDadosPessoaisDTO.class)))
+                .thenAnswer(invocation -> savedDto);
+        when(formService.getByUserId(12L)).thenReturn(savedDto);
+
+        String payload = """
+                {
+                  "userId": 12,
+                  "fullName": "Ana Silva",
+                  "email": "",
+                  "cpf": "12345678901",
+                  "rg": "RG123",
+                  "nationality": "Brasileira",
+                  "birthplace": "Recife",
+                  "race": "Parda",
+                  "phone": "81999990000",
+                  "gender": "Feminino",
+                  "cpfScholarship": "",
+                  "dateBirth": "2000-04-15T00:00:00.000Z",
+                  "deficiency": "Não",
+                  "educasenso": "EDU123",
+                  "escolaId": 8
+                }
+                """;
+
+        mockMvc.perform(post("/api/forms")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(payload))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.nationality").value("Brasileira"))
+                .andExpect(jsonPath("$.birthplace").value("Recife"))
+                .andExpect(jsonPath("$.race").value("Parda"))
+                .andExpect(jsonPath("$.dateBirth").value("2000-04-15"))
+                .andExpect(jsonPath("$.tipoEscola").value("PARTICULAR"))
+                .andExpect(jsonPath("$.nacionalidade").doesNotExist())
+                .andExpect(jsonPath("$.naturalidade").doesNotExist())
+                .andExpect(jsonPath("$.cor").doesNotExist());
+
+        ArgumentCaptor<FormDadosPessoaisDTO> personalDto = ArgumentCaptor.forClass(FormDadosPessoaisDTO.class);
+        verify(formService).createDadosPessoais(personalDto.capture());
+        org.junit.jupiter.api.Assertions.assertNull(personalDto.getValue().tipoEscola());
+        org.junit.jupiter.api.Assertions.assertEquals(8L, personalDto.getValue().escolaId());
+
+        mockMvc.perform(request(HttpMethod.GET, "/api/forms/12"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.nationality").value("Brasileira"))
+                .andExpect(jsonPath("$.birthplace").value("Recife"))
+                .andExpect(jsonPath("$.race").value("Parda"))
+                .andExpect(jsonPath("$.dateBirth").value("2000-04-15"))
+                .andExpect(jsonPath("$.tipoEscola").value("PARTICULAR"));
+    }
+
+    @Test
+    void frontendHousingPayloadPostsAndGetsBothHealthAnswersWithFrontendWireNames() throws Exception {
+        CondicoesHabitacionaisDTO savedDto = new CondicoesHabitacionaisDTO(
+                SituacaoImovelEnum.PROPRIO, TipoImovelEnum.CASA, EstruturaFisicaEnum.ALVENARIA,
+                EsgotoSanitarioEnum.EXISTENTE, FornecimentoEnergiaDTOEnum.COMPANHIA_EXISTENTE,
+                AbastecimentoAguaEnum.EXISTENTE, CondicoesDeSaudeCasosNaFamilia.NAO,
+                DoencasCronicas.SIM, 12L
+        );
+        when(housingService.salvarOuAtualizar(any(CondicoesHabitacionaisDTO.class)))
+                .thenAnswer(invocation -> savedDto);
+        when(housingService.getByUserId(12L)).thenReturn(Optional.of(savedDto));
+
+        String payload = """
+                {
+                  "userId": 12,
+                  "situacaoImovel": "PROPRIO",
+                  "tipoImovel": "CASA",
+                  "estruturaFisica": "ALVENARIA",
+                  "esgotoSanitario": "EXISTENTE",
+                  "fornecimentoEnergia": "COMPANHIA_EXISTENTE",
+                  "abastecimentoAgua": "EXISTENTE",
+                  "doencaCronicaFamilia": "SIM",
+                  "deficienciaFamilia": "NAO"
+                }
+                """;
+
+        mockMvc.perform(post("/api/form-condicoes-habitacionais")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(payload))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.fornecimentoEnergia").value("COMPANHIA_EXISTENTE"))
+                .andExpect(jsonPath("$.doencaCronicaFamilia").value("SIM"))
+                .andExpect(jsonPath("$.deficienciaFamilia").value("NAO"))
+                .andExpect(jsonPath("$.doencasCronicas").doesNotExist())
+                .andExpect(jsonPath("$.CondicoesDeSaudeCasosNaFamilia").doesNotExist());
+
+        ArgumentCaptor<CondicoesHabitacionaisDTO> housingDto =
+                ArgumentCaptor.forClass(CondicoesHabitacionaisDTO.class);
+        verify(housingService).salvarOuAtualizar(housingDto.capture());
+        org.junit.jupiter.api.Assertions.assertEquals(
+                DoencasCronicas.SIM, housingDto.getValue().doencasCronicas());
+        org.junit.jupiter.api.Assertions.assertEquals(
+                CondicoesDeSaudeCasosNaFamilia.NAO,
+                housingDto.getValue().CondicoesDeSaudeCasosNaFamilia());
+
+        mockMvc.perform(request(HttpMethod.GET, "/api/form-condicoes-habitacionais/12"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.fornecimentoEnergia").value("COMPANHIA_EXISTENTE"))
+                .andExpect(jsonPath("$.doencaCronicaFamilia").value("SIM"))
+                .andExpect(jsonPath("$.deficienciaFamilia").value("NAO"));
     }
 
     record RequestCase(HttpMethod method, String path) {

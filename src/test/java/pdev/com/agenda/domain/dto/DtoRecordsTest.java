@@ -15,6 +15,8 @@ import pdev.com.agenda.domain.enuns.ValidationStatusEnum;
 import pdev.com.agenda.domain.entity.ComposicaoFamiliar;
 import pdev.com.agenda.domain.entity.Role;
 import pdev.com.agenda.domain.entity.UserInfo;
+import pdev.com.agenda.domain.enuns.CondicoesDeSaudeCasosNaFamilia;
+import pdev.com.agenda.domain.enuns.DoencasCronicas;
 import pdev.com.agenda.domain.enuns.RoleEnum;
 import pdev.com.agenda.domain.mapper.UserInfoMapper;
 import pdev.com.agenda.mapper.ComposicaoFamiliarMapper;
@@ -123,6 +125,108 @@ class DtoRecordsTest {
     }
 
     @Test
+    void frontendPersonalDataPayloadValidatesWithoutSchoolTypeAndRoundTripsWithFrontendNames() throws Exception {
+        String requestJson = """
+                {
+                  "userId": 12,
+                  "fullName": "Ana Silva",
+                  "email": "",
+                  "cpf": "12345678901",
+                  "rg": "RG123",
+                  "nationality": "Brasileira",
+                  "birthplace": "Recife",
+                  "race": "Parda",
+                  "phone": "81999990000",
+                  "gender": "Feminino",
+                  "cpfScholarship": "",
+                  "dateBirth": "2000-04-15T00:00:00.000Z",
+                  "deficiency": "Não",
+                  "educasenso": "EDU123",
+                  "escolaId": 8
+                }
+                """;
+
+        FormDadosPessoaisDTO dto = OBJECT_MAPPER.readValue(requestJson, FormDadosPessoaisDTO.class);
+        assertTrue(validator.validate(dto).isEmpty());
+        assertNull(dto.tipoEscola());
+
+        JsonNode response = OBJECT_MAPPER.readTree(OBJECT_MAPPER.writeValueAsString(dto));
+        assertEquals("Brasileira", response.get("nationality").asText());
+        assertEquals("Recife", response.get("birthplace").asText());
+        assertEquals("Parda", response.get("race").asText());
+        assertEquals("2000-04-15", response.get("dateBirth").asText());
+        assertFalse(response.has("nacionalidade"));
+        assertFalse(response.has("naturalidade"));
+        assertFalse(response.has("cor"));
+
+        FormDadosPessoaisDTO legacyAliases = OBJECT_MAPPER.readValue(
+                """
+                        {
+                          "nacionalidade": "Brasileira",
+                          "naturalidade": "Recife",
+                          "cor": "Parda"
+                        }
+                        """,
+                FormDadosPessoaisDTO.class
+        );
+        assertEquals("Brasileira", legacyAliases.nacionalidade());
+        assertEquals("Recife", legacyAliases.naturalidade());
+        assertEquals("Parda", legacyAliases.cor());
+    }
+
+    @Test
+    void frontendHousingPayloadMapsHealthFieldsToTheirExistingDomainEnums() throws Exception {
+        String requestJson = """
+                {
+                  "userId": 12,
+                  "situacaoImovel": "PROPRIO",
+                  "tipoImovel": "CASA",
+                  "estruturaFisica": "ALVENARIA",
+                  "esgotoSanitario": "EXISTENTE",
+                  "fornecimentoEnergia": "COMPANHIA_EXISTENTE",
+                  "abastecimentoAgua": "EXISTENTE",
+                  "doencaCronicaFamilia": "SIM",
+                  "deficienciaFamilia": "NAO"
+                }
+                """;
+
+        CondicoesHabitacionaisDTO dto = OBJECT_MAPPER.readValue(requestJson, CondicoesHabitacionaisDTO.class);
+        assertTrue(validator.validate(dto).isEmpty());
+        assertEquals(DoencasCronicas.SIM, dto.doencasCronicas());
+        assertEquals(CondicoesDeSaudeCasosNaFamilia.NAO, dto.CondicoesDeSaudeCasosNaFamilia());
+        assertEquals(FornecimentoEnergiaDTOEnum.COMPANHIA_EXISTENTE, dto.fornecimentoEnergia());
+
+        JsonNode response = OBJECT_MAPPER.readTree(OBJECT_MAPPER.writeValueAsString(dto));
+        assertEquals("COMPANHIA_EXISTENTE", response.get("fornecimentoEnergia").asText());
+        assertEquals("SIM", response.get("doencaCronicaFamilia").asText());
+        assertEquals("NAO", response.get("deficienciaFamilia").asText());
+        assertFalse(response.has("doencasCronicas"));
+        assertFalse(response.has("CondicoesDeSaudeCasosNaFamilia"));
+
+        CondicoesHabitacionaisDTO legacyAliases = OBJECT_MAPPER.readValue(
+                """
+                        {
+                          "doencasCronicas": "NAO",
+                          "CondicoesDeSaudeCasosNaFamilia": "SIM"
+                        }
+                        """,
+                CondicoesHabitacionaisDTO.class
+        );
+        assertEquals(DoencasCronicas.NAO, legacyAliases.doencasCronicas());
+        assertEquals(CondicoesDeSaudeCasosNaFamilia.SIM,
+                legacyAliases.CondicoesDeSaudeCasosNaFamilia());
+
+        CondicoesHabitacionaisDTO legacyEnergyValue = OBJECT_MAPPER.readValue(
+                """
+                        {"fornecimentoEnergia": "COMPANHIA_ELETRICA"}
+                        """,
+                CondicoesHabitacionaisDTO.class
+        );
+        assertEquals(FornecimentoEnergiaDTOEnum.COMPANHIA_EXISTENTE,
+                legacyEnergyValue.fornecimentoEnergia());
+    }
+
+    @Test
     void mergedRequestResponseRecordsRetainRequestAndResponseFields() throws Exception {
         String processoJson = """
                 {
@@ -202,7 +306,7 @@ class DtoRecordsTest {
                 fieldPaths(new EscolaDTO(null, null, null, null, null, null, null)));
 
         assertEquals(Set.of("fullName", "cpf", "nacionalidade", "naturalidade", "cor", "phone",
-                        "gender", "pcd", "userId", "escolaId", "tipoEscola"),
+                        "gender", "pcd", "userId", "escolaId"),
                 fieldPaths(new FormDadosPessoaisDTO(null, null, null, null, null, null, null, null,
                         null, null, null, null, null, null, null, null, null, null)));
 
